@@ -2,6 +2,7 @@ package com.stroncea.androidtimetablescheduler;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.GridView;
 
@@ -13,6 +14,9 @@ public class TimeTableActivity extends AppCompatActivity {
     private GridView gridView;
     public static final int NUM_COLS = 5;
     private static int columnWidth, columnHeight;
+    public ArrayList<Button> listOfButtons;
+    private List<List<UofTEvent>> daysWithEvents;
+    Button[][] arrayOfButtons;
 
     @Override
     public  void onCreate(Bundle savedInstanceState) {
@@ -21,24 +25,20 @@ public class TimeTableActivity extends AppCompatActivity {
         gridView = findViewById(R.id.grid);
         // Since we have 5 days in a week
         gridView.setNumColumns(NUM_COLS);
+
+
         UofTTimeTablesGenerator t = SaveAndLoadTimeTableGenerator.<UofTEvent, UofTTimeTable, UofTTimeTablesGenerator>loadFromFile(this,"TimeTableGenerator");
         TimeTableActivityModel activityModel = new TimeTableActivityModel(t);
 
-        int displayWidth = gridView.getMeasuredWidth();
-        int displayHeight = gridView.getMeasuredHeight();
-
-        columnWidth = displayWidth / gridView.getNumColumns();
         // number of hours
         List<Integer> rows = activityModel.getRows();
-        int rowNumber =  rows.size();
-        columnHeight = displayHeight / rowNumber;
-        List<List<Button>> listOfButtons = new ArrayList<>();
-        Button[][] arrayOfButtons= new Button[NUM_COLS][rowNumber];
+        final int rowNumber =  rows.size();
+        arrayOfButtons= new Button[NUM_COLS][rowNumber];
         Button newBtn;
         int rowTime;
         // go day by day
         for(int i =0;i<NUM_COLS;i++){
-            List<List<UofTEvent>> daysWithEvents = activityModel.getUofTTimeTable().getEventsByWeek();
+            daysWithEvents = activityModel.getUofTTimeTable().getEventsByWeek();
             // each day has the events sorted
             List<UofTEvent> day = daysWithEvents.get(i);
             int eventCounter = 0;
@@ -55,7 +55,10 @@ public class TimeTableActivity extends AppCompatActivity {
                         if(day.get(eventCounter).getEndTime()>rowTime){
                             foundIfEventExists=true;
                             newBtn.setBackgroundColor(R.color.colorPrimary);
-                            newBtn.setText(rowTime);
+                            String text;
+                            UofTEvent e = day.get(eventCounter);
+                            text = e.getName() + " " + e.getLectureSection() + " " + String.valueOf(rowTime/3600);
+                            newBtn.setText(text);
                         }
                         // this means we need another event as endtime is either equal to this row start time
                         // or endtime is less than this row time
@@ -68,7 +71,10 @@ public class TimeTableActivity extends AppCompatActivity {
                     else  if(day.get(eventCounter).getStartTime() == rowTime){
                         foundIfEventExists=true;
                         newBtn.setBackgroundColor(R.color.colorPrimary);
-                        newBtn.setText(rowTime);
+                        String text;
+                        UofTEvent e = day.get(eventCounter);
+                        text = e.getName() + " " + e.getLectureSection() + " " + String.valueOf(rowTime/3600);
+                        newBtn.setText(text);
 
                         //however, we don't know anything about whether there are other rows in this event so don't iterate it.
 
@@ -83,9 +89,52 @@ public class TimeTableActivity extends AppCompatActivity {
 
 
         }
+//        ArrayList<ArrayList<Button>> listOfButtons = new ArrayList<>();
+//        ArrayList<Button> oneDay;
+//        for(int i =0;i<NUM_COLS;i++){
+//            oneDay = new ArrayList<>();
+//            for(int j=0;j<rowNumber;j++){
+//                oneDay.add(arrayOfButtons[i][j]);
+//            }
+//            listOfButtons.add(oneDay);
+//        }
+        listOfButtons = new ArrayList<>();
+        for(int i = 0; i<rowNumber;i++){
+            for(int j =0;j<NUM_COLS;j++) {
+                //TODO fix bug here
+                listOfButtons.add(arrayOfButtons[j][i]);
+            }
+        }
+//        for(int i =0;i<NUM_COLS;i++){
+//            for(int j=0;j<rowNumber;j++){
+//                listOfButtons.add(arrayOfButtons[j][i]);
+//            }
+//        }
+        gridView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        gridView.getViewTreeObserver().removeOnGlobalLayoutListener(
+                                this);
 
-        gridView.setAdapter(new GridAdapter(arrayOfButtons, columnWidth, columnHeight));
 
+                        int displayWidth = gridView.getMeasuredWidth();
+                        int displayHeight = gridView.getMeasuredHeight();
+
+                        columnWidth = displayWidth / gridView.getNumColumns();
+                        columnHeight = displayHeight / rowNumber;
+
+
+                        setAdapter();
+                    }
+                });
+
+
+
+    }
+    public void setAdapter(){
+        gridView.setAdapter(new GridAdapter(listOfButtons, columnWidth, columnHeight));
+        System.out.println("This should work now");
 
 
     }

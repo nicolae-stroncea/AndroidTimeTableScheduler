@@ -251,6 +251,7 @@ TimeTable checks if there is a conflict.
         else{
             Toast.makeText(this,"Add another course" ,Toast.LENGTH_SHORT).show();
             t.addBuildingBlocks(output);
+            course.getText().clear();
             listOfAcceptedCourses.add(output.getName());
             acceptedCourses.setAdapter(adapter);
 

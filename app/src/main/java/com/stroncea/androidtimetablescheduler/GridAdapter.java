@@ -23,7 +23,7 @@ public class GridAdapter extends BaseAdapter {
     /**
      * ArrayList of the buttons
      */
-    private ArrayList<ArrayList<Button>> mButtons;
+    private ArrayList<Button> mButtons;
     /**
      * Height and width of the column
      */
@@ -35,31 +35,11 @@ public class GridAdapter extends BaseAdapter {
      * @param columnWidth - width of the column
      * @param columnHeight - height of the column
      */
-    public GridAdapter(ArrayList<ArrayList<Button>> buttons, int columnWidth, int columnHeight) {
+    public GridAdapter(ArrayList<Button> buttons, int columnWidth, int columnHeight) {
         mButtons = buttons;
         mColumnWidth = columnWidth;
         mColumnHeight = columnHeight;
     }
-//    public  int getRow(int position) {
-//        return position / board.getDimension();
-//    }
-
-    /**
-     * get the position, given a row and a column
-     * @param row
-     * @param col
-     * @return
-     */
-//    public int getPosition(int row, int col){
-//        return row* board.getDimension() + col;
-//    }
-
-    /**
-     * @return the column number(Starts at 0).
-     */
-//    public int getCol(int position) {
-//        return position % board.getDimension();
-//    }
 
     @Override
     public int getCount() {
@@ -81,7 +61,7 @@ public class GridAdapter extends BaseAdapter {
         Button button;
 
         if (convertView == null) {
-            button = mButtons.get(position % mButtons.size()).get(position / mButtons.size());
+            button = mButtons.get(position);
         } else {
             button = (Button) convertView;
         }
