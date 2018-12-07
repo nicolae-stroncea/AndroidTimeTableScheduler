@@ -1,4 +1,5 @@
 package com.stroncea.androidtimetablescheduler;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,7 +7,7 @@ import java.util.List;
  * Represents a block of events.
  */
 
-public abstract class TimeTable<E extends Event, T extends TimeTable> implements EventContainer<E>, Comparable<T>, Scorable {
+public abstract class TimeTable<E extends Event, T extends TimeTable> implements EventContainer<E>, Comparable<T>, Scorable, Serializable {
     /*
         Generates a timetable if possible. If not, returns null.
          */
@@ -15,10 +16,16 @@ public abstract class TimeTable<E extends Event, T extends TimeTable> implements
 
     // by default score is -1
     private int score = -1;
-    public TimeTable()
-    {}
+    public TimeTable() {}
     public TimeTable(List<List<E>> listOfEventGroups) {
         this.listOfEventGroups =listOfEventGroups;
+    }
+    public List<E> getListOfEvents(){
+        List<E> listOfEvents = new ArrayList<>();
+        for (List<E> eventList : listOfEventGroups) {
+            listOfEvents.addAll(eventList);
+        }
+        return listOfEvents;
     }
 
     /**

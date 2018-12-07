@@ -1,5 +1,8 @@
 package com.stroncea.androidtimetablescheduler;
-public abstract class Event<T extends Event>{
+
+import java.io.Serializable;
+
+public abstract class Event<T extends Event> implements Serializable {
     private int startTime;
     private int endTime;
     private String name;

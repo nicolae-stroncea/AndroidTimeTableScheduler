@@ -1,4 +1,5 @@
 package com.stroncea.androidtimetablescheduler;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.NoSuchElementException;
  * This for example will contain all possible course lectures.
  * Will Contain for example:CSC208[Lec05,Lec06,Lec07].
  */
-public abstract class OptionsOfEventGroups<E extends Event> implements  Iterable<ArrayList<E>> {
+public abstract class OptionsOfEventGroups<E extends Event> implements  Iterable<ArrayList<E>>, Serializable {
     public List<List<E>> getListOfOptions() {
         return listOfOptions;
     }

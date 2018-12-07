@@ -10,7 +10,7 @@ public class UofTTimeTablesGenerator extends TimeTablesGenerator<UofTEvent, UofT
     }
 
     @Override
-    public TimeTable createTimeTable(List<List<UofTEvent>> allEvents) {
+    public UofTTimeTable createTimeTable(List<List<UofTEvent>> allEvents) {
         return new UofTTimeTable(allEvents);
     }
     // For UofTTimeTable, the timeTable with the smallest score is actually the biggest

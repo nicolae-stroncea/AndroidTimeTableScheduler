@@ -1,4 +1,5 @@
 package com.stroncea.androidtimetablescheduler;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,7 +21,7 @@ private ListView acceptedCourses;
 private List<String> listOfAcceptedCourses = new ArrayList<>();
 CourseRequests asyncTask;
 ArrayAdapter<String> adapter;
-TimeTablesGenerator t = new UofTTimeTablesGenerator();
+UofTTimeTablesGenerator t = new UofTTimeTablesGenerator();
 
 
     @Override
@@ -63,6 +64,10 @@ TimeTablesGenerator t = new UofTTimeTablesGenerator();
 
                 t.createTimeTables();
                 t.getTimeTables().sort(t);
+                List<List<UofTEvent>> eventsSorted = t.getTimeTables().get(0).getEventsByWeek();
+                SaveAndLoadTimeTableGenerator.saveToFile(MainActivity.this,"TimeTableGenerator",t);
+                startActivity(new Intent(MainActivity.this, TimeTableActivity.class));
+
             }
         });
 

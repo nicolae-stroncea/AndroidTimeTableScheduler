@@ -4,33 +4,30 @@ import java.util.Comparator;
 import java.util.List;
 
 public class UofTTimeTable extends TimeTable<UofTEvent, UofTTimeTable>{
-
+    List<List<UofTEvent>> dayWithEventsForTesting;
+    int daysWithEvents = 0;
     public UofTTimeTable(List<List<UofTEvent>> listOfEventGroups) {
         super(listOfEventGroups);
     }
-    int daysWithEvents = 0;
-    List<List<UofTEvent>> eventsByWeek = new ArrayList<>();
+    public List<List<UofTEvent>>  getDayWithEventsForTesting(){
+        return getEventsByWeek();
+    }
     public int getDaysWithEvents(){
         return daysWithEvents;
     }
 
-    public void setDaysWithEvents(int daysWithEvents) {
-        this.daysWithEvents = daysWithEvents;
-    }
-
     /**
-     * Gives a score based on the amount of wait time between classes. The higher the score, the larger the wait time,
-     * therefore the worst a timetable is
+     * Returns the events by week, sorted by endtime
      * @return
      */
-    @Override
-    public double giveScore() {
+    public List<List<UofTEvent>> getEventsByWeek() {
         List<UofTEvent> listOfEvents = new ArrayList<>();
         List<List<UofTEvent>> listOfEventGroups = getListOfEventGroups();
         // first we flatten the list by combining all the events in 1.
         for (List<UofTEvent> eventList : listOfEventGroups) {
             listOfEvents.addAll(eventList);
         }
+        List<List<UofTEvent>> eventsByWeek = new ArrayList<>();
         // sort the events by day of the week.
         List<UofTEvent> dayOfWeekEvents;
         for(int i =0; i<5;i++){
@@ -50,21 +47,16 @@ public class UofTTimeTable extends TimeTable<UofTEvent, UofTTimeTable>{
                     eventsByWeek.get(2).add(event);
                     break;
                 case(4):
-                   eventsByWeek.get(3).add(event);
+                    eventsByWeek.get(3).add(event);
                     break;
                 case(5):
                     eventsByWeek.get(4).add(event);
                     break;
             }
         }
-        // find the number of days which have courses
-        for(List<UofTEvent> e: eventsByWeek){
-            if(!e.isEmpty()){
-                daysWithEvents+=1;
-            }
-        }
         // sort each list of events by their endtime
-        for(List<UofTEvent> oneDayEvents :eventsByWeek){
+        for(int i=0;i<eventsByWeek.size();i++){
+            List<UofTEvent> oneDayEvents = eventsByWeek.get(i);
             oneDayEvents.sort(new Comparator<UofTEvent>() {
                 @Override
                 public int compare(UofTEvent o1, UofTEvent o2) {
@@ -84,7 +76,29 @@ public class UofTTimeTable extends TimeTable<UofTEvent, UofTTimeTable>{
                     }
                 }
             });
-        }// Calculate the difference between the times
+        }
+        return eventsByWeek;
+    }
+
+    public void setDaysWithEvents(int daysWithEvents) {
+        this.daysWithEvents = daysWithEvents;
+    }
+
+    /**
+     * Gives a score based on the amount of wait time between classes. The higher the score, the larger the wait time,
+     * therefore the worst a timetable is
+     * @return
+     */
+    @Override
+    public double giveScore() {
+        List<List<UofTEvent>> eventsByWeek = getEventsByWeek();
+        // find the number of days which have courses
+        for(List<UofTEvent> e: eventsByWeek){
+            if(!e.isEmpty()){
+                daysWithEvents+=1;
+            }
+        }
+        // Calculate the difference between the times
         int timeDifferenceBtnEvents = 0;
         for(int i=0; i<eventsByWeek.size(); i++){
             List<UofTEvent> eventsByDay =eventsByWeek.get(i);

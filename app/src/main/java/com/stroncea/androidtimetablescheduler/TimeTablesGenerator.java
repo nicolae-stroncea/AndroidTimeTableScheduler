@@ -1,4 +1,5 @@
 package com.stroncea.androidtimetablescheduler;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -6,16 +7,16 @@ import java.util.List;
 /**
 Generates all possible TimeTables
  */
-public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> implements Comparator<T> {
+public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> implements Comparator<T>, Serializable {
     private List<OptionsOfEventGroups<E>> buildingBlocks;
     List<UserPreferences> userPref;
 
-    public List<TimeTable> getTimeTables() {
+    public List<T> getTimeTables() {
         return timeTables;
     }
 
 
-    private List<TimeTable> timeTables = new ArrayList<>();
+    private List<T> timeTables = new ArrayList<>();
 
     /**
      * Gets passed a list of OptionsOfEventGroups's, which are objects that contain alternatives for a course, i.e
@@ -54,7 +55,7 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
                 allEvents.addAll(items);
                 allEvents.add(e);
                 //TODO decide how to make it here better
-                TimeTable t = createTimeTable(allEvents);
+                T t = createTimeTable(allEvents);
                 t.build();
                 if(t.isValid()){
                     timeTables.add(t);
@@ -73,7 +74,7 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
 
         }
     }
-    public abstract TimeTable createTimeTable(List<List<E>> allEvents);
+    public abstract T createTimeTable(List<List<E>> allEvents);
 
 
 
