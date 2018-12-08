@@ -1,16 +1,21 @@
 package com.stroncea.androidtimetablescheduler;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PatternMatcher;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class MainActivity extends AppCompatActivity implements AsyncResponse {
 private Button addCourse;
 private EditText course;
@@ -18,6 +23,10 @@ private Button generatetmtblbtn;
 private Button clearCourses;
 private ListView acceptedCourses;
 private List<String> listOfAcceptedCourses = new ArrayList<>();
+private RadioGroup semester;
+private RadioGroup campus;
+private RadioGroup weight;
+
 CourseRequests asyncTask;
 ArrayAdapter<String> adapter;
 UofTTimeTablesGenerator t = new UofTTimeTablesGenerator();
@@ -29,6 +38,9 @@ UofTTimeTablesGenerator t = new UofTTimeTablesGenerator();
         setContentView(R.layout.main_layout);
         addCourse = findViewById(R.id.submit);
         generatetmtblbtn = findViewById(R.id.generateTimeTable);
+        semester = findViewById(R.id.semester);
+        campus = findViewById(R.id.campus);
+        weight = findViewById(R.id.weight);
         course = findViewById(R.id.course);
         clearCourses = findViewById(R.id.clearCourses);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfAcceptedCourses);
@@ -40,16 +52,55 @@ UofTTimeTablesGenerator t = new UofTTimeTablesGenerator();
             public void onClick(View view) {
                 try{
                     String courseCode = course.getText().toString().toUpperCase();
-                    if(!listOfAcceptedCourses.contains(courseCode)){
-                        asyncTask = new CourseRequests();
-                        asyncTask.delegate = MainActivity.this;
-                        //execute the async task
-                        asyncTask.execute(courseCode);
+                    courseCode = courseCode.replace(" ","" );
+                    Pattern patt = Pattern.compile(".+([HF][135][FSY])$");
+                    Matcher m = patt.matcher(courseCode);
+                    if(m.matches()){
+                        Toast.makeText(MainActivity.this, "Do not types last 3 characters",Toast.LENGTH_SHORT).show();
                     }
                     else{
-                        Toast.makeText(MainActivity.this, "You have already added this course",Toast.LENGTH_SHORT ).show();;
-                    }
+                        String courseWeight;
+                        String campusType;
+                        String semesterType;
+                        int id = weight.getCheckedRadioButtonId();
+                        if(id==R.id.half){
+                            courseWeight = "H";
+                        }
+                        else{
+                            courseWeight = "Y";
+                        }
+                        id = campus.getCheckedRadioButtonId();
+                        if(id==R.id.UTM){
+                            campusType = "5";
+                        }
+                        else if(id==R.id.UTSC){
+                            campusType = "3";
+                        }
+                        else{
+                            campusType = "1";
+                        }
+                        id = semester.getCheckedRadioButtonId();
+                        if(id==R.id.fall){
+                            semesterType="F";
+                        }
+                        else if(id==R.id.winter){
+                            semesterType="S";
+                        }
+                        else{
+                            semesterType="Y";
 
+                        }
+                        courseCode = courseCode.concat(courseWeight).concat(campusType).concat(semesterType);
+                        if(!listOfAcceptedCourses.contains(courseCode)){
+                            asyncTask = new CourseRequests();
+                            asyncTask.delegate = MainActivity.this;
+                            //execute the async task
+                            asyncTask.execute(courseCode);
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "You have already added this course",Toast.LENGTH_SHORT ).show();;
+                        }
+                    }
 
                 }
                 catch(Exception e){
