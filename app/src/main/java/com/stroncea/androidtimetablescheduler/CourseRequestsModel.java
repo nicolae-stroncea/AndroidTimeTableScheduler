@@ -1,5 +1,7 @@
 package com.stroncea.androidtimetablescheduler;
 
+import android.app.VoiceInteractor;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,8 +12,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
+//TODO need to see how to deal with yearly courses
 public class CourseRequestsModel {
     private static final String API_KEY = "TngcUaE7v5Pe7rrXDKHmE4qlbfvB01Wz";
     private static final String SEARCH_BY_COURSE = "https://cobalt.qas.im/api/1.0/courses/search?q=";
@@ -23,9 +27,9 @@ public class CourseRequestsModel {
      * @return
      * @throws IOException
      */
-    public static OptionsOfEventGroups<UofTEvent> request(String course) throws IOException {
+    public static List<OptionsOfEventGroups<UofTEvent>> request(String course) throws IOException {
         String response = sendGET(course);
-        OptionsOfEventGroups<UofTEvent> options = null;
+        List<OptionsOfEventGroups<UofTEvent>> options = null;
         if(response.equals("[]")){
             System.out.println("REQUEST FAILED");
         }
@@ -38,7 +42,8 @@ public class CourseRequestsModel {
         return options;
     }
 
-    private static OptionsOfEventGroups<UofTEvent> processJson(String response){
+    private static List<OptionsOfEventGroups<UofTEvent>> processJson(String response){
+        List<OptionsOfEventGroups<UofTEvent>> options = new ArrayList<>();
         JSONObject meeting_object;
         JSONArray lectureArray;
         UofTEvent e;
@@ -57,13 +62,17 @@ public class CourseRequestsModel {
                 counter+=1;
             }
             if(foundCurrYear){
-                course = new UofTCourse(thisYearCourse.getString("code"));
-                List<List<UofTEvent>> listOfOptions = new ArrayList<>();
-                List<UofTEvent> oneLecture = new ArrayList<>();
+                List<UofTEvent> oneLecture;
                 // get all the lecture sections and get a list of events for each one
                 JSONArray lecture_sections =  thisYearCourse.getJSONArray("meeting_sections");
                 // iterate over all the lecture sections
+                // there will be different kinds of lecture sections,
+                // so we will create an option for each one of them as we are going
+                // to need all of them
+                Map<Character, List<List<UofTEvent>>> typesOfourses = new HashMap<>();
+//                List<List<UofTEvent>> listOfOptions;
                 for (int i=0; i < lecture_sections.length(); i++) {
+//                    listOfOptions = new ArrayList<>();
                     meeting_object = lecture_sections.getJSONObject(i);
                     String name = meeting_object.getString("code");
                     //This is the array which has all of the meeting times for a specific Lecture section
@@ -80,16 +89,33 @@ public class CourseRequestsModel {
                         e.setLocation(lecture.getString("location"));
                         oneLecture.add(e);
                     }
-                    listOfOptions.add(oneLecture);
+                    char courseType = name.charAt(0);
+                    // if this type of lecture already exists, add a new lecture to it
+                    if(typesOfourses.containsKey(courseType)){
+                        List<List<UofTEvent>> typeCourse = typesOfourses.get(courseType);
+                        typeCourse.add(oneLecture);
+                        typesOfourses.put(courseType, typeCourse);
+
+                    }
+                    // if this type of lecture doesn't exists, create it
+                    else{
+                        List<List<UofTEvent>> typeCourse =new ArrayList<>();
+                        typeCourse.add(oneLecture);
+                        typesOfourses.put(courseType, typeCourse);
+                    }
                 }
-                course.setListOfOptions(listOfOptions);
+                for(List<List<UofTEvent>> listOfEvents: typesOfourses.values()){
+                    course = new UofTCourse(thisYearCourse.getString("code"));
+                    course.setListOfOptions(listOfEvents);
+                    options.add(course);
+                }
                 System.out.println("Created the list of events");
             }
         }
         catch(Exception ex){
             ex.printStackTrace();
         }
-        return course;
+        return options;
     }
 
     /**

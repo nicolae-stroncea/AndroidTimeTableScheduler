@@ -3,11 +3,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
 private Button addCourse;
 private EditText course;
 private Button generatetmtblbtn;
+private Button clearCourses;
 private ListView acceptedCourses;
 private List<String> listOfAcceptedCourses = new ArrayList<>();
 CourseRequests asyncTask;
@@ -31,6 +30,7 @@ UofTTimeTablesGenerator t = new UofTTimeTablesGenerator();
         addCourse = findViewById(R.id.submit);
         generatetmtblbtn = findViewById(R.id.generateTimeTable);
         course = findViewById(R.id.course);
+        clearCourses = findViewById(R.id.clearCourses);
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfAcceptedCourses);
         acceptedCourses = findViewById(R.id.acceptedCourses);
         acceptedCourses.setAdapter(adapter);
@@ -67,6 +67,17 @@ UofTTimeTablesGenerator t = new UofTTimeTablesGenerator();
                 List<List<UofTEvent>> eventsSorted = t.getTimeTables().get(0).getEventsByWeek();
                 SaveAndLoadTimeTableGenerator.saveToFile(MainActivity.this,"TimeTableGenerator",t);
                 startActivity(new Intent(MainActivity.this, TimeTableActivity.class));
+
+
+            }
+        });
+        clearCourses.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listOfAcceptedCourses = new ArrayList<>();
+                acceptedCourses.setAdapter(adapter);
+                t.setBuildingBlocks(null);
+
 
             }
         });
@@ -242,7 +253,7 @@ TimeTable checks if there is a conflict.
 
     //this gets the result from the CourseRequests
     @Override
-    public void processFinish(OptionsOfEventGroups<UofTEvent> output){
+    public void processFinish(List<OptionsOfEventGroups<UofTEvent>> output){
         //Here you will receive the result fired from async class
         //of onPostExecute(result) method.
         if(output==null){
@@ -250,9 +261,11 @@ TimeTable checks if there is a conflict.
         }
         else{
             Toast.makeText(this,"Add another course" ,Toast.LENGTH_SHORT).show();
-            t.addBuildingBlocks(output);
+            for(OptionsOfEventGroups<UofTEvent> option: output){
+                t.addBuildingBlocks(option);
+            }
             course.getText().clear();
-            listOfAcceptedCourses.add(output.getName());
+            listOfAcceptedCourses.add(0, output.get(0).getName());
             acceptedCourses.setAdapter(adapter);
 
         }
