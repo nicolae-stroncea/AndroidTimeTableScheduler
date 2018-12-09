@@ -4,13 +4,9 @@ import java.util.Comparator;
 import java.util.List;
 
 public class UofTTimeTable extends TimeTable<UofTEvent, UofTTimeTable>{
-    List<List<UofTEvent>> dayWithEventsForTesting;
     int daysWithEvents = 0;
     public UofTTimeTable(List<List<UofTEvent>> listOfEventGroups) {
         super(listOfEventGroups);
-    }
-    public List<List<UofTEvent>>  getDayWithEventsForTesting(){
-        return getEventsByWeek();
     }
     public int getDaysWithEvents(){
         return daysWithEvents;

@@ -28,6 +28,8 @@ public class TimeTableActivity extends AppCompatActivity {
 
 
         UofTTimeTablesGenerator t = SaveAndLoadTimeTableGenerator.<UofTEvent, UofTTimeTable, UofTTimeTablesGenerator>loadFromFile(this,"TimeTableGenerator");
+        t.createTimeTables();
+        t.getTimeTables().sort(t);
         TimeTableActivityModel activityModel = new TimeTableActivityModel(t);
 
         // number of hours

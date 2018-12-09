@@ -1,0 +1,24 @@
+//TODO keep refactoring everything so that it is in terms of ChoiceOfEventGroups and EventGroup rather than Lists especially for the generator and the timeTable. Only apply where necessary
+
+
+//TODO change implementation from UofTEvent to WeeklyEvent and WeeklyTimeTable
+
+//TODO Add documentation and testing everywhere
+//TODO differentiate between fall, winter, and full year courses. If fall, make its own timetable for it. If winter, make its own timetable for it. If full year, put it in both fall and winter.
+
+Maybe subclass TimeTable into WinterTimeTable and SummerTimeTable.
+
+//TODO Filtering
+
+1. I think i'm iterating twice over the list: one time to detect the conflicts and one time to sort it by scores. See if maybe it would be more productive to iterate by both from the get go.
+Disadvantages will iterate over the beginning of a lot of invalids. Advantage, will not iterate twice over valid timetables. Test, see which one is faster.
+
+2. Implement Sorting and Filtering as 2 separate actions.
+
+3. Filtering: Create a property called: PropertyEquals(String PropertyName, String value, Boolean true, false). Events will have this method(implement using generics). If we want them to equal, we set the boolean to true, if we want them not to equal, we set the boolean to false. Then, when we're creating the timetables, we just use that method, and put the String Filter hat we get from the user in the method, with his desired value. Think about this a bit more, it may not be even the events that we want to check the properties of, but the unique lectures in optionsOfEventGroups, since we will want to check properites like(Instructor, time of lecture, lecture name, etc). It may even be both.
+
+4.Each OptionsOfEventGroups will have have a Map<String, String>(maybe change the key to an enum, which takes a map of propertynames with the desired property values. THen when we checkForConflicts(rename the method so it's more general and includes checking for filters), we also check if our events have the same properies as the ones the map requests. If not, same as with insert, invalidate the timetable.
+
+5. For sorting, we would do that in GiveScore. Make it general so we can dynamically insert Sorters.
+Maybe make Sorter an Interface, and then create classe which have 1 method, and 2 parameters(to compare objects or timetables, dunno, check). Consider making it even more general, maybe you just get the data that you want to sort by, and max, min, balanced, and the software automatically decides an algorithm. This would be best. Additionally, consider whether the sorters would need a priority, my guess is they would.
+

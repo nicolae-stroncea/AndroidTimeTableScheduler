@@ -6,18 +6,18 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * Currently this is the superClass for Course. We want it to represent anything which behaves like course, in the
- * sense that it has mutually exclusive alternatives. We  try and generate timetables using the different alternatives.
+ * This describes a list of EventGroup. For this class, ll connected EventGroups are alternatives to each other, and if a timeTable has 1 connectedEventGroup, it will not have the other.
  *
- * This for example will contain all possible course lectures.
+ * This for example will contain all possible course lecture(where a lecture is an EventGroup(L0101
+ * will have Events on Monday, Tuesday Wednesday)..
  * Will Contain for example:CSC208[Lec05,Lec06,Lec07].
  */
-public abstract class OptionsOfEventGroups<E extends Event> implements  Iterable<ArrayList<E>>, Serializable {
-    public List<List<E>> getListOfOptions() {
+public abstract class ChoiceOfEventGroups<E extends Event<E>> implements  Iterable<EventGroup<E>>, Serializable {
+    public List<EventGroup<E>> getListOfOptions() {
         return listOfOptions;
     }
 
-    public void setListOfOptions(List<List<E>> listOfOptions) {
+    public void setListOfOptions(List<EventGroup<E>> listOfOptions) {
         this.listOfOptions = listOfOptions;
     }
 
@@ -25,11 +25,15 @@ public abstract class OptionsOfEventGroups<E extends Event> implements  Iterable
         this.name = name;
     }
 
-    private List<List<E>> listOfOptions = new ArrayList<>();
+    private List<EventGroup<E>> listOfOptions = new ArrayList<>();
     public String name;
     public abstract boolean equals(Object obj);
-    public void add(List<E> Section) {
-        listOfOptions.add(Section);
+
+    /**
+     * Adds a section.
+     */
+    public void add(EventGroup<E> section) {
+        listOfOptions.add(section);
     }
     public String getName() {
         return this.name;
@@ -44,7 +48,7 @@ public abstract class OptionsOfEventGroups<E extends Event> implements  Iterable
             return currentSection< listOfOptions.size();
         }
         @Override
-        public List<E> next() {
+        public EventGroup<E> next() {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }

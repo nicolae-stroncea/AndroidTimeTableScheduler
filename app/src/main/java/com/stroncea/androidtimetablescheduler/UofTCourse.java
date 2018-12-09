@@ -1,5 +1,5 @@
 package com.stroncea.androidtimetablescheduler;
-public class UofTCourse extends OptionsOfEventGroups<UofTEvent> {
+public class UofTCourse extends ChoiceOfEventGroups<UofTEvent> {
     public UofTCourse(String name) {
         this.name = name;
     }

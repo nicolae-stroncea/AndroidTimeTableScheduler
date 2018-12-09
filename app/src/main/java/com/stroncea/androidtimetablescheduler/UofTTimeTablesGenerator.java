@@ -2,7 +2,7 @@ package com.stroncea.androidtimetablescheduler;
 import java.util.List;
 
 public class UofTTimeTablesGenerator extends TimeTablesGenerator<UofTEvent, UofTTimeTable>{
-    public UofTTimeTablesGenerator(List<OptionsOfEventGroups<UofTEvent>> buildingBlocks){
+    public UofTTimeTablesGenerator(List<ChoiceOfEventGroups<UofTEvent>> buildingBlocks){
         super(buildingBlocks);
     }
     public UofTTimeTablesGenerator(){

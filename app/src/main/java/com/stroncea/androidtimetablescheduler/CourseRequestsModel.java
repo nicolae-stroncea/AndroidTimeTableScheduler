@@ -1,7 +1,5 @@
 package com.stroncea.androidtimetablescheduler;
 
-import android.app.VoiceInteractor;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,14 +20,16 @@ public class CourseRequestsModel {
 
 
     /**
-     *
+     * We will get a string which represents the json of a course like CSC108.
+     * This course has a bundle of ChoiceOfEventGroups: because we can have Tutorials, Practicals
+     * and lectures, all of which are an EventGroup each.
      * @param course are the arrays of course the user wants executed.
      * @return
      * @throws IOException
      */
-    public static List<OptionsOfEventGroups<UofTEvent>> request(String course) throws IOException {
+    public static List<ChoiceOfEventGroups<UofTEvent>> request(String course) throws IOException {
         String response = sendGET(course);
-        List<OptionsOfEventGroups<UofTEvent>> options = null;
+        List<ChoiceOfEventGroups<UofTEvent>> options = null;
         if(response.equals("[]")){
             System.out.println("REQUEST FAILED");
         }
@@ -42,8 +42,9 @@ public class CourseRequestsModel {
         return options;
     }
 
-    private static List<OptionsOfEventGroups<UofTEvent>> processJson(String response){
-        List<OptionsOfEventGroups<UofTEvent>> options = new ArrayList<>();
+    private static List<ChoiceOfEventGroups<UofTEvent>> processJson(String response){
+        //
+        List<ChoiceOfEventGroups<UofTEvent>> multipleChoices = new ArrayList<>();
         JSONObject meeting_object;
         JSONArray lectureArray;
         UofTEvent e;
@@ -62,14 +63,14 @@ public class CourseRequestsModel {
                 counter+=1;
             }
             if(foundCurrYear){
-                List<UofTEvent> oneLecture;
+               EventGroup<UofTEvent> oneLectureGroup;
                 // get all the lecture sections and get a list of events for each one
                 JSONArray lecture_sections =  thisYearCourse.getJSONArray("meeting_sections");
                 // iterate over all the lecture sections
                 // there will be different kinds of lecture sections,
                 // so we will create an option for each one of them as we are going
                 // to need all of them
-                Map<Character, List<List<UofTEvent>>> typesOfourses = new HashMap<>();
+                Map<Character, ChoiceOfEventGroups<UofTEvent>> typesOfCourses = new HashMap<>();
 //                List<List<UofTEvent>> listOfOptions;
                 for (int i=0; i < lecture_sections.length(); i++) {
 //                    listOfOptions = new ArrayList<>();
@@ -77,7 +78,7 @@ public class CourseRequestsModel {
                     String name = meeting_object.getString("code");
                     //This is the array which has all of the meeting times for a specific Lecture section
                     lectureArray = meeting_object.getJSONArray("times");
-                    oneLecture = new ArrayList<>();
+                    oneLectureGroup  = new EventGroup<>();
                     for (int j=0; j < lectureArray.length(); j++) {
                         JSONObject lecture = lectureArray.getJSONObject(j);
                         e = new UofTEvent();
@@ -87,27 +88,26 @@ public class CourseRequestsModel {
                         e.setWeekDay(DaysOfWeek.convertStringToENUM(lecture.getString("day")));
                         e.setLectureSection(name);
                         e.setLocation(lecture.getString("location"));
-                        oneLecture.add(e);
+                        oneLectureGroup.addEvent(e);
                     }
                     char courseType = name.charAt(0);
                     // if this type of lecture already exists, add a new lecture to it
-                    if(typesOfourses.containsKey(courseType)){
-                        List<List<UofTEvent>> typeCourse = typesOfourses.get(courseType);
-                        typeCourse.add(oneLecture);
-                        typesOfourses.put(courseType, typeCourse);
+                    if(typesOfCourses.containsKey(courseType)){
+                        ChoiceOfEventGroups<UofTEvent> typeCourse = typesOfCourses.get(courseType);
+                        typeCourse.add(oneLectureGroup);
+                        typesOfCourses.put(courseType, typeCourse);
 
                     }
                     // if this type of lecture doesn't exists, create it
                     else{
-                        List<List<UofTEvent>> typeCourse =new ArrayList<>();
-                        typeCourse.add(oneLecture);
-                        typesOfourses.put(courseType, typeCourse);
+                        ChoiceOfEventGroups<UofTEvent> typeCourse =new UofTCourse();
+                        typeCourse.add(oneLectureGroup);
+                        typesOfCourses.put(courseType, typeCourse);
                     }
                 }
-                for(List<List<UofTEvent>> listOfEvents: typesOfourses.values()){
-                    course = new UofTCourse(thisYearCourse.getString("code"));
-                    course.setListOfOptions(listOfEvents);
-                    options.add(course);
+                for(ChoiceOfEventGroups<UofTEvent> choiceOfEventGroups: typesOfCourses.values()){
+                    choiceOfEventGroups.setName(thisYearCourse.getString("code"));
+                    multipleChoices.add(choiceOfEventGroups);
                 }
                 System.out.println("Created the list of events");
             }
@@ -115,7 +115,7 @@ public class CourseRequestsModel {
         catch(Exception ex){
             ex.printStackTrace();
         }
-        return options;
+        return multipleChoices;
     }
 
     /**

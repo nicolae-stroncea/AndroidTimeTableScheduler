@@ -1,0 +1,48 @@
+  "id": "MAT235Y1Y20189",
+  For UoftCourse;
+  "code": "L0101",
+  "instructor"
+}
+  "id": "MAT235Y1Y20189",
+  "code": "MAT235Y1Y",
+  "name": "Calculus II",
+  "description": "Parametric equations and polar coordinates. Vectors, vector functions and space curves. Differential and integral calculus of functions of several variables. Line integrals and surface integrals and classic vector calculus theorems. Examples from life sciences and physical science applications.",
+  "division": "Faculty of Arts and Science",
+  "department": "Mathematics",
+  "prerequisites": "(MAT135H1, MAT136H1)\\/MAT137Y1\\/MAT157Y1",
+  "exclusions": "MAT237Y1, MAT257Y1, MATB41H3, MATB42H3, MAT232H5, MAT233H5, MAT236H5, MAT368H5, MAT291H & MAT294H",
+  "level": 200,
+  "campus": "UTSG",
+  "term": "2018 Fall",
+  "meeting_sections": [
+    {
+      "code": "L0101",
+      "size": 196,
+      "enrolment": 0,
+      "times": [
+        {
+          "day": "MONDAY",
+          "start": 50400,
+          "end": 54000,
+          "duration": 3600,
+          "location": "MP 102"
+        },
+        {
+          "day": "WEDNESDAY",
+          "start": 50400,
+          "end": 54000,
+          "duration": 3600,
+          "location": "MP 102"
+        },
+        {
+          "day": "FRIDAY",
+          "start": 50400,
+          "end": 54000,
+          "duration": 3600,
+          "location": "MP 102"
+        }
+      ],
+      "instructors": [
+        "R Keast"
+      ]
+    },
