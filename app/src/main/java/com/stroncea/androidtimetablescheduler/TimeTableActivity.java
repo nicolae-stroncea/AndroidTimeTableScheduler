@@ -1,7 +1,11 @@
 package com.stroncea.androidtimetablescheduler;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.GridView;
@@ -29,7 +33,6 @@ public class TimeTableActivity extends AppCompatActivity {
 
         UofTTimeTablesGenerator t = SaveAndLoadTimeTableGenerator.<UofTEvent, UofTTimeTable, UofTTimeTablesGenerator>loadFromFile(this,"TimeTableGenerator");
         t.createTimeTables();
-        t.getTimeTables().sort(t);
         TimeTableActivityModel activityModel = new TimeTableActivityModel(t);
 
         // number of hours
@@ -61,7 +64,8 @@ public class TimeTableActivity extends AppCompatActivity {
                     if(day.get(eventCounter).getStartTime()<rowTime){
                         if(day.get(eventCounter).getEndTime()>rowTime){
                             foundIfEventExists=true;
-                            newBtn.setBackgroundColor(R.color.colorPrimary);
+                            newBtn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+
                             e = day.get(eventCounter);
                             text = e.getName() + " " + e.getLectureSection() + " " + String.valueOf(rowTime/3600);
                             newBtn.setText(text);
@@ -76,7 +80,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
                     else  if(day.get(eventCounter).getStartTime() == rowTime){
                         foundIfEventExists=true;
-                        newBtn.setBackgroundColor(R.color.colorPrimary);
+                        newBtn.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
                         e = day.get(eventCounter);
                         text = e.getName() + " " + e.getLectureSection() + " " + String.valueOf(rowTime/3600);
                         newBtn.setText(text);
@@ -134,8 +138,7 @@ public class TimeTableActivity extends AppCompatActivity {
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        gridView.getViewTreeObserver().removeOnGlobalLayoutListener(
-                                this);
+                        removeOnGlobalLayoutListener(gridView, this);
 
 
                         int displayWidth = gridView.getMeasuredWidth();
@@ -157,5 +160,13 @@ public class TimeTableActivity extends AppCompatActivity {
         System.out.println("This should work now");
 
 
+    }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public static void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener){
+        if (Build.VERSION.SDK_INT < 16) {
+            v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
+        } else {
+            v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
+        }
     }
 }

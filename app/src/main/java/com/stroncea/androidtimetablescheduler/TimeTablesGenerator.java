@@ -4,6 +4,7 @@ import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -33,11 +34,12 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
     /**
      * Create all possible TimeTable Combinations and sorts them according to score
      */
+    //TODO transform this into normal forLoops. It's a lot faster that way.
     public void createTimeTables(){
         if(buildingBlocks.size()!=0){
             List<EventGroup<E>> allEvents = new ArrayList<>();
             createHelper(0, allEvents);
-
+            Collections.sort(timeTables, this);
         }
     }
 

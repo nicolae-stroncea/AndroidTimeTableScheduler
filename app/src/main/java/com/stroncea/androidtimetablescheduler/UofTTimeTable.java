@@ -1,5 +1,6 @@
 package com.stroncea.androidtimetablescheduler;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class UofTTimeTable extends TimeTable<UofTEvent, UofTTimeTable>{
         // sort each list of events by their endtime
         for(int i=0;i<eventsByWeek.size();i++){
             List<UofTEvent> oneDayEvents = eventsByWeek.get(i);
-            oneDayEvents.sort(new Comparator<UofTEvent>() {
+            Comparator<UofTEvent> comparator = new Comparator<UofTEvent>() {
                 @Override
                 public int compare(UofTEvent o1, UofTEvent o2) {
 
@@ -71,7 +72,9 @@ public class UofTTimeTable extends TimeTable<UofTEvent, UofTTimeTable>{
                         return 0;
                     }
                 }
-            });
+            };
+            Collections.sort(oneDayEvents, comparator);
+
         }
         return eventsByWeek;
     }
