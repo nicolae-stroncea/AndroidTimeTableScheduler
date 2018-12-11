@@ -4,26 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a block of events.
+ * Represents a group of events. A TimeTable can either be Valid or Invalid
  */
 
-public abstract class TimeTable<E extends Event, T extends TimeTable> implements EventContainer<E>, Comparable<T>, Scorable, Serializable {
-    /*
-        Generates a timetable if possible. If not, returns null.
-         */
-    private List<List<E>> listOfEventGroups = new ArrayList<>();
+public abstract class TimeTable<E extends Event<E>, T extends TimeTable> implements EventContainer<E>, Comparable<T>, Scorable, Serializable {
+    private List<EventGroup<E>> listOfEventGroups = new ArrayList<>();
     private boolean isValid;
-
     // by default score is -1
     private int score = -1;
+
     public TimeTable() {}
-    public TimeTable(List<List<E>> listOfEventGroups) {
+
+    /**
+     *
+     * @param listOfEventGroups represents a list of different EventGroups:
+     * LEC101 of CSC258, LEC102 of CSC207, LEC201 of MAT235
+     *
+     */
+    public TimeTable(List<EventGroup<E>> listOfEventGroups) {
         this.listOfEventGroups =listOfEventGroups;
     }
+
+    /**
+     *
+     * @return the entire flattened list of events which represent this timeTable
+     */
+
     public List<E> getListOfEvents(){
         List<E> listOfEvents = new ArrayList<>();
-        for (List<E> eventList : listOfEventGroups) {
-            listOfEvents.addAll(eventList);
+        for (EventGroup<E> eventList : listOfEventGroups) {
+            listOfEvents.addAll(eventList.getEventGroup());
         }
         return listOfEvents;
     }
@@ -40,9 +50,18 @@ public abstract class TimeTable<E extends Event, T extends TimeTable> implements
 
     }
 
-    public void setEvents(List<List<E>> listOfEventGroups) {
+    /**
+     *
+     * @param listOfEventGroups Set the diffeent eventGroups to build the timeTable From
+     */
+    public void setEvents(List<EventGroup<E>> listOfEventGroups) {
         this.listOfEventGroups = listOfEventGroups;
     }
+
+    /**
+     * TimeTable is valid if it doesn't have conflicts. Not related to Filters.
+     * @return
+     */
     public boolean isValid(){
         return isValid;
     }
@@ -54,20 +73,21 @@ public abstract class TimeTable<E extends Event, T extends TimeTable> implements
      * @param listOfEventGroups
      * @return
      * */
-    public void checkForConflict(List<List<E>> listOfEventGroups) {
+    public void checkForConflict(List<EventGroup<E>> listOfEventGroups) {
         int index;
+        EventGroup<E> eventGroup, eventGrouptoCompare;
         // we will need to first get an eventGroup.
         for(int i=0;i<listOfEventGroups.size();i++){
             // now we take each element from the eventGroup, and try to compare it against each element
             // from every other eventGroup.
-            List<E> eventGroup= listOfEventGroups.get(i);
+            eventGroup = listOfEventGroups.get(i);
             // we first get the current element in our current EventGroup
             for(int j=0;j<eventGroup.size();j++){
                 E event = eventGroup.get(j);
                 index = i+1;
                 // Iterate through every next eventGroup
                 while(index<listOfEventGroups.size()){
-                    List<E> eventGrouptoCompare= listOfEventGroups.get(index);
+                    eventGrouptoCompare= listOfEventGroups.get(index);
                     // compare against every element within the eventGroupToCompare
                     for(int k=0;k<eventGrouptoCompare.size();k++){
                         if(event.intersects(eventGrouptoCompare.get(k))){
@@ -81,10 +101,12 @@ public abstract class TimeTable<E extends Event, T extends TimeTable> implements
         }
         isValid = true;
     }
-    //TODO See where to get rid of generics in latest changes, and maybe overall. Only implement where necessary.
-    // maybe just keep everything about scoring from last commit, discard all other changes
 
-     public List<List<E>> getListOfEventGroups() {
+    /**
+     * Get the groups
+     * @return
+     */
+     public List<EventGroup<E>> getListOfEventGroups() {
         return listOfEventGroups;
     }
      public int getScore() {

@@ -41,7 +41,8 @@ public class CourseRequestsModel {
         System.out.println("GET DONE");
         return options;
     }
-
+    //TODO somewhere here need to get rid of bug where a lecture might be completely empty.
+    // check wht that's about
     private static List<ChoiceOfEventGroups<UofTEvent>> processJson(String response){
         //
         List<ChoiceOfEventGroups<UofTEvent>> multipleChoices = new ArrayList<>();
@@ -71,16 +72,18 @@ public class CourseRequestsModel {
                 // so we will create an option for each one of them as we are going
                 // to need all of them
                 Map<Character, ChoiceOfEventGroups<UofTEvent>> typesOfCourses = new HashMap<>();
+                String name;
+                JSONObject lecture;
 //                List<List<UofTEvent>> listOfOptions;
                 for (int i=0; i < lecture_sections.length(); i++) {
 //                    listOfOptions = new ArrayList<>();
                     meeting_object = lecture_sections.getJSONObject(i);
-                    String name = meeting_object.getString("code");
+                    name = meeting_object.getString("code");
                     //This is the array which has all of the meeting times for a specific Lecture section
                     lectureArray = meeting_object.getJSONArray("times");
                     oneLectureGroup  = new EventGroup<>();
                     for (int j=0; j < lectureArray.length(); j++) {
-                        JSONObject lecture = lectureArray.getJSONObject(j);
+                        lecture = lectureArray.getJSONObject(j);
                         e = new UofTEvent();
                         e.setStartTime(lecture.getInt("start"));
                         e.setEndTime(lecture.getInt("end"));

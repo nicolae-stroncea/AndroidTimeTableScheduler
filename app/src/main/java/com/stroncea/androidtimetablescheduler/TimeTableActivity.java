@@ -40,12 +40,15 @@ public class TimeTableActivity extends AppCompatActivity {
         arrayOfButtons= new Button[NUM_COLS][rowNumber];
         Button newBtn;
         int rowTime;
+        List<UofTEvent> day;
         // go day by day
         for(int i =0;i<NUM_COLS-1;i++){
             daysWithEvents = activityModel.getUofTTimeTable().getEventsByWeek();
             // each day has the events sorted
-            List<UofTEvent> day = daysWithEvents.get(i);
+            day = daysWithEvents.get(i);
             int eventCounter = 0;
+            UofTEvent e;
+            String text;
             // fill in the buttonArray for 1 day(which represents 1 list)
             // iterate over each index
             for(int j=0;j<rowNumber-1;j++){
@@ -59,8 +62,7 @@ public class TimeTableActivity extends AppCompatActivity {
                         if(day.get(eventCounter).getEndTime()>rowTime){
                             foundIfEventExists=true;
                             newBtn.setBackgroundColor(R.color.colorPrimary);
-                            String text;
-                            UofTEvent e = day.get(eventCounter);
+                            e = day.get(eventCounter);
                             text = e.getName() + " " + e.getLectureSection() + " " + String.valueOf(rowTime/3600);
                             newBtn.setText(text);
                         }
@@ -75,8 +77,7 @@ public class TimeTableActivity extends AppCompatActivity {
                     else  if(day.get(eventCounter).getStartTime() == rowTime){
                         foundIfEventExists=true;
                         newBtn.setBackgroundColor(R.color.colorPrimary);
-                        String text;
-                        UofTEvent e = day.get(eventCounter);
+                        e = day.get(eventCounter);
                         text = e.getName() + " " + e.getLectureSection() + " " + String.valueOf(rowTime/3600);
                         newBtn.setText(text);
 

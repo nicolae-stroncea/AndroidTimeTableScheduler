@@ -8,18 +8,12 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
-Generates all possible TimeTables
+Generates all possible TimeTables given a list  of choice of EventGroups.
  */
 public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> implements Comparator<T>, Serializable {
     private List<ChoiceOfEventGroups<E>> buildingBlocks;
-    List<UserPreferences> userPref;
-
-    public List<T> getTimeTables() {
-        return timeTables;
-    }
-
-
     private List<T> timeTables = new ArrayList<>();
+    List<UserPreferences> userPref;
 
     /**
      * Gets passed a list of ChoiceOfEventGroups's, which are objects that contain alternatives for a course, i.e
@@ -41,7 +35,7 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
      */
     public void createTimeTables(){
         if(buildingBlocks.size()!=0){
-            List<List<E>> allEvents = new ArrayList<>();
+            List<EventGroup<E>> allEvents = new ArrayList<>();
             createHelper(0, allEvents);
 
         }
@@ -53,14 +47,15 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
      * @param index within buildingBlocks which shows at which UnkownP we are currently at.
      * @param items is a List of ChoiceOfEventGroups's in this combination.
      */
-    private void createHelper(int index, List<List<E>> items){
+    private void createHelper(int index, List<EventGroup<E>> items){
         // If we're at the last b1uildingBlock in the list
         if (index == buildingBlocks.size() - 1) {
             for(EventGroup<E> e :buildingBlocks.get(index)){
-                List<List<E>> allEvents = new ArrayList<>();
+                List<EventGroup<E>> allEvents = new ArrayList<>();
                 allEvents.addAll(items);
-                allEvents.add(e.getEventGroup());
+                allEvents.add(e);
                 //TODO decide how to make it here better
+
                 T t = createTimeTable(allEvents);
                 t.build();
                 if(t.isValid()){
@@ -72,15 +67,15 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
         else{
             // Add all the events from 1
             for(EventGroup<E> e :buildingBlocks.get(index)){
-                List<List<E>> allEvents = new ArrayList<>();
+                List<EventGroup<E>> allEvents = new ArrayList<>();
                 allEvents.addAll(items);
-                allEvents.add(e.getEventGroup());
+                allEvents.add(e);
                 createHelper(index+1, allEvents);
             }
 
         }
     }
-    public abstract T createTimeTable(List<List<E>> allEvents);
+    public abstract T createTimeTable(List<EventGroup<E>>allEvents);
 
     public void clearBuildingBlocks(){
         buildingBlocks.clear();
@@ -103,5 +98,7 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
     public int compare(T o1, T o2){
         return o1.compareTo(o2);
     }
-
+    public List<T> getTimeTables() {
+        return timeTables;
+    }
 }

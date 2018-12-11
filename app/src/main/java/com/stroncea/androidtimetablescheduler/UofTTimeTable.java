@@ -5,7 +5,7 @@ import java.util.List;
 
 public class UofTTimeTable extends TimeTable<UofTEvent, UofTTimeTable>{
     int daysWithEvents = 0;
-    public UofTTimeTable(List<List<UofTEvent>> listOfEventGroups) {
+    public UofTTimeTable(List<EventGroup<UofTEvent>> listOfEventGroups) {
         super(listOfEventGroups);
     }
     public int getDaysWithEvents(){
@@ -13,15 +13,15 @@ public class UofTTimeTable extends TimeTable<UofTEvent, UofTTimeTable>{
     }
 
     /**
-     * Returns the events by week, sorted by endtime
+     * Returns the events by week, sorted by endtime.
      * @return
      */
     public List<List<UofTEvent>> getEventsByWeek() {
         List<UofTEvent> listOfEvents = new ArrayList<>();
-        List<List<UofTEvent>> listOfEventGroups = getListOfEventGroups();
+        List<EventGroup<UofTEvent>> listOfEventGroups = getListOfEventGroups();
         // first we flatten the list by combining all the events in 1.
-        for (List<UofTEvent> eventList : listOfEventGroups) {
-            listOfEvents.addAll(eventList);
+        for (EventGroup<UofTEvent> eventList : listOfEventGroups) {
+            listOfEvents.addAll(eventList.getEventGroup());
         }
         List<List<UofTEvent>> eventsByWeek = new ArrayList<>();
         // sort the events by day of the week.

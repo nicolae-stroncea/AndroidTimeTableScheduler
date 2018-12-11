@@ -9,7 +9,7 @@ import java.util.List;
  * @param <E>
  */
 public class EventGroup<E extends Event<E>> implements Serializable {
-    List<E> eventGroup;
+    private List<E> eventGroup;
     public EventGroup(List<E> eventGroup){
         this.eventGroup=eventGroup;
     }
@@ -19,6 +19,12 @@ public class EventGroup<E extends Event<E>> implements Serializable {
 
     public List<E> getEventGroup() {
         return eventGroup;
+    }
+    public int size(){
+        return eventGroup.size();
+    }
+    public E get(int i){
+        return eventGroup.get(i);
     }
 
     public void setEventGroup(List<E> eventGroup) {

@@ -1,7 +1,8 @@
 //TODO keep refactoring everything so that it is in terms of ChoiceOfEventGroups and EventGroup rather than Lists especially for the generator and the timeTable. Only apply where necessary
 
-
+//TODO i think i've decided that it's best to keep them just for that
 //TODO change implementation from UofTEvent to WeeklyEvent and WeeklyTimeTable
+
 
 //TODO Add documentation and testing everywhere
 //TODO differentiate between fall, winter, and full year courses. If fall, make its own timetable for it. If winter, make its own timetable for it. If full year, put it in both fall and winter.
