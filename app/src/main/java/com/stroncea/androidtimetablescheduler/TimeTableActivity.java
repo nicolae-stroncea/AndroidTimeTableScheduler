@@ -34,9 +34,10 @@ public class TimeTableActivity extends AppCompatActivity {
 
         // number of hours
         List<Integer> rows = activityModel.getRows();
-        final int rowNumber =  rows.size();
+        // add 1 because we will have an extra row to display the days of the week
+        final int rowNumber =  rows.size() + 1;
         // add one because the first row will be all days of the week
-        arrayOfButtons= new Button[NUM_COLS][rowNumber+1];
+        arrayOfButtons= new Button[NUM_COLS][rowNumber];
         Button newBtn;
         int rowTime;
         // go day by day
@@ -47,7 +48,7 @@ public class TimeTableActivity extends AppCompatActivity {
             int eventCounter = 0;
             // fill in the buttonArray for 1 day(which represents 1 list)
             // iterate over each index
-            for(int j=0;j<rowNumber;j++){
+            for(int j=0;j<rowNumber-1;j++){
                 newBtn = new Button(this);
                 //get the time which represents this given index
                 rowTime = rows.get(j);
@@ -95,12 +96,20 @@ public class TimeTableActivity extends AppCompatActivity {
         }
         // add the time to the first column
         float f;
-        for(int i = 0;i<rowNumber;i++){
+        String txt;
+        for(int i = 0;i<rowNumber-1;i++){
             newBtn = new Button(this);
             // i cast it to float because otherwise it'll truncate result. this way
             // i first cast the integers to float and it'll treat it as a float
             f= (float) rows.get(i)/3600;
-            newBtn.setText(String.valueOf(f));
+            txt = String.valueOf(f);
+            if(txt.contains(".0")){
+                txt = txt.replace(".0",":00" );
+            }
+            else{ // must be half an hour
+                txt = txt.replace(".5",":30");
+            }
+            newBtn.setText(txt);
             arrayOfButtons[0][i+1] = newBtn;
         }
         // add the day of the week to the first row
@@ -114,20 +123,9 @@ public class TimeTableActivity extends AppCompatActivity {
         // the first row, first column will be empty
         arrayOfButtons[0][0] = new Button(this);
 
-
-//        ArrayList<ArrayList<Button>> listOfButtons = new ArrayList<>();
-//        ArrayList<Button> oneDay;
-//        for(int i =0;i<NUM_COLS;i++){
-//            oneDay = new ArrayList<>();
-//            for(int j=0;j<rowNumber;j++){
-//                oneDay.add(arrayOfButtons[i][j]);
-//            }
-//            listOfButtons.add(oneDay);
-//        }
         listOfButtons = new ArrayList<>();
         for(int i = 0; i<rowNumber;i++){
             for(int j =0;j<NUM_COLS;j++) {
-                //TODO fix bug here
                 listOfButtons.add(arrayOfButtons[j][i]);
             }
         }
