@@ -53,26 +53,23 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
         // If we're at the last b1uildingBlock in the list
         if (index == buildingBlocks.size() - 1) {
             for(EventGroup<E> e :buildingBlocks.get(index)){
-                List<EventGroup<E>> allEvents = new ArrayList<>();
-                allEvents.addAll(items);
-                allEvents.add(e);
-                //TODO decide how to make it here better
-
-                T t = createTimeTable(allEvents);
+                items.add(e);
+                // create a new arrayList with items
+                // because otherwise the current one is modified
+                T t = createTimeTable(new ArrayList<>(items));
                 t.build();
                 if(t.isValid()){
                     timeTables.add(t);
                 }
-
+                items.remove(items.size()-1);
             }
         }
         else{
             // Add all the events from 1
             for(EventGroup<E> e :buildingBlocks.get(index)){
-                List<EventGroup<E>> allEvents = new ArrayList<>();
-                allEvents.addAll(items);
-                allEvents.add(e);
-                createHelper(index+1, allEvents);
+                items.add(e);
+                createHelper(index+1, items);
+                items.remove(items.size()-1);
             }
 
         }
