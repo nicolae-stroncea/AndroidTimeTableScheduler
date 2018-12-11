@@ -32,4 +32,22 @@ public enum DaysOfWeek implements Serializable {
 
         }
     }
+    //TODO implement this using ToString instead
+    public static String convertNumberToString(int dayOfWeek){
+        switch(dayOfWeek){
+            case(1):
+                return "Monday";
+            case(2):
+                return "Tuesday";
+            case(3):
+                return "Wednesday";
+            case(4):
+                return "Thursday";
+            case(5):
+                return "Friday";
+            default:
+                return "Monday";
+
+        }
+    }
 }

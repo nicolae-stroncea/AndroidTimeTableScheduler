@@ -82,6 +82,10 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
     }
     public abstract T createTimeTable(List<List<E>> allEvents);
 
+    public void clearBuildingBlocks(){
+        buildingBlocks.clear();
+    }
+
 
 
     public List<ChoiceOfEventGroups<E>> getBuildingBlocks() {

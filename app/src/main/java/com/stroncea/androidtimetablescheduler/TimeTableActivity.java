@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class TimeTableActivity extends AppCompatActivity {
     private GridView gridView;
-    public static final int NUM_COLS = 5;
+    public static final int NUM_COLS = 6;
     private static int columnWidth, columnHeight;
     public ArrayList<Button> listOfButtons;
     private List<List<UofTEvent>> daysWithEvents;
@@ -35,11 +35,12 @@ public class TimeTableActivity extends AppCompatActivity {
         // number of hours
         List<Integer> rows = activityModel.getRows();
         final int rowNumber =  rows.size();
-        arrayOfButtons= new Button[NUM_COLS][rowNumber];
+        // add one because the first row will be all days of the week
+        arrayOfButtons= new Button[NUM_COLS][rowNumber+1];
         Button newBtn;
         int rowTime;
         // go day by day
-        for(int i =0;i<NUM_COLS;i++){
+        for(int i =0;i<NUM_COLS-1;i++){
             daysWithEvents = activityModel.getUofTTimeTable().getEventsByWeek();
             // each day has the events sorted
             List<UofTEvent> day = daysWithEvents.get(i);
@@ -86,11 +87,34 @@ public class TimeTableActivity extends AppCompatActivity {
                         foundIfEventExists = true;
                     }
                 }
-                arrayOfButtons[i][j] = newBtn;
+                // we start at 1 as we want our first column to just be the hours
+                arrayOfButtons[i+1][j+1] = newBtn;
             }
 
 
         }
+        // add the time to the first column
+        float f;
+        for(int i = 0;i<rowNumber;i++){
+            newBtn = new Button(this);
+            // i cast it to float because otherwise it'll truncate result. this way
+            // i first cast the integers to float and it'll treat it as a float
+            f= (float) rows.get(i)/3600;
+            newBtn.setText(String.valueOf(f));
+            arrayOfButtons[0][i+1] = newBtn;
+        }
+        // add the day of the week to the first row
+        for(int i = 1;i<NUM_COLS;i++){
+            newBtn = new Button(this);
+            // i cast it to float because otherwise it'll truncate result. this way
+            // i first cast the integers to float and it'll treat it as a float
+            newBtn.setText(DaysOfWeek.convertNumberToString(i));
+            arrayOfButtons[i][0] = newBtn;
+        }
+        // the first row, first column will be empty
+        arrayOfButtons[0][0] = new Button(this);
+
+
 //        ArrayList<ArrayList<Button>> listOfButtons = new ArrayList<>();
 //        ArrayList<Button> oneDay;
 //        for(int i =0;i<NUM_COLS;i++){
@@ -107,11 +131,6 @@ public class TimeTableActivity extends AppCompatActivity {
                 listOfButtons.add(arrayOfButtons[j][i]);
             }
         }
-//        for(int i =0;i<NUM_COLS;i++){
-//            for(int j=0;j<rowNumber;j++){
-//                listOfButtons.add(arrayOfButtons[j][i]);
-//            }
-//        }
         gridView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override

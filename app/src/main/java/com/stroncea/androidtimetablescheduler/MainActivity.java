@@ -120,9 +120,9 @@ UofTTimeTablesGenerator t = new UofTTimeTablesGenerator();
         clearCourses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listOfAcceptedCourses = new ArrayList<>();
+                listOfAcceptedCourses.clear();
                 acceptedCourses.setAdapter(adapter);
-                t.setBuildingBlocks(null);
+                t.clearBuildingBlocks();
 
 
             }
