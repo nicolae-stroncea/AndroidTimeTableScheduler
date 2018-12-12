@@ -11,8 +11,8 @@ import java.util.List;
 /**
 Generates all possible TimeTables given a list  of choice of EventGroups.
  */
-public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> implements Comparator<T>, Serializable {
-    private List<ChoiceOfEventGroups<E>> buildingBlocks;
+public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>, C extends ChoiceOfEventGroups<E>> implements Comparator<T>, Serializable {
+    private List<C> buildingBlocks;
     private List<T> timeTables = new ArrayList<>();
     List<UserPreferences> userPref;
 
@@ -21,13 +21,13 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
      * Lec101, Lec205, Lec104 for a course CSC108.
      * @param buildingBlocks is a list of ChoiceOfEventGroups to be combined together.
      */
-    public TimeTablesGenerator(List<ChoiceOfEventGroups<E>> buildingBlocks){
+    public TimeTablesGenerator(List<C> buildingBlocks){
         this.buildingBlocks = buildingBlocks;
     }
     public TimeTablesGenerator(){
         this.buildingBlocks = new ArrayList<>();
     }
-    public TimeTablesGenerator(List<ChoiceOfEventGroups<E>> buildingBlocks, List<UserPreferences> userPref){
+    public TimeTablesGenerator(List<C> buildingBlocks, List<UserPreferences> userPref){
         this.buildingBlocks = buildingBlocks;
         this.userPref= userPref;
     }
@@ -81,14 +81,14 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
 
 
 
-    public List<ChoiceOfEventGroups<E>> getBuildingBlocks() {
+    public List<C> getBuildingBlocks() {
         return buildingBlocks;
     }
 
-    public void setBuildingBlocks(List<ChoiceOfEventGroups<E>> buildingBlocks) {
+    public void setBuildingBlocks(List<C> buildingBlocks) {
         this.buildingBlocks = buildingBlocks;
     }
-    public void addBuildingBlocks(ChoiceOfEventGroups<E> newBuildingBlock){
+    public void addBuildingBlocks(C newBuildingBlock){
         buildingBlocks.add(newBuildingBlock);
     }
     // By default

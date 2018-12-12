@@ -133,7 +133,7 @@ UofTTimeTablesGenerator t = new UofTTimeTablesGenerator();
 
     //this gets the result from the CourseRequests
     @Override
-    public void processFinish(List<ChoiceOfEventGroups<UofTEvent>> output){
+    public void processFinish(List<UofTChoiceOfEventGroups> output){
         //Here you will receive the result fired from async class
         //of onPostExecute(result) method.
         if(output==null){
@@ -141,7 +141,9 @@ UofTTimeTablesGenerator t = new UofTTimeTablesGenerator();
         }
         else{
             Toast.makeText(this,"Add another course" ,Toast.LENGTH_SHORT).show();
-            for(ChoiceOfEventGroups<UofTEvent> option: output){
+            for(UofTChoiceOfEventGroups option: output){
+                // first clean it. Get rid of all repeat times.
+                option.cleanOption();
                 t.addBuildingBlocks(option);
             }
             course.getText().clear();
@@ -150,5 +152,4 @@ UofTTimeTablesGenerator t = new UofTTimeTablesGenerator();
 
         }
     }
-
 }

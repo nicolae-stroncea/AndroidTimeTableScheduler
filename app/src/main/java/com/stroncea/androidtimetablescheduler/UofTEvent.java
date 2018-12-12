@@ -85,4 +85,33 @@ public class UofTEvent extends Event<UofTEvent> {
     public int getWeekDay() {
         return weekDay;
     }
+    public boolean equals(UofTEvent e2){
+        boolean equal = false;
+        if(this.weekDay == e2.weekDay) {
+            if (this.getStartTime() == e2.getStartTime() && this.getEndTime() == e2.getEndTime()){
+                equal = true;
+            }
+        }
+        return equal;
+    }
+    // Events are equal if they have the same startime, endtime, and weekday
+    @Override
+    public boolean equals(Object obj) {
+        boolean isEqual;
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof UofTEvent))
+            return false;
+        UofTEvent other = (UofTEvent) obj;
+
+        isEqual =  equals(other);
+        return isEqual;
+    }
+    @Override
+    public int hashCode() {
+        return weekDay*1000 + getStartTime()*2 + getEndTime()*6;
+    }
+
 }

@@ -1,7 +1,9 @@
 package com.stroncea.androidtimetablescheduler;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represents a group of events. A TimeTable can either be Valid or Invalid
@@ -74,38 +76,21 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable> impleme
      * @return
      * */
     public void checkForConflict(List<EventGroup<E>> listOfEventGroups) {
-        int index;
-        EventGroup<E> eventGroup, eventGrouptoCompare;
-        // we will need to first get an eventGroup.
-        for(int i=0;i<listOfEventGroups.size();i++){
-            // now we take each element from the eventGroup, and try to compare it against each element
-            // from every other eventGroup.
-            eventGroup = listOfEventGroups.get(i);
-            // we first get the current element in our current EventGroup
-            for(int j=0;j<eventGroup.size();j++){
-                E event = eventGroup.get(j);
-                index = i+1;
-                // Iterate through every next eventGroup
-                while(index<listOfEventGroups.size()){
-                    eventGrouptoCompare= listOfEventGroups.get(index);
-                    // compare against every element within the eventGroupToCompare
-                    for(int k=0;k<eventGrouptoCompare.size();k++){
-                        if(event.intersects(eventGrouptoCompare.get(k))){
-                             isValid= false;
-                             return;
-                        }
-                    }
-                    index++;
+        List<E> allEvents = getListOfEvents();
+        for (int i = 0; i < allEvents.size(); i++) {
+            for (int j = i + 1; j < allEvents.size(); j++) {
+                if (allEvents.get(i).intersects(allEvents.get(j))) {
+                    isValid = false;
+                    return;
                 }
             }
         }
         isValid = true;
     }
-
-    /**
-     * Get the groups
-     * @return
-     */
+        /**
+         * Get the groups
+         * @return
+         */
      public List<EventGroup<E>> getListOfEventGroups() {
         return listOfEventGroups;
     }

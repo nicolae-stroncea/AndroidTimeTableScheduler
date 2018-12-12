@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 public class TimeTableActivityModel {
-    private TimeTablesGenerator<UofTEvent, UofTTimeTable> timeTablesGenerator;
+    private TimeTablesGenerator<UofTEvent, UofTTimeTable,UofTChoiceOfEventGroups> timeTablesGenerator;
     private UofTTimeTable uofTTimeTable;
     private int currTimeTable = 0;
 
@@ -56,7 +56,7 @@ public class TimeTableActivityModel {
         return timeTablesGenerator;
     }
 
-    public void setTimeTablesGenerator(TimeTablesGenerator<UofTEvent, UofTTimeTable> timeTablesGenerator) {
+    public void setTimeTablesGenerator(TimeTablesGenerator<UofTEvent, UofTTimeTable,UofTChoiceOfEventGroups> timeTablesGenerator) {
         this.timeTablesGenerator = timeTablesGenerator;
     }
 

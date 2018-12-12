@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class EventGroup<E extends Event<E>> implements Serializable {
     private List<E> eventGroup;
+    //TODO consider putting eventGroup in its own subclass of UoftEventGroup
+    private String instructor;
     public EventGroup(List<E> eventGroup){
         this.eventGroup=eventGroup;
     }
@@ -32,5 +34,13 @@ public class EventGroup<E extends Event<E>> implements Serializable {
     }
     public void addEvent(E e){
         this.eventGroup.add(e);
+    }
+
+    public String getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
     }
 }

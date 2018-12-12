@@ -6,7 +6,7 @@ import java.util.List;
 
 import static com.stroncea.androidtimetablescheduler.CourseRequestsModel.request;
 
-class CourseRequests extends AsyncTask<String, Void, List<ChoiceOfEventGroups<UofTEvent>>> {
+class CourseRequests extends AsyncTask<String, Void, List<UofTChoiceOfEventGroups>> {
     private Exception exception;
     public AsyncResponse delegate = null;
 
@@ -16,7 +16,7 @@ class CourseRequests extends AsyncTask<String, Void, List<ChoiceOfEventGroups<Uo
      * @param courses
      * @return
      */
-    protected List<ChoiceOfEventGroups<UofTEvent>> doInBackground(String... courses) {
+    protected List<UofTChoiceOfEventGroups> doInBackground(String... courses) {
         try {
             if(courses.length != 1){
                 throw new IllegalStateException("courses must  have strictly 1 parameter");
@@ -36,7 +36,7 @@ class CourseRequests extends AsyncTask<String, Void, List<ChoiceOfEventGroups<Uo
      */
 
     @Override
-    protected void onPostExecute(List<ChoiceOfEventGroups<UofTEvent>> result) {
+    protected void onPostExecute(List<UofTChoiceOfEventGroups> result) {
         //passes it on to the activity to deal with it
         delegate.processFinish(result);
     }

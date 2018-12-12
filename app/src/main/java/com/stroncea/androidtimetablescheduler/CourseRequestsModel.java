@@ -27,9 +27,9 @@ public class CourseRequestsModel {
      * @return
      * @throws IOException
      */
-    public static List<ChoiceOfEventGroups<UofTEvent>> request(String course) throws IOException {
+    public static List<UofTChoiceOfEventGroups> request(String course) throws IOException {
         String response = sendGET(course);
-        List<ChoiceOfEventGroups<UofTEvent>> options = null;
+        List<UofTChoiceOfEventGroups> options = null;
         if(response.equals("[]")){
             System.out.println("REQUEST FAILED");
         }
@@ -43,13 +43,13 @@ public class CourseRequestsModel {
     }
     //TODO somewhere here need to get rid of bug where a lecture might be completely empty.
     // check wht that's about
-    private static List<ChoiceOfEventGroups<UofTEvent>> processJson(String response){
+    private static List<UofTChoiceOfEventGroups> processJson(String response){
         //
-        List<ChoiceOfEventGroups<UofTEvent>> multipleChoices = new ArrayList<>();
+        List<UofTChoiceOfEventGroups> multipleChoices = new ArrayList<>();
         JSONObject meeting_object;
         JSONArray lectureArray;
         UofTEvent e;
-        UofTCourse course = null;
+        UofTChoiceOfEventGroups course = null;
         try{
             JSONArray courseAcrossYears = new JSONArray(response);
             boolean foundCurrYear = true;
@@ -71,7 +71,7 @@ public class CourseRequestsModel {
                 // there will be different kinds of lecture sections,
                 // so we will create an option for each one of them as we are going
                 // to need all of them
-                Map<Character, ChoiceOfEventGroups<UofTEvent>> typesOfCourses = new HashMap<>();
+                Map<Character, UofTChoiceOfEventGroups> typesOfCourses = new HashMap<>();
                 String name;
                 JSONObject lecture;
 //                List<List<UofTEvent>> listOfOptions;
@@ -93,22 +93,23 @@ public class CourseRequestsModel {
                         e.setLocation(lecture.getString("location"));
                         oneLectureGroup.addEvent(e);
                     }
+                    oneLectureGroup.setInstructor(meeting_object.getString("instructors"));
                     char courseType = name.charAt(0);
                     // if this type of lecture already exists, add a new lecture to it
                     if(typesOfCourses.containsKey(courseType)){
-                        ChoiceOfEventGroups<UofTEvent> typeCourse = typesOfCourses.get(courseType);
+                        UofTChoiceOfEventGroups typeCourse = typesOfCourses.get(courseType);
                         typeCourse.add(oneLectureGroup);
                         typesOfCourses.put(courseType, typeCourse);
 
                     }
                     // if this type of lecture doesn't exists, create it
                     else{
-                        ChoiceOfEventGroups<UofTEvent> typeCourse =new UofTCourse();
+                        UofTChoiceOfEventGroups typeCourse =new UofTChoiceOfEventGroups();
                         typeCourse.add(oneLectureGroup);
                         typesOfCourses.put(courseType, typeCourse);
                     }
                 }
-                for(ChoiceOfEventGroups<UofTEvent> choiceOfEventGroups: typesOfCourses.values()){
+                for(UofTChoiceOfEventGroups choiceOfEventGroups: typesOfCourses.values()){
                     choiceOfEventGroups.setName(thisYearCourse.getString("code"));
                     multipleChoices.add(choiceOfEventGroups);
                 }

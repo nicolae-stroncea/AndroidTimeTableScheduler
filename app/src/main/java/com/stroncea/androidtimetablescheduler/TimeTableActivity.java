@@ -34,7 +34,7 @@ public class TimeTableActivity extends AppCompatActivity implements SwipeGesture
         gridView.setSwipeGestureCallBack(this);
 
 
-        UofTTimeTablesGenerator t = SaveAndLoadTimeTableGenerator.<UofTEvent, UofTTimeTable, UofTTimeTablesGenerator>loadFromFile(this,"TimeTableGenerator");
+        UofTTimeTablesGenerator t = SaveAndLoadTimeTableGenerator.<UofTEvent, UofTTimeTable, UofTChoiceOfEventGroups, UofTTimeTablesGenerator>loadFromFile(this,"TimeTableGenerator");
         t.createTimeTables();
         activityModel = new TimeTableActivityModel(t);
 

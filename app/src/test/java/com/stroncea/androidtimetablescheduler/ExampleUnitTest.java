@@ -24,7 +24,7 @@ Get events List from the Courses, Combine them and Generate a TimeTable.
 TimeTable checks if there is a conflict.
  */
 //
-//    ChoiceOfEventGroups<UofTEvent> uofTCourse1 = new UofTCourse("CSC108H1F");
+//    ChoiceOfEventGroups<UofTEvent> uofTCourse1 = new UofTChoiceOfEventGroups("CSC108H1F");
 //
 //    List<UofTEvent> listOfEvents = new ArrayList<>();
 //    UofTEvent e;
@@ -65,7 +65,7 @@ TimeTable checks if there is a conflict.
 //    listOfEvents.add(e);
 //    uofTCourse1.add(listOfEvents);
 //
-//    UofTCourse uofTCourse2 = new UofTCourse("CSCA48");
+//    UofTChoiceOfEventGroups uofTCourse2 = new UofTChoiceOfEventGroups("CSCA48");
 //
 //    listOfEvents = new ArrayList<>();
 //    e = new UofTEvent("CSCA48Lec01",13,14,DaysOfWeek.MONDAY);
@@ -97,7 +97,7 @@ TimeTable checks if there is a conflict.
 //    listOfEvents.add(e);
 //    uofTCourse2.add(listOfEvents);
 //
-//    UofTCourse uofTCourse3 = new UofTCourse("MGAB01H3");
+//    UofTChoiceOfEventGroups uofTCourse3 = new UofTChoiceOfEventGroups("MGAB01H3");
 //
 //    listOfEvents = new ArrayList<>();
 //    e = new UofTEvent("MGAB01H3Lec01",9,11,DaysOfWeek.TUESDAY);
@@ -141,7 +141,7 @@ TimeTable checks if there is a conflict.
 //    listOfEvents.add(e);
 //    uofTCourse3.add(listOfEvents);
 //
-//    UofTCourse uofTCourse4 = new UofTCourse("ENGA02");
+//    UofTChoiceOfEventGroups uofTCourse4 = new UofTChoiceOfEventGroups("ENGA02");
 //
 //    listOfEvents = new ArrayList<>();
 //    e = new UofTEvent("ENGA02Lec01",11,13,DaysOfWeek.MONDAY);
