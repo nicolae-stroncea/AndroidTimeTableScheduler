@@ -3,6 +3,7 @@ package com.stroncea.androidtimetablescheduler;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,15 +13,16 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-public class TimeTableActivity extends AppCompatActivity {
-    private GridView gridView;
+public class TimeTableActivity extends AppCompatActivity implements SwipeGestureCallBack{
+    private GestureDetectGridView gridView;
     public static final int NUM_COLS = 6;
     private static int columnWidth, columnHeight;
     public ArrayList<Button> listOfButtons;
     private List<List<UofTEvent>> daysWithEvents;
     Button[][] arrayOfButtons;
+    private TimeTableActivityModel activityModel;
+    private int rowNumber;
 
     @Override
     public  void onCreate(Bundle savedInstanceState) {
@@ -29,12 +31,17 @@ public class TimeTableActivity extends AppCompatActivity {
         gridView = findViewById(R.id.grid);
         // Since we have 5 days in a week
         gridView.setNumColumns(NUM_COLS);
+        gridView.setSwipeGestureCallBack(this);
 
 
         UofTTimeTablesGenerator t = SaveAndLoadTimeTableGenerator.<UofTEvent, UofTTimeTable, UofTTimeTablesGenerator>loadFromFile(this,"TimeTableGenerator");
         t.createTimeTables();
-        TimeTableActivityModel activityModel = new TimeTableActivityModel(t);
+        activityModel = new TimeTableActivityModel(t);
 
+        setUpDisplay();
+    }
+
+    private void setUpDisplay() {
         // number of hours
         List<Integer> rows = activityModel.getRows();
         // add 1 because we will have an extra row to display the days of the week
@@ -134,6 +141,18 @@ public class TimeTableActivity extends AppCompatActivity {
                 listOfButtons.add(arrayOfButtons[j][i]);
             }
         }
+        // change the gridView size if the RowNumber is different
+        if(rowNumber != this.rowNumber){
+            changeGridViewSize(rowNumber);
+            this.rowNumber=rowNumber;
+        }
+        else{
+            // don't need to update display in the other one, as it's updated in changeGridViewSize
+            setAdapter();
+        }
+    }
+
+    public void changeGridViewSize(final int rowNumber) {
         gridView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -146,27 +165,37 @@ public class TimeTableActivity extends AppCompatActivity {
 
                         columnWidth = displayWidth / gridView.getNumColumns();
                         columnHeight = displayHeight / rowNumber;
-
-
                         setAdapter();
+
                     }
                 });
-
-
-
     }
+
     public void setAdapter(){
         gridView.setAdapter(new GridAdapter(listOfButtons, columnWidth, columnHeight));
         System.out.println("This should work now");
-
-
     }
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener){
         if (Build.VERSION.SDK_INT < 16) {
             v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
         } else {
             v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
+        }
+    }
+
+    @Override
+    public void onSwipe(Direction direction) {
+        switch(direction){
+            case RIGHT:
+                activityModel.setPrevTimeTable();
+                setUpDisplay();
+                break;
+            case LEFT:
+                activityModel.setNextTimeTable();
+                setUpDisplay();
+                break;
         }
     }
 }

@@ -37,8 +37,7 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
     //TODO transform this into normal forLoops. It's a lot faster that way.
     public void createTimeTables(){
         if(buildingBlocks.size()!=0){
-            List<EventGroup<E>> allEvents = new ArrayList<>();
-            createHelper(0, allEvents);
+            createHelper(0, new ArrayList<EventGroup<E>>());
             Collections.sort(timeTables, this);
         }
     }

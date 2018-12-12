@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.stroncea.androidtimetablescheduler.GestureDetectGridView xmlns:android="http://schemas.android.com/apk/res/android"
        android:layout_width="match_parent"
        android:layout_height="match_parent"
        android:id="@+id/grid"
@@ -13,5 +13,5 @@
         tools:context="com.stroncea.androidtimetablescheduler.TimeTableActivity"
         >
 
-   </GridView>
+   </com.stroncea.androidtimetablescheduler.GestureDetectGridView>
 </LinearLayout>

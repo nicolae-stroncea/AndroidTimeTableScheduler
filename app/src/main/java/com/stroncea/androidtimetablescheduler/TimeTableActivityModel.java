@@ -7,13 +7,14 @@ import java.util.List;
 import java.util.Set;
 
 public class TimeTableActivityModel {
-    private TimeTablesGenerator timeTablesGenerator;
+    private TimeTablesGenerator<UofTEvent, UofTTimeTable> timeTablesGenerator;
     private UofTTimeTable uofTTimeTable;
+    private int currTimeTable = 0;
 
     public TimeTableActivityModel(UofTTimeTablesGenerator t){
         this.timeTablesGenerator = t;
         List<UofTTimeTable> listOfTimeTables = timeTablesGenerator.getTimeTables();
-        uofTTimeTable = listOfTimeTables.get(0);
+        uofTTimeTable = listOfTimeTables.get(currTimeTable);
         }
         public List<Integer> getRows(){
             // get the first element
@@ -35,11 +36,27 @@ public class TimeTableActivityModel {
             Collections.sort( listOfHalfHours );
             return listOfHalfHours;
         }
+        public void setNextTimeTable(){
+            currTimeTable+=1;
+            uofTTimeTable = timeTablesGenerator.getTimeTables().get(currTimeTable);
+        }
+        public void setPrevTimeTable(){
+            if(currTimeTable!=0){
+                currTimeTable-=1;
+                uofTTimeTable = timeTablesGenerator.getTimeTables().get(currTimeTable);
+            }
+            else{
+                uofTTimeTable = timeTablesGenerator.getTimeTables().get(0);
+
+            }
+
+        }
+
     public TimeTablesGenerator getTimeTablesGenerator() {
         return timeTablesGenerator;
     }
 
-    public void setTimeTablesGenerator(TimeTablesGenerator timeTablesGenerator) {
+    public void setTimeTablesGenerator(TimeTablesGenerator<UofTEvent, UofTTimeTable> timeTablesGenerator) {
         this.timeTablesGenerator = timeTablesGenerator;
     }
 
