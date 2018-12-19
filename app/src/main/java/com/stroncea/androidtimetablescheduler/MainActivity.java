@@ -42,7 +42,7 @@ UofTTimeTablesGenerator t = new UofTTimeTablesGenerator();
         weight = findViewById(R.id.weight);
         course = findViewById(R.id.course);
         clearCourses = findViewById(R.id.clearCourses);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfAcceptedCourses);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listOfAcceptedCourses);
         acceptedCourses = findViewById(R.id.acceptedCourses);
         acceptedCourses.setAdapter(adapter);
         //this to set delegate/listener back to this class
@@ -97,7 +97,7 @@ UofTTimeTablesGenerator t = new UofTTimeTablesGenerator();
                             asyncTask.execute(courseCode);
                         }
                         else{
-                            Toast.makeText(MainActivity.this, "You have already added this course",Toast.LENGTH_SHORT ).show();;
+                            Toast.makeText(MainActivity.this, "You have already added this course",Toast.LENGTH_SHORT ).show();
                         }
                     }
 

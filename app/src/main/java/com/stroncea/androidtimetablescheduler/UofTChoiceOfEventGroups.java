@@ -1,11 +1,8 @@
 package com.stroncea.androidtimetablescheduler;
 
-import android.os.Parcelable;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,17 +17,13 @@ public class UofTChoiceOfEventGroups extends ChoiceOfEventGroups<UofTEvent> {
     public UofTChoiceOfEventGroups(){
         super();
     }
-    @Override
-    public boolean equals(Object obj) {
-        UofTChoiceOfEventGroups alma = (UofTChoiceOfEventGroups) obj;
-        return this.getName().equals(alma.getName());
-    }
+
 
     /**
      * check if it UofTChoiceOfEventGroup is made of groups of 1 event
-     * @return
+     * @return whether this object can be cleaned
      */
-    public boolean checkIfEligible(){
+    public boolean checkIfCleanable(){
         List<EventGroup<UofTEvent>> listOfEventGroups = getListOfOptions();
         for(EventGroup<UofTEvent> ev: listOfEventGroups){
             if(ev.size()!=1){
@@ -42,7 +35,7 @@ public class UofTChoiceOfEventGroups extends ChoiceOfEventGroups<UofTEvent> {
     }
     public void cleanOption() {
         Map<String, List<String>> bundle = new HashMap<>();
-        if (checkIfEligible()) {
+        if (checkIfCleanable()) {
             List<EventGroup<UofTEvent>> listOfEventGroups = getListOfOptions();
             List<EventGroup<UofTEvent>> newListOfEventGrups = new ArrayList<>();
             Set<UofTEvent> setOfEvents = new HashSet<>();

@@ -3,13 +3,11 @@ package com.stroncea.androidtimetablescheduler;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.GridView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +18,7 @@ public class TimeTableActivity extends AppCompatActivity implements SwipeGesture
     private static int columnWidth, columnHeight;
     public ArrayList<Button> listOfButtons;
     private List<List<UofTEvent>> daysWithEvents;
-    Button[][] arrayOfButtons;
+    private Button[][] arrayOfButtons;
     private TimeTableActivityModel activityModel;
     private int rowNumber;
 

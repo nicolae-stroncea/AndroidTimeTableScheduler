@@ -1,11 +1,13 @@
 package com.stroncea.androidtimetablescheduler;
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class UofTTimeTable extends TimeTable<UofTEvent, UofTTimeTable>{
-    int daysWithEvents = 0;
+    private int daysWithEvents = 0;
     public UofTTimeTable(List<EventGroup<UofTEvent>> listOfEventGroups) {
         super(listOfEventGroups);
     }
@@ -14,8 +16,8 @@ public class UofTTimeTable extends TimeTable<UofTEvent, UofTTimeTable>{
     }
 
     /**
-     * Returns the events by week, sorted by endtime.
-     * @return
+     *
+     * @return the events by week, sorted by endtime.
      */
     public List<List<UofTEvent>> getEventsByWeek() {
         List<UofTEvent> listOfEvents = new ArrayList<>();
@@ -86,7 +88,7 @@ public class UofTTimeTable extends TimeTable<UofTEvent, UofTTimeTable>{
     /**
      * Gives a score based on the amount of wait time between classes. The higher the score, the larger the wait time,
      * therefore the worst a timetable is
-     * @return
+     * @return the score
      */
     @Override
     public double giveScore() {
@@ -112,9 +114,7 @@ public class UofTTimeTable extends TimeTable<UofTEvent, UofTTimeTable>{
     //TODO this is for just least amount of wait times
 
     /**
-     * TimeTable with the smallest score is the biggest
-     * @param o
-     * @return
+     * TimeTable with the smallest score is the main one.
      */
     @Override
     public int compareTo(UofTTimeTable o) {

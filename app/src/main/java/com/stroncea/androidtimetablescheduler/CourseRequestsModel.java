@@ -24,7 +24,7 @@ public class CourseRequestsModel {
      * This course has a bundle of ChoiceOfEventGroups: because we can have Tutorials, Practicals
      * and lectures, all of which are an EventGroup each.
      * @param course are the arrays of course the user wants executed.
-     * @return
+     * @return a list of UofTChoiceOfEventGroups.
      * @throws IOException
      */
     public static List<UofTChoiceOfEventGroups> request(String course) throws IOException {
@@ -49,14 +49,13 @@ public class CourseRequestsModel {
         JSONObject meeting_object;
         JSONArray lectureArray;
         UofTEvent e;
-        UofTChoiceOfEventGroups course = null;
         try{
             JSONArray courseAcrossYears = new JSONArray(response);
-            boolean foundCurrYear = true;
+            boolean foundCurrYear = false;
             int counter = 0;
             String currYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
             JSONObject thisYearCourse = new JSONObject();
-            while(foundCurrYear && counter<courseAcrossYears.length()){
+            while(!foundCurrYear && counter<courseAcrossYears.length()){
                 thisYearCourse = courseAcrossYears.getJSONObject(counter);
                 if(thisYearCourse.getString("term").contains(currYear)){
                     foundCurrYear=true;
@@ -139,7 +138,7 @@ public class CourseRequestsModel {
         con.setRequestMethod("GET");
         int responseCode = con.getResponseCode();
         System.out.println("GET Response Code :: " + responseCode);
-        StringBuffer response = new StringBuffer();
+        StringBuilder response = new StringBuilder();
         // if successful, get the string
         if (responseCode == HttpURLConnection.HTTP_OK) { // success
             BufferedReader in = new BufferedReader(new InputStreamReader(

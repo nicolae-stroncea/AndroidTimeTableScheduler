@@ -1,7 +1,4 @@
 package com.stroncea.androidtimetablescheduler;
-
-import android.widget.Toast;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +11,7 @@ Generates all possible TimeTables given a list  of choice of EventGroups.
 public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>, C extends ChoiceOfEventGroups<E>> implements Comparator<T>, Serializable {
     private List<C> buildingBlocks;
     private List<T> timeTables = new ArrayList<>();
-    List<UserPreferences> userPref;
+    private List<UserPreferences> userPref;
 
     /**
      * Gets passed a list of ChoiceOfEventGroups's, which are objects that contain alternatives for a course, i.e

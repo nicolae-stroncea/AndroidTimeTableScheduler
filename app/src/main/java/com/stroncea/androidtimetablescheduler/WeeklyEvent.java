@@ -3,7 +3,7 @@ package com.stroncea.androidtimetablescheduler;
 /**
  * Represetns an event which has weekly properties such as weekday
  */
-public class WeeklyEvent extends Event<WeeklyEvent> {
+public abstract class WeeklyEvent extends Event<WeeklyEvent> {
     private int weekDay;
 
 
@@ -36,36 +36,6 @@ public class WeeklyEvent extends Event<WeeklyEvent> {
 
     public WeeklyEvent(int startTime) {
         super(startTime, startTime +1);
-    }
-
-    //TODO check logic. See if it works
-    @Override
-    public boolean intersects(WeeklyEvent e2) {
-
-        boolean intersects = false;
-        if(this.weekDay == e2.weekDay) {
-            if (this.getStartTime() < e2.getStartTime() && this.getEndTime() > e2.getStartTime()) {
-                intersects = true;
-            }
-            else if(this.getStartTime()==e2.getStartTime()){
-                intersects = true;
-            }
-            else if(this.getStartTime() > e2.getStartTime() && this.getStartTime() < e2.getEndTime()){
-                intersects = true;
-            }
-            // check the opposite
-            if (e2.getStartTime() < this.getStartTime() && e2.getEndTime() > this.getStartTime()) {
-                intersects = true;
-            }
-            else if(e2.getStartTime()==this.getStartTime()){
-                intersects = true;
-            }
-            else if(e2.getStartTime() > this.getStartTime() && e2.getStartTime() < this.getEndTime()){
-                intersects = true;
-            }
-
-        }
-        return intersects;
     }
 
     public int getWeekDay() {

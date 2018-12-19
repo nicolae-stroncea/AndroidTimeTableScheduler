@@ -9,7 +9,7 @@ import java.util.Set;
  * Represents a group of events. A TimeTable can either be Valid or Invalid
  */
 
-public abstract class TimeTable<E extends Event<E>, T extends TimeTable> implements EventContainer<E>, Comparable<T>, Scorable, Serializable {
+public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> implements EventContainer<E>, Comparable<T>, Scorable, Serializable {
     private List<EventGroup<E>> listOfEventGroups = new ArrayList<>();
     private boolean isValid;
     // by default score is -1
@@ -41,8 +41,7 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable> impleme
     }
 
     /**
-     * Builds the timeTable and Returns it
-     * @return the timetable just built
+     * Builds the timeTable.
      */
     public void build(){
         checkForConflict(listOfEventGroups);
@@ -54,7 +53,7 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable> impleme
 
     /**
      *
-     * @param listOfEventGroups Set the diffeent eventGroups to build the timeTable From
+     * @param listOfEventGroups Set the different eventGroups to build the timeTable From
      */
     public void setEvents(List<EventGroup<E>> listOfEventGroups) {
         this.listOfEventGroups = listOfEventGroups;
@@ -62,7 +61,7 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable> impleme
 
     /**
      * TimeTable is valid if it doesn't have conflicts. Not related to Filters.
-     * @return
+     * @return whether timeTable is valid
      */
     public boolean isValid(){
         return isValid;
@@ -72,8 +71,8 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable> impleme
      * We have a list of a list of events. Within each list of events, we know that all the events do not have a conflict
      * with one another. Therefore we will test every event in 1 list of events against every event in another list of events
      * Identify if you have a conflict between events. Assumes all of them may have a conflict between EachOther
-     * @param listOfEventGroups
-     * @return
+     * @param listOfEventGroups is a list of EventGroups, where all Events in an EventGroup are related to each other. listOfEventGroups is all the events that are part of this timeTable
+     *
      * */
     public void checkForConflict(List<EventGroup<E>> listOfEventGroups) {
         List<E> allEvents = getListOfEvents();
@@ -89,7 +88,7 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable> impleme
     }
         /**
          * Get the groups
-         * @return
+         * @return the listOfEventGroups
          */
      public List<EventGroup<E>> getListOfEventGroups() {
         return listOfEventGroups;

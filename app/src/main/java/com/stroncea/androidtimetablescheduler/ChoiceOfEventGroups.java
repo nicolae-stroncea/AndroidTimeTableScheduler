@@ -27,7 +27,6 @@ public abstract class ChoiceOfEventGroups<E extends Event<E>> implements  Iterab
 
     private List<EventGroup<E>> listOfOptions = new ArrayList<>();
     public String name;
-    public abstract boolean equals(Object obj);
 
     /**
      * Adds a section.
@@ -38,10 +37,10 @@ public abstract class ChoiceOfEventGroups<E extends Event<E>> implements  Iterab
     public String getName() {
         return this.name;
     }
-    public Iterator iterator() {
+    public Iterator<EventGroup<E>> iterator() {
         return new SectionIterator();
     }
-    public class SectionIterator implements Iterator {
+    public class SectionIterator implements Iterator<EventGroup<E>> {
         int currentSection = 0;
         @Override
         public boolean hasNext(){

@@ -31,8 +31,7 @@ public class TimeTableActivityModel {
                     setOfHalfHours.add(newHour + i * 1800);
                 }
             }
-            List<Integer> listOfHalfHours = new ArrayList<>();
-            listOfHalfHours.addAll(setOfHalfHours);
+            List<Integer> listOfHalfHours = new ArrayList<>(setOfHalfHours);
             Collections.sort( listOfHalfHours );
             return listOfHalfHours;
         }
