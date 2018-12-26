@@ -8,7 +8,7 @@ import java.util.List;
 /**
 Generates all possible TimeTables given a list  of choice of EventGroups.
  */
-public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>, C extends ChoiceOfEventGroups<E>> implements Comparator<T>, Serializable {
+public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>, C extends ChoiceOfEventGroups<E>> implements Comparator<T>, Serializable, TimeTableCreator<E,T> {
     private List<C> buildingBlocks;
     private List<T> timeTables = new ArrayList<>();
     private List<UserPreferences> userPref;
@@ -71,7 +71,8 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
 
         }
     }
-    public abstract T createTimeTable(List<EventGroup<E>>allEvents);
+
+
 
     public void clearBuildingBlocks(){
         buildingBlocks.clear();

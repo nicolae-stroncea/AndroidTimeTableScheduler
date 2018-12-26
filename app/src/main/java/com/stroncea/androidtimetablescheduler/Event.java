@@ -2,7 +2,7 @@ package com.stroncea.androidtimetablescheduler;
 
 import java.io.Serializable;
 
-public abstract class Event<T extends Event<T>> implements Serializable {
+public abstract class Event<E extends Event<E>> implements Serializable {
     private int startTime;
     private int endTime;
     private String name;
@@ -44,5 +44,5 @@ public abstract class Event<T extends Event<T>> implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    abstract boolean intersects(T object);
+    abstract boolean intersects(E object);
 }
