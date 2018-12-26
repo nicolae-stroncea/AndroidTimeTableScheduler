@@ -63,7 +63,7 @@ public class CourseRequestsModel {
                 counter+=1;
             }
             if(foundCurrYear){
-               EventGroup<UofTEvent> oneLectureGroup;
+               UofTEventGroup oneLectureGroup;
                 // get all the lecture sections and get a list of events for each one
                 JSONArray lecture_sections =  thisYearCourse.getJSONArray("meeting_sections");
                 // iterate over all the lecture sections
@@ -80,7 +80,7 @@ public class CourseRequestsModel {
                     name = meeting_object.getString("code");
                     //This is the array which has all of the meeting times for a specific Lecture section
                     lectureArray = meeting_object.getJSONArray("times");
-                    oneLectureGroup  = new EventGroup<>();
+                    oneLectureGroup  = new UofTEventGroup();
                     for (int j=0; j < lectureArray.length(); j++) {
                         lecture = lectureArray.getJSONObject(j);
                         e = new UofTEvent();

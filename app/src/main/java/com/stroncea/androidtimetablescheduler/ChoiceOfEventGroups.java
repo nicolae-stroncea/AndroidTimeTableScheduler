@@ -6,13 +6,16 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * This describes a list of EventGroup. For this class, ll connected EventGroups are alternatives to each other, and if a timeTable has 1 connectedEventGroup, it will not have the other.
+ * This describes a list of related EventGroup. For this class, ll connected EventGroups are alternatives to each other, and if a timeTable has 1 connectedEventGroup, it will not have the other.
  *
  * This for example will contain all possible course lecture(where a lecture is an EventGroup(L0101
  * will have Events on Monday, Tuesday Wednesday)..
  * Will Contain for example:CSC208[Lec05,Lec06,Lec07].
  */
-public abstract class ChoiceOfEventGroups<E extends Event<E>> implements  Iterable<EventGroup<E>>, Serializable {
+public class ChoiceOfEventGroups<E extends Event<E>> implements  Iterable<EventGroup<E>>, Serializable {
+    private List<EventGroup<E>> listOfOptions = new ArrayList<>();
+    public String name;
+
     public List<EventGroup<E>> getListOfOptions() {
         return listOfOptions;
     }
@@ -25,8 +28,7 @@ public abstract class ChoiceOfEventGroups<E extends Event<E>> implements  Iterab
         this.name = name;
     }
 
-    private List<EventGroup<E>> listOfOptions = new ArrayList<>();
-    public String name;
+
 
     /**
      * Adds a section.

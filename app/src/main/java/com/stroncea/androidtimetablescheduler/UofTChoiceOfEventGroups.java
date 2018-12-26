@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This is UofT specific because this is about tutorials repeating at the same time.
+ * This is UofT specific because this is about lectures and tutorials
+ * repeating at the same time.
  */
 public class UofTChoiceOfEventGroups extends ChoiceOfEventGroups<UofTEvent> {
     public UofTChoiceOfEventGroups(String name) {
@@ -39,7 +40,6 @@ public class UofTChoiceOfEventGroups extends ChoiceOfEventGroups<UofTEvent> {
             List<EventGroup<UofTEvent>> listOfEventGroups = getListOfOptions();
             List<EventGroup<UofTEvent>> newListOfEventGrups = new ArrayList<>();
             Set<UofTEvent> setOfEvents = new HashSet<>();
-            // Let only the distinct Tutorials remain
             StringBuilder key;
             for(EventGroup<UofTEvent> evGroup:listOfEventGroups){
                 for(int i=0;i<evGroup.size();i++){
@@ -57,12 +57,12 @@ public class UofTChoiceOfEventGroups extends ChoiceOfEventGroups<UofTEvent> {
                     setOfEvents.add(evGroup.get(i));
                 }
             }
-            EventGroup<UofTEvent> eventGroup;
+            UofTEventGroup eventGroup;
             List<UofTEvent> lonelyEventList;
             for(UofTEvent event: setOfEvents){
                 lonelyEventList = new ArrayList<>();
                 lonelyEventList.add(event);
-                eventGroup = new EventGroup<>();
+                eventGroup = new UofTEventGroup();
                 eventGroup.setEventGroup(lonelyEventList);
                 eventGroup.setBundle(bundle);
                 newListOfEventGrups.add(eventGroup);

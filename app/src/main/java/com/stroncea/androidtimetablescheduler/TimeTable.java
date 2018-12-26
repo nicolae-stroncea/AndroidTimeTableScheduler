@@ -6,12 +6,15 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Represents a group of events. A TimeTable can either be Valid or Invalid
+ * Represents a group of events. A TimeTable can either be Valid or Invalid.
+ * Must implement Compare(), where it decides how to sort the timeTables by score.
+ * It must implement it because with different events, you will sort timeTables differently.
+ * For example with a weekly event, you will compare by day of week, monthly event, by day of month.
+ *
  */
 
-public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> implements EventContainer<E>, Comparable<T>, Scorable, Serializable {
+public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> implements Comparable<T>, Scorable, Serializable {
     private List<EventGroup<E>> listOfEventGroups = new ArrayList<>();
-    private boolean isValid;
     // by default score is -1
     private int score = -1;
 
@@ -40,16 +43,6 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> im
         return listOfEvents;
     }
 
-    /**
-     * Builds the timeTable.
-     */
-    public void build(){
-        checkForConflict(listOfEventGroups);
-        if(isValid){
-            giveScore();
-        }
-
-    }
 
     /**
      *
@@ -59,34 +52,7 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> im
         this.listOfEventGroups = listOfEventGroups;
     }
 
-    /**
-     * TimeTable is valid if it doesn't have conflicts. Not related to Filters.
-     * @return whether timeTable is valid
-     */
-    public boolean isValid(){
-        return isValid;
-    }
-
-    /**
-     * We have a list of a list of events. Within each list of events, we know that all the events do not have a conflict
-     * with one another. Therefore we will test every event in 1 list of events against every event in another list of events
-     * Identify if you have a conflict between events. Assumes all of them may have a conflict between EachOther
-     * @param listOfEventGroups is a list of EventGroups, where all Events in an EventGroup are related to each other. listOfEventGroups is all the events that are part of this timeTable
-     *
-     * */
-    public void checkForConflict(List<EventGroup<E>> listOfEventGroups) {
-        List<E> allEvents = getListOfEvents();
-        for (int i = 0; i < allEvents.size(); i++) {
-            for (int j = i + 1; j < allEvents.size(); j++) {
-                if (allEvents.get(i).intersects(allEvents.get(j))) {
-                    isValid = false;
-                    return;
-                }
-            }
-        }
-        isValid = true;
-    }
-        /**
+       /**
          * Get the groups
          * @return the listOfEventGroups
          */
@@ -100,5 +66,6 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> im
     public void setScore(int score) {
         this.score = score;
     }
+
 
 }

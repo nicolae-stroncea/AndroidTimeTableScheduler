@@ -7,19 +7,19 @@ import java.util.List;
 import java.util.Set;
 
 public class TimeTableActivityModel {
-    private TimeTablesGenerator<UofTEvent, UofTTimeTable,UofTChoiceOfEventGroups> timeTablesGenerator;
-    private UofTTimeTable uofTTimeTable;
+    private TimeTablesGenerator<UofTEvent, WeeklyTimeTable,UofTChoiceOfEventGroups> timeTablesGenerator;
+    private WeeklyTimeTable weeklyTimeTable;
     private int currTimeTable = 0;
 
-    public TimeTableActivityModel(UofTTimeTablesGenerator t){
+    public TimeTableActivityModel(WeeklyTimeTablesGenerator t){
         this.timeTablesGenerator = t;
-        List<UofTTimeTable> listOfTimeTables = timeTablesGenerator.getTimeTables();
-        uofTTimeTable = listOfTimeTables.get(currTimeTable);
+        List<WeeklyTimeTable> listOfTimeTables = timeTablesGenerator.getTimeTables();
+        weeklyTimeTable = listOfTimeTables.get(currTimeTable);
         }
         public List<Integer> getRows(){
             // get the first element
             // get number of rows
-            List<UofTEvent> listOfEvents =  uofTTimeTable.getListOfEvents();
+            List<UofTEvent> listOfEvents =  weeklyTimeTable.getListOfEvents();
             Set<Integer> setOfHalfHours = new HashSet<>();
             for(UofTEvent event:listOfEvents) {
                 // add the first hour
@@ -37,15 +37,15 @@ public class TimeTableActivityModel {
         }
         public void setNextTimeTable(){
             currTimeTable+=1;
-            uofTTimeTable = timeTablesGenerator.getTimeTables().get(currTimeTable);
+            weeklyTimeTable = timeTablesGenerator.getTimeTables().get(currTimeTable);
         }
         public void setPrevTimeTable(){
             if(currTimeTable!=0){
                 currTimeTable-=1;
-                uofTTimeTable = timeTablesGenerator.getTimeTables().get(currTimeTable);
+                weeklyTimeTable = timeTablesGenerator.getTimeTables().get(currTimeTable);
             }
             else{
-                uofTTimeTable = timeTablesGenerator.getTimeTables().get(0);
+                weeklyTimeTable = timeTablesGenerator.getTimeTables().get(0);
 
             }
 
@@ -55,16 +55,16 @@ public class TimeTableActivityModel {
         return timeTablesGenerator;
     }
 
-    public void setTimeTablesGenerator(TimeTablesGenerator<UofTEvent, UofTTimeTable,UofTChoiceOfEventGroups> timeTablesGenerator) {
+    public void setTimeTablesGenerator(TimeTablesGenerator<UofTEvent, WeeklyTimeTable,UofTChoiceOfEventGroups> timeTablesGenerator) {
         this.timeTablesGenerator = timeTablesGenerator;
     }
 
-    public UofTTimeTable getUofTTimeTable() {
-        return uofTTimeTable;
+    public WeeklyTimeTable getWeeklyTimeTable() {
+        return weeklyTimeTable;
     }
 
-    public void setUofTTimeTable(UofTTimeTable uofTTimeTable) {
-        this.uofTTimeTable = uofTTimeTable;
+    public void setWeeklyTimeTable(WeeklyTimeTable weeklyTimeTable) {
+        this.weeklyTimeTable = weeklyTimeTable;
     }
 
 }

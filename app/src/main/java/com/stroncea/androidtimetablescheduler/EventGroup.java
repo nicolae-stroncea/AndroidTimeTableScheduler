@@ -15,10 +15,7 @@ public class EventGroup<E extends Event<E>> implements Serializable {
      * as the key, and the name of the bundled events as the values.
      * Key is in the form of weekDay'start'startTime'end'endTime
      */
-    private Map<String, List<String>> eventGroupBundle;
     private List<E> eventGroup;
-    //TODO consider putting eventGroup in its own subclass of UoftEventGroup
-    private String instructor;
     public EventGroup(List<E> eventGroup){
         this.eventGroup=eventGroup;
     }
@@ -43,20 +40,5 @@ public class EventGroup<E extends Event<E>> implements Serializable {
         this.eventGroup.add(e);
     }
 
-    public String getInstructor() {
-        return instructor;
-    }
-
-    public void setInstructor(String instructor) {
-        this.instructor = instructor;
-    }
-
-    public Map<String, List<String>> getBundle() {
-        return eventGroupBundle;
-    }
-
-    public void setBundle(Map<String, List<String>> bundle) {
-        this.eventGroupBundle = bundle;
-    }
 }
 

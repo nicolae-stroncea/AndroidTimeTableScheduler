@@ -52,10 +52,11 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
                 items.add(e);
                 // create a new arrayList with items
                 // because otherwise the current one is modified
-                T t = createTimeTable(new ArrayList<>(items));
-                t.build();
-                if(t.isValid()){
+                if(!hasAConflict(new ArrayList<>(items))){
+                    T t = createTimeTable(new ArrayList<>(items));
+                    t.giveScore();
                     timeTables.add(t);
+
                 }
                 items.remove(items.size()-1);
             }
@@ -88,12 +89,38 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
     public void addBuildingBlocks(C newBuildingBlock){
         buildingBlocks.add(newBuildingBlock);
     }
-    // By default
+    // The timmeTable with the smallest score is actually the biggest
+    // Therefore, we need to reverse them.
     @Override
     public int compare(T o1, T o2){
-        return o1.compareTo(o2);
+        int comparingResult = o1.compareTo(o2);
+        return -comparingResult;
     }
     public List<T> getTimeTables() {
         return timeTables;
     }
+
+    /**
+     * We have a list of a list of events. Within each list of events, we know that all the events do not have a conflict
+     * with one another. Therefore we will test every event in 1 list of events against every event in another list of events
+     * Identify if you have a conflict between events. Assumes all of them may have a conflict between EachOther
+     * @param listOfEventGroups is a list of EventGroups, where all Events in an EventGroup are related to each other. listOfEventGroups is all the events that are part of this timeTable
+     *
+     * */
+    public boolean hasAConflict(List<EventGroup<E>> listOfEventGroups) {
+        List<E> allEvents = new ArrayList<>();
+        for (EventGroup<E> eventList : listOfEventGroups) {
+            allEvents.addAll(eventList.getEventGroup());
+        }
+        for (int i = 0; i < allEvents.size(); i++) {
+            for (int j = i + 1; j < allEvents.size(); j++) {
+                if (allEvents.get(i).intersects(allEvents.get(j))) {
+                    return true;
+                }
+            }
+        }
+    return false;
+    }
+
+
 }

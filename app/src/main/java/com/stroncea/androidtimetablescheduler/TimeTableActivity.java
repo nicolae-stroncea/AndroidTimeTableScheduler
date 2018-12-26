@@ -17,8 +17,6 @@ public class TimeTableActivity extends AppCompatActivity implements SwipeGesture
     public static final int NUM_COLS = 6;
     private static int columnWidth, columnHeight;
     public ArrayList<Button> listOfButtons;
-    private List<List<UofTEvent>> daysWithEvents;
-    private Button[][] arrayOfButtons;
     private TimeTableActivityModel activityModel;
     private int rowNumber;
 
@@ -32,7 +30,7 @@ public class TimeTableActivity extends AppCompatActivity implements SwipeGesture
         gridView.setSwipeGestureCallBack(this);
 
 
-        UofTTimeTablesGenerator t = SaveAndLoadTimeTableGenerator.<UofTEvent, UofTTimeTable, UofTChoiceOfEventGroups, UofTTimeTablesGenerator>loadFromFile(this,"TimeTableGenerator");
+        WeeklyTimeTablesGenerator t = SaveAndLoadTimeTableGenerator.<UofTEvent, WeeklyTimeTable, UofTChoiceOfEventGroups, WeeklyTimeTablesGenerator>loadFromFile(this,"TimeTableGenerator");
         t.createTimeTables();
         activityModel = new TimeTableActivityModel(t);
 
@@ -45,13 +43,13 @@ public class TimeTableActivity extends AppCompatActivity implements SwipeGesture
         // add 1 because we will have an extra row to display the days of the week
         final int rowNumber =  rows.size() + 1;
         // add one because the first row will be all days of the week
-        arrayOfButtons= new Button[NUM_COLS][rowNumber];
+        Button[][] arrayOfButtons= new Button[NUM_COLS][rowNumber];
         Button newBtn;
         int rowTime;
         List<UofTEvent> day;
         // go day by day
         for(int i =0;i<NUM_COLS-1;i++){
-            daysWithEvents = activityModel.getUofTTimeTable().getEventsByWeek();
+            List<List<UofTEvent>> daysWithEvents = activityModel.getWeeklyTimeTable().getEventsByWeek();
             // each day has the events sorted
             day = daysWithEvents.get(i);
             int eventCounter = 0;
