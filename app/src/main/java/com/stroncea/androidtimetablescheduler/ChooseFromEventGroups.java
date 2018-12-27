@@ -6,20 +6,31 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
- * This describes a list of related EventGroup. For this class, ll connected EventGroups are alternatives to each other, and if a timeTable has 1 connectedEventGroup, it will not have the other.
+ * Single Responsibility: Represents a list of related EventGroups.
+ * For this class, the related EventGroups are all alternatives to each other,
+ * and WILL NEVER BE CONSIDERED as part of the same timetable,
+ * i.e if a timeTable has 1 ChooseFromEventGroups, it will not have the other.
  *
- * This for example will contain all possible course lecture(where a lecture is an EventGroup(L0101
- * will have Events on Monday, Tuesday Wednesday)..
- * Will Contain for example:CSC208[Lec05,Lec06,Lec07].
+ * Will Contain for example:CSC208[Lec05,Lec06,Lec07], where a student must be enrolled
+ * in STRITLY 1 lecture.
+ *
  */
-public class ChoiceOfEventGroups<E extends Event<E>> implements  Iterable<EventGroup<E>>, Serializable {
+public class ChooseFromEventGroups<E extends Event<E>> implements  Iterable<EventGroup<E>>, Serializable {
     private List<EventGroup<E>> listOfOptions = new ArrayList<>();
     public String name;
 
+    /**
+     *
+     * @return get possible options
+     */
     public List<EventGroup<E>> getListOfOptions() {
         return listOfOptions;
     }
 
+    /**
+     * Set the possible options
+     * @param listOfOptions represents the possible options
+     */
     public void setListOfOptions(List<EventGroup<E>> listOfOptions) {
         this.listOfOptions = listOfOptions;
     }
@@ -27,7 +38,6 @@ public class ChoiceOfEventGroups<E extends Event<E>> implements  Iterable<EventG
     public void setName(String name) {
         this.name = name;
     }
-
 
 
     /**

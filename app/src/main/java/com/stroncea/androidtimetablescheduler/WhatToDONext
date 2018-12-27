@@ -1,4 +1,8 @@
-//TODO to reduce number of Lectures and Tutorials, change Structure of  ChoiceOfEventGroup. See Below
+//TODO reformat UofTChooseFromEventGroups so that it works for Lectures as well using equals and Sets
+//TODO best way to do it is make an equals() method fo EventGroup, but the eventGroups in sets,
+// and check if they're equal
+// and for everything tbh, no matter the size. Consider using equals() from event, or generating your
+// own equals() specifically for eventGroups, which would put them in a set, compare elements
 // I've noticed that too many Tutorials, and Lectures in the same EventGroup are at the same Time
 // Since they are all at the same time. When we do event.intersects() we shouldn't do that to each one of them, rather do that to the whole group who is at the same time. Therefore, the entire group will either pass or fail.
 // For example Tut01, Tut02, Tut03 may all be at the same time.
@@ -11,11 +15,14 @@
 //TODO Get rid of duplicate data by putting it in upper classes for example lectureSection and location into eventGroup and check that this
 // still maintains integrity of system and doesn't make it too dependent on implementation
 
-//TODO Figure out the hashCode. Maybe make it a bit more general, so there's a chance it will be equal. Play aroud with that chance, and the profiler to see most efficient combo
 
 //TODO: Fix bug: Try CSC207 and ECO101: Loop through the screen.  A lot of timetables are identical
+//TODO fix gridView not responsing sometimes. Check code and see for yourself, setAdapter isn't called
+//in some cases
 
-//TODO change implementation from UofTEvent to WeeklyEvent and WeeklyTimeTable
+//TODO Figure out the hashCode. Maybe make it a bit more general, so there's a chance it will be equal. Play aroud with that chance, and the profiler to see most efficient combo
+
+
 //TODO Add documentation and testing everywhere
 
 //TODO differentiate between fall, winter, and full year courses. If fall, make its own timetable for it. If winter, make its own timetable for it. If full year, put it in both fall and winter.

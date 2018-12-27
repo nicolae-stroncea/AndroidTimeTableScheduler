@@ -19,6 +19,9 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
+/**
+ * adapter for the TimeTable UI
+ */
 public class GridAdapter extends BaseAdapter {
     /**
      * ArrayList of the buttons

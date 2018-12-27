@@ -11,14 +11,15 @@ import java.util.Set;
  * This is UofT specific because this is about lectures and tutorials
  * repeating at the same time.
  */
-public class UofTChoiceOfEventGroups extends ChoiceOfEventGroups<UofTEvent> {
-    public UofTChoiceOfEventGroups(String name) {
+//TODO consider making it more general so it can apply to other cases where classes may repeat
+// at the same time
+public class UofTChooseFromEventGroups extends ChooseFromEventGroups<UofTEvent> {
+    public UofTChooseFromEventGroups(String name) {
         this.name = name;
     }
-    public UofTChoiceOfEventGroups(){
+    public UofTChooseFromEventGroups(){
         super();
     }
-
 
     /**
      * check if it UofTChoiceOfEventGroup is made of groups of 1 event

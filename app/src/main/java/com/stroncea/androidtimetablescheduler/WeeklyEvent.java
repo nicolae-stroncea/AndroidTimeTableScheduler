@@ -34,7 +34,6 @@ public class WeeklyEvent<E extends WeeklyEvent<E>> extends Event<E> {
     }
 
 
-    //TODO check logic. See if it works
     @Override
     public boolean intersects(E e2) {
 
@@ -67,6 +66,12 @@ public class WeeklyEvent<E extends WeeklyEvent<E>> extends Event<E> {
     public int getWeekDay() {
         return weekDay;
     }
+
+    /**
+     * Equals strictly if startTime, endTime and weekDay are the same
+     * @param e2
+     * @return
+     */
     public boolean equals(WeeklyEvent<E> e2){
         boolean equal = false;
         if(this.weekDay == e2.weekDay) {
@@ -76,7 +81,7 @@ public class WeeklyEvent<E extends WeeklyEvent<E>> extends Event<E> {
         }
         return equal;
     }
-    // Events are equal if they have the same startime, endtime, and weekday
+//     Events are equal if they have the same startime, endtime, and weekday
     @Override
     public boolean equals(Object obj) {
         boolean isEqual;
@@ -86,14 +91,14 @@ public class WeeklyEvent<E extends WeeklyEvent<E>> extends Event<E> {
             return false;
         if (!(obj instanceof WeeklyEvent))
             return false;
-        WeeklyEvent<E> other = (WeeklyEvent) obj;
+        WeeklyEvent<E> other = (WeeklyEvent<E>) obj;
 
         isEqual =  equals(other);
         return isEqual;
     }
     @Override
     public int hashCode() {
-        return weekDay*1000 + getStartTime()*2 + getEndTime()*6;
+        return weekDay*97 + getStartTime()*11 + getEndTime()*7;
     }
 
 }

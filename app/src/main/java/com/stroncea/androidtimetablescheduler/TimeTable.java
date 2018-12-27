@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Represents a group of events. A TimeTable can either be Valid or Invalid.
+ * Represents a Valid List of EventGroups(From class description: all events in an eventGroup
+ * must go together). There is no conflicts between any EventGroups.
  * Must implement Compare(), where it decides how to sort the timeTables by score.
  * It must implement it because with different events, you will sort timeTables differently.
  * For example with a weekly event, you will compare by day of week, monthly event, by day of month.
  *
+ * Must implement Scorable, where you choose your custom filters on what attributes you want to score
+ * a timeTable
  */
 
 public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> implements Comparable<T>, Scorable, Serializable {
@@ -52,10 +55,10 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> im
         this.listOfEventGroups = listOfEventGroups;
     }
 
-       /**
-         * Get the groups
-         * @return the listOfEventGroups
-         */
+   /**
+     * Get the groups
+     * @return the listOfEventGroups
+     */
      public List<EventGroup<E>> getListOfEventGroups() {
         return listOfEventGroups;
     }

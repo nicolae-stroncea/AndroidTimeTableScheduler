@@ -17,14 +17,14 @@ public class ExampleUnitTest {
     @Test
     public void Test(){
         /*
-Turn our input into events, and put it into ChoiceOfEventGroups's.
-Move the ChoiceOfEventGroups's to the timeTableGenerator.
+Turn our input into events, and put it into ChooseFromEventGroups's.
+Move the ChooseFromEventGroups's to the timeTableGenerator.
 TimeTableGenerator takes all appropriate combinations and generates all possible timetables.
 Get events List from the Courses, Combine them and Generate a TimeTable.
 TimeTable checks if there is a conflict.
  */
 //
-//    ChoiceOfEventGroups<UofTEvent> uofTCourse1 = new UofTChoiceOfEventGroups("CSC108H1F");
+//    ChooseFromEventGroups<UofTEvent> uofTCourse1 = new UofTChooseFromEventGroups("CSC108H1F");
 //
 //    List<UofTEvent> listOfEvents = new ArrayList<>();
 //    UofTEvent e;
@@ -65,7 +65,7 @@ TimeTable checks if there is a conflict.
 //    listOfEvents.add(e);
 //    uofTCourse1.add(listOfEvents);
 //
-//    UofTChoiceOfEventGroups uofTCourse2 = new UofTChoiceOfEventGroups("CSCA48");
+//    UofTChooseFromEventGroups uofTCourse2 = new UofTChooseFromEventGroups("CSCA48");
 //
 //    listOfEvents = new ArrayList<>();
 //    e = new UofTEvent("CSCA48Lec01",13,14,DaysOfWeek.MONDAY);
@@ -97,7 +97,7 @@ TimeTable checks if there is a conflict.
 //    listOfEvents.add(e);
 //    uofTCourse2.add(listOfEvents);
 //
-//    UofTChoiceOfEventGroups uofTCourse3 = new UofTChoiceOfEventGroups("MGAB01H3");
+//    UofTChooseFromEventGroups uofTCourse3 = new UofTChooseFromEventGroups("MGAB01H3");
 //
 //    listOfEvents = new ArrayList<>();
 //    e = new UofTEvent("MGAB01H3Lec01",9,11,DaysOfWeek.TUESDAY);
@@ -141,7 +141,7 @@ TimeTable checks if there is a conflict.
 //    listOfEvents.add(e);
 //    uofTCourse3.add(listOfEvents);
 //
-//    UofTChoiceOfEventGroups uofTCourse4 = new UofTChoiceOfEventGroups("ENGA02");
+//    UofTChooseFromEventGroups uofTCourse4 = new UofTChooseFromEventGroups("ENGA02");
 //
 //    listOfEvents = new ArrayList<>();
 //    e = new UofTEvent("ENGA02Lec01",11,13,DaysOfWeek.MONDAY);
@@ -173,7 +173,7 @@ TimeTable checks if there is a conflict.
 //    listOfEvents.add(e);
 //    uofTCourse4.add(listOfEvents);
 //
-//    List<ChoiceOfEventGroups<UofTEvent>> listOfCourses= new ArrayList<>();
+//    List<ChooseFromEventGroups<UofTEvent>> listOfCourses= new ArrayList<>();
 //    listOfCourses.add(uofTCourse1);
 //    listOfCourses.add(uofTCourse2);
 //    listOfCourses.add(uofTCourse3);

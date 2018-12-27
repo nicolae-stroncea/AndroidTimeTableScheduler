@@ -3,8 +3,10 @@ package com.stroncea.androidtimetablescheduler;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents a UofTEventGroup.
+ */
 public class UofTEventGroup extends EventGroup<UofTEvent>{
-    //TODO consider putting eventGroup in its own subclass of UoftEventGroup
     private String instructor;
     private Map<String, List<String>> eventGroupBundle;
 

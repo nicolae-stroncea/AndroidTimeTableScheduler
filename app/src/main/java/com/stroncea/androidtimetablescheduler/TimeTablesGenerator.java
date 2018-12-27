@@ -9,22 +9,22 @@ import java.util.List;
 Generates all possible TimeTables given a list  of choice of EventGroups.
  */
 public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> implements Comparator<T>, Serializable, TimeTableCreator<E,T> {
-    private List<ChoiceOfEventGroups<E>> buildingBlocks;
+    private List<ChooseFromEventGroups<E>> buildingBlocks;
     private List<T> timeTables = new ArrayList<>();
     private List<UserPreferences> userPref;
 
     /**
-     * Gets passed a list of ChoiceOfEventGroups's, which are objects that contain alternatives for a course, i.e
+     * Gets passed a list of ChooseFromEventGroups's, which are objects that contain alternatives for a course, i.e
      * Lec101, Lec205, Lec104 for a course CSC108.
-     * @param buildingBlocks is a list of ChoiceOfEventGroups to be combined together.
+     * @param buildingBlocks is a list of ChooseFromEventGroups to be combined together.
      */
-    public TimeTablesGenerator(List<ChoiceOfEventGroups<E>> buildingBlocks){
+    public TimeTablesGenerator(List<ChooseFromEventGroups<E>> buildingBlocks){
         this.buildingBlocks = buildingBlocks;
     }
     public TimeTablesGenerator(){
         this.buildingBlocks = new ArrayList<>();
     }
-    public TimeTablesGenerator(List<ChoiceOfEventGroups<E>> buildingBlocks, List<UserPreferences> userPref){
+    public TimeTablesGenerator(List<ChooseFromEventGroups<E>> buildingBlocks, List<UserPreferences> userPref){
         this.buildingBlocks = buildingBlocks;
         this.userPref= userPref;
     }
@@ -43,7 +43,7 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
      * Let's say we have: [CSC108[x1,x2],Mat235[y1,y2],CSC165[z1].
      * We would build timetable: [x1,y1,z1],[x1,y2,z1],[x2,y1,z1],[x2,y2,z1].
      * @param index within buildingBlocks which shows at which UnkownP we are currently at.
-     * @param items is a List of ChoiceOfEventGroups's in this combination.
+     * @param items is a List of ChooseFromEventGroups's in this combination.
      */
     private void createHelper(int index, List<EventGroup<E>> items){
         // If we're at the last b1uildingBlock in the list
@@ -80,14 +80,14 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
 
 
 
-    public List<ChoiceOfEventGroups<E>> getBuildingBlocks() {
+    public List<ChooseFromEventGroups<E>> getBuildingBlocks() {
         return buildingBlocks;
     }
 
-    public void setBuildingBlocks(List<ChoiceOfEventGroups<E>> buildingBlocks) {
+    public void setBuildingBlocks(List<ChooseFromEventGroups<E>> buildingBlocks) {
         this.buildingBlocks = buildingBlocks;
     }
-    public void addBuildingBlocks(ChoiceOfEventGroups<E> newBuildingBlock){
+    public void addBuildingBlocks(ChooseFromEventGroups<E> newBuildingBlock){
         buildingBlocks.add(newBuildingBlock);
     }
     // The timmeTable with the smallest score is actually the biggest
@@ -97,12 +97,17 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
         int comparingResult = o1.compareTo(o2);
         return -comparingResult;
     }
+
+    /**
+     *
+     * @return all timeTables
+     */
     public List<T> getTimeTables() {
         return timeTables;
     }
 
     /**
-     * We have a list of a list of events. Within each list of events, we know that all the events do not have a conflict
+     * We have a list of a EventGroups. Within each EventGroup, we know that all the events do not have a conflict
      * with one another. Therefore we will test every event in 1 list of events against every event in another list of events
      * Identify if you have a conflict between events. Assumes all of them may have a conflict between EachOther
      * @param listOfEventGroups is a list of EventGroups, where all Events in an EventGroup are related to each other. listOfEventGroups is all the events that are part of this timeTable

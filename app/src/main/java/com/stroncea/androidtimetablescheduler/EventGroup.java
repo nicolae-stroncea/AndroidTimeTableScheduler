@@ -6,14 +6,20 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a group of related events: For example it would represent a Lecture L0101, with 3 Events, each one representing an event on monday, wednesday, friday.
- * @param <E>
+ * Single responsibility: Represents a group of events
+ * WHICH MUST BE PART OF THE SAME group. I.E If one of the events form a EventGroup is present
+ * in a timeTable, all of them must be. They can't be apart from each other. By definition,
+ * THERE CANNOT BE ANY CONFLICTS BETWEEN events in an EventGroup. All of them must be separate
+ * from each other
+ * Examples: Would represent a High School Math Class, where you have a Math Event on Monday,
+ * Math Event on Wednesday, and Math Event on Friday. All of these are part of the same EventGroup
+ * and must be part of the same timeTable.
+ ** @param <E> represents the kind of event
  */
 public class EventGroup<E extends Event<E>> implements Serializable {
     /**
-     * Since some eventGroups are bundled, it holds the event weekday, start and endtime
-     * as the key, and the name of the bundled events as the values.
-     * Key is in the form of weekDay'start'startTime'end'endTime
+     * the group of events which must all be part of the same timeTable,
+     * i.e chem class(Monday Event, Tuesday Event, Friday Event).
      */
     private List<E> eventGroup;
     public EventGroup(List<E> eventGroup){

@@ -3,5 +3,5 @@ package com.stroncea.androidtimetablescheduler;
 import java.util.List;
 
 public interface AsyncResponse {
-    void processFinish(List<UofTChoiceOfEventGroups> o);
+    void processFinish(List<UofTChooseFromEventGroups> o);
 }

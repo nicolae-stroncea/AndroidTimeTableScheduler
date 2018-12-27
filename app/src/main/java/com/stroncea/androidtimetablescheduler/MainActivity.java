@@ -28,7 +28,7 @@ private RadioGroup weight;
 
 CourseRequests asyncTask;
 ArrayAdapter<String> adapter;
-WeeklyTimeTablesGenerator t = new WeeklyTimeTablesGenerator();
+WeeklyTimeTablesGenerator<UofTEvent> t = new WeeklyTimeTablesGenerator<>();
 
 
     @Override
@@ -131,9 +131,13 @@ WeeklyTimeTablesGenerator t = new WeeklyTimeTablesGenerator();
 
     }
 
-    //this gets the result from the CourseRequests
+    /**
+     * this gets the result from the CourseRequests
+     * @param output is the list of possible choises for a given course:
+     *               [Mat235{Lec101,Lec102,Lec103}, Mat235{Tut101,Tut312,TUt301}, Mat{Pra102,}
+     */
     @Override
-    public void processFinish(List<UofTChoiceOfEventGroups> output){
+    public void processFinish(List<UofTChooseFromEventGroups> output){
         //Here you will receive the result fired from async class
         //of onPostExecute(result) method.
         if(output==null){
@@ -141,7 +145,7 @@ WeeklyTimeTablesGenerator t = new WeeklyTimeTablesGenerator();
         }
         else{
             Toast.makeText(this,"Add another course" ,Toast.LENGTH_SHORT).show();
-            for(UofTChoiceOfEventGroups option: output){
+            for(UofTChooseFromEventGroups option: output){
                 // first clean it. Get rid of all repeat times.
                 option.cleanOption();
                 t.addBuildingBlocks(option);

@@ -13,6 +13,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+/**
+ * Model for CourseRequestsModel
+ */
 //TODO need to see how to deal with yearly courses
 public class CourseRequestsModel {
     private static final String API_KEY = "TngcUaE7v5Pe7rrXDKHmE4qlbfvB01Wz";
@@ -21,15 +25,15 @@ public class CourseRequestsModel {
 
     /**
      * We will get a string which represents the json of a course like CSC108.
-     * This course has a bundle of ChoiceOfEventGroups: because we can have Tutorials, Practicals
+     * This course has a bundle of ChooseFromEventGroups: because we can have Tutorials, Practicals
      * and lectures, all of which are an EventGroup each.
      * @param course are the arrays of course the user wants executed.
-     * @return a list of UofTChoiceOfEventGroups.
+     * @return a list of UofTChooseFromEventGroups.
      * @throws IOException
      */
-    public static List<UofTChoiceOfEventGroups> request(String course) throws IOException {
+    public static List<UofTChooseFromEventGroups> request(String course) throws IOException {
         String response = sendGET(course);
-        List<UofTChoiceOfEventGroups> options = null;
+        List<UofTChooseFromEventGroups> options = null;
         if(response.equals("[]")){
             System.out.println("REQUEST FAILED");
         }
@@ -43,9 +47,9 @@ public class CourseRequestsModel {
     }
     //TODO somewhere here need to get rid of bug where a lecture might be completely empty.
     // check wht that's about
-    private static List<UofTChoiceOfEventGroups> processJson(String response){
+    private static List<UofTChooseFromEventGroups> processJson(String response){
         //
-        List<UofTChoiceOfEventGroups> multipleChoices = new ArrayList<>();
+        List<UofTChooseFromEventGroups> multipleChoices = new ArrayList<>();
         JSONObject meeting_object;
         JSONArray lectureArray;
         UofTEvent e;
@@ -70,7 +74,7 @@ public class CourseRequestsModel {
                 // there will be different kinds of lecture sections,
                 // so we will create an option for each one of them as we are going
                 // to need all of them
-                Map<Character, UofTChoiceOfEventGroups> typesOfCourses = new HashMap<>();
+                Map<Character, UofTChooseFromEventGroups> typesOfCourses = new HashMap<>();
                 String name;
                 JSONObject lecture;
 //                List<List<UofTEvent>> listOfOptions;
@@ -96,19 +100,19 @@ public class CourseRequestsModel {
                     char courseType = name.charAt(0);
                     // if this type of lecture already exists, add a new lecture to it
                     if(typesOfCourses.containsKey(courseType)){
-                        UofTChoiceOfEventGroups typeCourse = typesOfCourses.get(courseType);
+                        UofTChooseFromEventGroups typeCourse = typesOfCourses.get(courseType);
                         typeCourse.add(oneLectureGroup);
                         typesOfCourses.put(courseType, typeCourse);
 
                     }
                     // if this type of lecture doesn't exists, create it
                     else{
-                        UofTChoiceOfEventGroups typeCourse =new UofTChoiceOfEventGroups();
+                        UofTChooseFromEventGroups typeCourse =new UofTChooseFromEventGroups();
                         typeCourse.add(oneLectureGroup);
                         typesOfCourses.put(courseType, typeCourse);
                     }
                 }
-                for(UofTChoiceOfEventGroups choiceOfEventGroups: typesOfCourses.values()){
+                for(UofTChooseFromEventGroups choiceOfEventGroups: typesOfCourses.values()){
                     choiceOfEventGroups.setName(thisYearCourse.getString("code"));
                     multipleChoices.add(choiceOfEventGroups);
                 }
