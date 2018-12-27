@@ -72,7 +72,7 @@ public class WeeklyEvent<E extends WeeklyEvent<E>> extends Event<E> {
      * @param e2
      * @return
      */
-    public boolean equals(WeeklyEvent<E> e2){
+    public boolean isEqual(WeeklyEvent<E> e2){
         boolean equal = false;
         if(this.weekDay == e2.weekDay) {
             if (this.getStartTime() == e2.getStartTime() && this.getEndTime() == e2.getEndTime()){
@@ -93,12 +93,18 @@ public class WeeklyEvent<E extends WeeklyEvent<E>> extends Event<E> {
             return false;
         WeeklyEvent<E> other = (WeeklyEvent<E>) obj;
 
-        isEqual =  equals(other);
+        isEqual =  isEqual(other);
         return isEqual;
     }
     @Override
     public int hashCode() {
         return weekDay*97 + getStartTime()*11 + getEndTime()*7;
+    }
+    @Override
+    public String toString(){
+        String s = super.toString();
+        s+=weekDay;
+        return s;
     }
 
 }

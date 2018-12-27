@@ -2,8 +2,8 @@ package com.stroncea.androidtimetablescheduler;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Single responsibility: Represents a group of events
@@ -44,6 +44,40 @@ public class EventGroup<E extends Event<E>> implements Serializable {
     }
     public void addEvent(E e){
         this.eventGroup.add(e);
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof EventGroup))
+            return false;
+        // put both into sets and compare if the sets are equal, based on whether they have all
+        // the same events inside
+        EventGroup<E> other = (EventGroup<E>) obj;
+        HashSet<E> setOther = new HashSet<>(other.getEventGroup());
+        HashSet<E> thisSet = new HashSet<>(eventGroup);
+        return setOther.equals(thisSet);
+        }
+
+    @Override
+    public int hashCode() {
+        int hashCode =0;
+        for(E ev:eventGroup){
+            hashCode+=ev.hashCode();
+        }
+        return hashCode;
+    }
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for(E event:eventGroup){
+            sb.append((event.toString()));
+        }
+        return sb.toString();
     }
 
 }

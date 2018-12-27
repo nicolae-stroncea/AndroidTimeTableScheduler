@@ -61,7 +61,7 @@ public abstract class Event<E extends Event<E>> implements Serializable {
     public abstract boolean intersects(E object);
 
     /**
-     * This is implemented because equals is implemented
+     * This is implemented because isEqual is implemented
      * @return the hashCode
      */
     @Override
@@ -74,4 +74,13 @@ public abstract class Event<E extends Event<E>> implements Serializable {
      */
     @Override
     public abstract boolean equals(Object obj);
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(name);
+        sb.append(startTime);
+        sb.append(endTime);
+        return sb.toString();
+    }
 }

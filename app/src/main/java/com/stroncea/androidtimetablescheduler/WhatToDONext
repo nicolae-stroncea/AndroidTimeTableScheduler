@@ -1,21 +1,10 @@
-//TODO reformat UofTChooseFromEventGroups so that it works for Lectures as well using equals and Sets
-//TODO best way to do it is make an equals() method fo EventGroup, but the eventGroups in sets,
-// and check if they're equal
-// and for everything tbh, no matter the size. Consider using equals() from event, or generating your
-// own equals() specifically for eventGroups, which would put them in a set, compare elements
-// I've noticed that too many Tutorials, and Lectures in the same EventGroup are at the same Time
-// Since they are all at the same time. When we do event.intersects() we shouldn't do that to each one of them, rather do that to the whole group who is at the same time. Therefore, the entire group will either pass or fail.
-// For example Tut01, Tut02, Tut03 may all be at the same time.
-// Therefore, bundle them together in ChoiceOfEventGroup(so that the list you return is strictly a list of time), Or Something of that sort. In here, the list in ChoiceOfEventGroup would be reduced, but there would be other properties that give access to how many EventGroups truly are at the same time. Implementation note: This would not happen if
-// Figure out a structure which works, and make sure it will work for the future as well when
-// we start applying filters.
 // Then The way that will look on the UI, is: If you have a Time, at which multiple Tutorials/Lectures occur, they are maybe coloured in a different way, or have an asterisks next to them.
 // You then click on them, and it displays all the possible Compatible Events Happening at the same Time.
 // EventGroup will now be a list specifically by time
 //TODO Get rid of duplicate data by putting it in upper classes for example lectureSection and location into eventGroup and check that this
 // still maintains integrity of system and doesn't make it too dependent on implementation
 
-
+//TODO fix bug: Mat223 and Mat224 add Bundle. Both have 4, and 5 elements, and when we add both, we get a total of 8.WHY
 //TODO: Fix bug: Try CSC207 and ECO101: Loop through the screen.  A lot of timetables are identical
 //TODO fix gridView not responsing sometimes. Check code and see for yourself, setAdapter isn't called
 //in some cases

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,7 +29,7 @@ private RadioGroup weight;
 
 CourseRequests asyncTask;
 ArrayAdapter<String> adapter;
-TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>> t = new TimeTablesGenerator<>(new WeeklyTimeTableCreator<UofTEvent>());
+GeneratorWithRepeatingEventGroups<UofTEvent, WeeklyTimeTable<UofTEvent>> t = new GeneratorWithRepeatingEventGroups<>(new WeeklyTimeTableCreator<UofTEvent>());
 
 
     @Override
@@ -137,7 +138,7 @@ TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>> t = new TimeTablesGen
      *               [Mat235{Lec101,Lec102,Lec103}, Mat235{Tut101,Tut312,TUt301}, Mat{Pra102,}
      */
     @Override
-    public void processFinish(List<UofTChooseFromEventGroups> output){
+    public void processFinish(List<ChooseFromEventGroupsWithRepeats<UofTEvent>> output){
         //Here you will receive the result fired from async class
         //of onPostExecute(result) method.
         if(output==null){
@@ -145,9 +146,10 @@ TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>> t = new TimeTablesGen
         }
         else{
             Toast.makeText(this,"Add another course" ,Toast.LENGTH_SHORT).show();
-            for(UofTChooseFromEventGroups option: output){
+            for(ChooseFromEventGroupsWithRepeats<UofTEvent> option: output){
                 // first clean it. Get rid of all repeat times.
-                option.cleanOption();
+                Map<EventGroup<UofTEvent>, List<EventGroup<UofTEvent>>> oneOption = option.stripRepeats();
+                t.addToBundle(oneOption);
                 t.addBuildingBlocks(option);
             }
             course.getText().clear();

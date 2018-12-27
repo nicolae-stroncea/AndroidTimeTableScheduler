@@ -8,7 +8,7 @@ import java.util.Map;
  */
 public class UofTEventGroup extends EventGroup<UofTEvent>{
     private String instructor;
-    private Map<String, List<String>> eventGroupBundle;
+
 
     public String getInstructor() {
         return instructor;
@@ -17,13 +17,7 @@ public class UofTEventGroup extends EventGroup<UofTEvent>{
     public void setInstructor(String instructor) {
         this.instructor = instructor;
     }
-    public Map<String, List<String>> getBundle() {
-        return eventGroupBundle;
-    }
 
-    public void setBundle(Map<String, List<String>> bundle) {
-        this.eventGroupBundle = bundle;
-    }
 
 
 

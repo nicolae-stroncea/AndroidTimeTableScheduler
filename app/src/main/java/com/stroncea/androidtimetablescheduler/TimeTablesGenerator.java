@@ -31,6 +31,9 @@ public class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> i
         this(buildingBlocks,t);
         this.userPref= userPref;
     }
+    public TimeTablesGenerator(){
+
+    }
     /**
      * Create all possible TimeTable Combinations and sorts them according to score
      */
