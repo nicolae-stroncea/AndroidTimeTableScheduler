@@ -1,13 +1,17 @@
+//TODO fix bug: Mat223 and Mat224 add Bundle. Both have 4, and 5 elements, and when we add both, we get a total of 8.WHY
+//TODO: Fix bug: Try CSC207 and ECO101: Loop through the screen.  A lot of timetables are identical
+//TODO fix gridView not responsing sometimes. Check code and see for yourself, setAdapter isn't called
+//in some cases
+
+
+
 // Then The way that will look on the UI, is: If you have a Time, at which multiple Tutorials/Lectures occur, they are maybe coloured in a different way, or have an asterisks next to them.
 // You then click on them, and it displays all the possible Compatible Events Happening at the same Time.
 // EventGroup will now be a list specifically by time
 //TODO Get rid of duplicate data by putting it in upper classes for example lectureSection and location into eventGroup and check that this
 // still maintains integrity of system and doesn't make it too dependent on implementation
 
-//TODO fix bug: Mat223 and Mat224 add Bundle. Both have 4, and 5 elements, and when we add both, we get a total of 8.WHY
-//TODO: Fix bug: Try CSC207 and ECO101: Loop through the screen.  A lot of timetables are identical
-//TODO fix gridView not responsing sometimes. Check code and see for yourself, setAdapter isn't called
-//in some cases
+
 
 //TODO Figure out the hashCode. Maybe make it a bit more general, so there's a chance it will be equal. Play aroud with that chance, and the profiler to see most efficient combo
 

@@ -23,6 +23,9 @@ public class SaveAndLoadTimeTableGenerator {
      *
      * @param fileName the name of the file
      */
+    // we can suppress the warning because we only save TimeTableGenerator objects therefore, we
+    // know for certain that's what we're going to get
+    @SuppressWarnings("unchecked")
     public static <K extends Event<K>,V extends TimeTable<K,V>, T extends TimeTablesGenerator<K,V>> T loadFromFile(Context context, String fileName) {
         T timetableGenerator = null;
         try {

@@ -144,6 +144,10 @@ GeneratorWithRepeatingEventGroups<UofTEvent, WeeklyTimeTable<UofTEvent>> t = new
         if(output==null){
             Toast.makeText(this,"Course name wrong" ,Toast.LENGTH_SHORT).show();
         }
+        else if(output.size() == 0){
+            Toast.makeText(this,"No data for this course available" ,Toast.LENGTH_SHORT).show();
+
+        }
         else{
             Toast.makeText(this,"Add another course" ,Toast.LENGTH_SHORT).show();
             for(ChooseFromEventGroupsWithRepeats<UofTEvent> option: output){

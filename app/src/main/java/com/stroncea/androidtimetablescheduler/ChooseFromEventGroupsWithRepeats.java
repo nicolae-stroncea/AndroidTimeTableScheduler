@@ -2,18 +2,15 @@ package com.stroncea.androidtimetablescheduler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 /**
- * This is UofT specific because this is about lectures and tutorials
- * repeating at the same time.
+ * This represents a ChooseFromGroups which has EventGroups that occur at the same times. Therefore
+ * We can optimize generation of timeTable by bundling them together.
  */
-//TODO consider making it more general so it can apply to other cases where classes may repeat
-// at the same time
 public class ChooseFromEventGroupsWithRepeats<E extends Event<E>> extends ChooseFromEventGroups<E> {
     public ChooseFromEventGroupsWithRepeats(String name) {
         this.name = name;
@@ -69,13 +66,5 @@ public class ChooseFromEventGroupsWithRepeats<E extends Event<E>> extends Choose
         List<EventGroup<E>> listOfEventGroups = getListOfOptions();
         Map<String, List<EventGroup<E>>> bundle = new HashMap<>();
         return bundle;
-
-
-
     }
-
-
-
-
-
 }

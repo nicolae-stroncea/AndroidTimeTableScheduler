@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Full"
-                android:id="@+id/ful"/>
+                android:id="@+id/full"/>
         </RadioGroup>
         <RadioGroup
             android:layout_width="wrap_content"
