@@ -23,7 +23,7 @@ public class SaveAndLoadTimeTableGenerator {
      *
      * @param fileName the name of the file
      */
-    public static <K extends Event<K>,V extends TimeTable<K,V>, C extends ChoiceOfEventGroups<K>, T extends TimeTablesGenerator<K,V,C>> T loadFromFile(Context context, String fileName) {
+    public static <K extends Event<K>,V extends TimeTable<K,V>, T extends TimeTablesGenerator<K,V>> T loadFromFile(Context context, String fileName) {
         T timetableGenerator = null;
         try {
             InputStream inputStream = context.openFileInput(fileName);
@@ -47,7 +47,7 @@ public class SaveAndLoadTimeTableGenerator {
      *
      * @param fileName the name of the file
      */
-    public static <K extends Event<K>,V extends TimeTable<K,V>,C extends  ChoiceOfEventGroups<K>, T extends TimeTablesGenerator<K,V,C>> void saveToFile(Context context, String fileName, T timeTable) {
+    public static <K extends Event<K>,V extends TimeTable<K,V>, T extends TimeTablesGenerator<K,V>> void saveToFile(Context context, String fileName, T timeTable) {
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     context.openFileOutput(fileName, MODE_PRIVATE));

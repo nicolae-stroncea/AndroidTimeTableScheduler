@@ -1,8 +1,8 @@
 package com.stroncea.androidtimetablescheduler;
 import java.util.List;
 
-public class WeeklyTimeTablesGenerator extends TimeTablesGenerator<UofTEvent, WeeklyTimeTable, UofTChoiceOfEventGroups>{
-    public WeeklyTimeTablesGenerator(List<UofTChoiceOfEventGroups> buildingBlocks){
+public class WeeklyTimeTablesGenerator extends TimeTablesGenerator<UofTEvent, WeeklyTimeTable>{
+    public WeeklyTimeTablesGenerator(List<ChoiceOfEventGroups<UofTEvent>> buildingBlocks){
         super(buildingBlocks);
     }
     public WeeklyTimeTablesGenerator(){
