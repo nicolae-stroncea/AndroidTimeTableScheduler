@@ -1,5 +1,5 @@
 package com.stroncea.androidtimetablescheduler;
-public class WeeklyEvent extends Event<WeeklyEvent> {
+public class WeeklyEvent<E extends WeeklyEvent<E>> extends Event<E> {
     private int weekDay;
 
 
@@ -36,10 +36,10 @@ public class WeeklyEvent extends Event<WeeklyEvent> {
 
     //TODO check logic. See if it works
     @Override
-    public boolean intersects(WeeklyEvent e2) {
+    public boolean intersects(E e2) {
 
         boolean intersects = false;
-        if(this.weekDay == e2.weekDay) {
+        if(this.weekDay == e2.getWeekDay()) {
             if (this.getStartTime() < e2.getStartTime() && this.getEndTime() > e2.getStartTime()) {
                 intersects = true;
             }
@@ -67,7 +67,7 @@ public class WeeklyEvent extends Event<WeeklyEvent> {
     public int getWeekDay() {
         return weekDay;
     }
-    public boolean equals(WeeklyEvent e2){
+    public boolean equals(WeeklyEvent<E> e2){
         boolean equal = false;
         if(this.weekDay == e2.weekDay) {
             if (this.getStartTime() == e2.getStartTime() && this.getEndTime() == e2.getEndTime()){
@@ -86,7 +86,7 @@ public class WeeklyEvent extends Event<WeeklyEvent> {
             return false;
         if (!(obj instanceof WeeklyEvent))
             return false;
-        WeeklyEvent other = (WeeklyEvent) obj;
+        WeeklyEvent<E> other = (WeeklyEvent) obj;
 
         isEqual =  equals(other);
         return isEqual;

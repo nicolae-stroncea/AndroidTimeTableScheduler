@@ -1,17 +1,10 @@
 package com.stroncea.androidtimetablescheduler;
 import java.util.List;
 
-public class WeeklyTimeTablesGenerator extends TimeTablesGenerator<UofTEvent, WeeklyTimeTable>{
-    public WeeklyTimeTablesGenerator(List<ChoiceOfEventGroups<UofTEvent>> buildingBlocks){
-        super(buildingBlocks);
-    }
-    public WeeklyTimeTablesGenerator(){
-        super();
-    }
-
+public class WeeklyTimeTablesGenerator<E extends WeeklyEvent<E>> extends TimeTablesGenerator<E, WeeklyTimeTable<E>>{
     @Override
-    public WeeklyTimeTable createTimeTable(List<EventGroup<UofTEvent>> allEvents){
-        return new WeeklyTimeTable(allEvents);
+    public WeeklyTimeTable<E> createTimeTable(List<EventGroup<E>> allEvents){
+        return new WeeklyTimeTable<>(allEvents);
     }
 
 

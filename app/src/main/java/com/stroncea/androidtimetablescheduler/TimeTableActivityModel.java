@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Set;
 
 public class TimeTableActivityModel {
-    private TimeTablesGenerator<UofTEvent, WeeklyTimeTable> timeTablesGenerator;
-    private WeeklyTimeTable weeklyTimeTable;
+    private WeeklyTimeTablesGenerator<UofTEvent> timeTablesGenerator;
+    private WeeklyTimeTable<UofTEvent> weeklyTimeTable;
     private int currTimeTable = 0;
 
-    public TimeTableActivityModel(WeeklyTimeTablesGenerator t){
+    public TimeTableActivityModel(WeeklyTimeTablesGenerator<UofTEvent> t){
         this.timeTablesGenerator = t;
-        List<WeeklyTimeTable> listOfTimeTables = timeTablesGenerator.getTimeTables();
+        List<WeeklyTimeTable<UofTEvent>> listOfTimeTables = timeTablesGenerator.getTimeTables();
         weeklyTimeTable = listOfTimeTables.get(currTimeTable);
         }
         public List<Integer> getRows(){
@@ -51,19 +51,19 @@ public class TimeTableActivityModel {
 
         }
 
-    public TimeTablesGenerator getTimeTablesGenerator() {
+    public TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>> getTimeTablesGenerator() {
         return timeTablesGenerator;
     }
 
-    public void setTimeTablesGenerator(TimeTablesGenerator<UofTEvent, WeeklyTimeTable> timeTablesGenerator) {
+    public void setTimeTablesGenerator(WeeklyTimeTablesGenerator<UofTEvent> timeTablesGenerator) {
         this.timeTablesGenerator = timeTablesGenerator;
     }
 
-    public WeeklyTimeTable getWeeklyTimeTable() {
+    public WeeklyTimeTable<UofTEvent> getWeeklyTimeTable() {
         return weeklyTimeTable;
     }
 
-    public void setWeeklyTimeTable(WeeklyTimeTable weeklyTimeTable) {
+    public void setWeeklyTimeTable(WeeklyTimeTable<UofTEvent> weeklyTimeTable) {
         this.weeklyTimeTable = weeklyTimeTable;
     }
 

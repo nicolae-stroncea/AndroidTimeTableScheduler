@@ -5,9 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class WeeklyTimeTable extends TimeTable<UofTEvent, WeeklyTimeTable>{
+public class WeeklyTimeTable<E extends WeeklyEvent<E>> extends TimeTable<E, WeeklyTimeTable<E>>{
     private int daysWithEvents = 0;
-    public WeeklyTimeTable(List<EventGroup<UofTEvent>> listOfEventGroups) {
+    public WeeklyTimeTable(List<EventGroup<E>> listOfEventGroups) {
         super(listOfEventGroups);
     }
     public int getDaysWithEvents(){
@@ -18,22 +18,22 @@ public class WeeklyTimeTable extends TimeTable<UofTEvent, WeeklyTimeTable>{
      *
      * @return the events by week, sorted by endtime.
      */
-    public List<List<UofTEvent>> getEventsByWeek() {
-        List<UofTEvent> listOfEvents = new ArrayList<>();
-        List<EventGroup<UofTEvent>> listOfEventGroups = getListOfEventGroups();
+    public List<List<E>> getEventsByWeek() {
+        List<E> listOfEvents = new ArrayList<>();
+        List<EventGroup<E>> listOfEventGroups = getListOfEventGroups();
         // first we flatten the list by combining all the events in 1.
-        for (EventGroup<UofTEvent> eventList : listOfEventGroups) {
+        for (EventGroup<E> eventList : listOfEventGroups) {
             listOfEvents.addAll(eventList.getEventGroup());
         }
-        List<List<UofTEvent>> eventsByWeek = new ArrayList<>();
+        List<List<E>> eventsByWeek = new ArrayList<>();
         // sort the events by day of the week.
-        List<UofTEvent> dayOfWeekEvents;
+        List<E> dayOfWeekEvents;
         for(int i =0; i<5;i++){
             dayOfWeekEvents = new ArrayList<>();
             eventsByWeek.add(dayOfWeekEvents);
         }
         // put each event into a list according to its day of the week
-        for(UofTEvent event: listOfEvents){
+        for(E event: listOfEvents){
             switch(event.getWeekDay()){
                 case(1):
                     eventsByWeek.get(0).add(event);
@@ -54,10 +54,10 @@ public class WeeklyTimeTable extends TimeTable<UofTEvent, WeeklyTimeTable>{
         }
         // sort each list of events by their endtime
         for(int i=0;i<eventsByWeek.size();i++){
-            List<UofTEvent> oneDayEvents = eventsByWeek.get(i);
-            Comparator<UofTEvent> comparator = new Comparator<UofTEvent>() {
+            List<E> oneDayEvents = eventsByWeek.get(i);
+            Comparator<E> comparator = new Comparator<E>() {
                 @Override
-                public int compare(UofTEvent o1, UofTEvent o2) {
+                public int compare(E o1, E o2) {
 
                     if(o1.getEndTime()>o2.getEndTime()){
                         return 1;
@@ -91,9 +91,9 @@ public class WeeklyTimeTable extends TimeTable<UofTEvent, WeeklyTimeTable>{
      */
     @Override
     public double giveScore() {
-        List<List<UofTEvent>> eventsByWeek = getEventsByWeek();
+        List<List<E>> eventsByWeek = getEventsByWeek();
         // find the number of days which have courses
-        for(List<UofTEvent> e: eventsByWeek){
+        for(List<E> e: eventsByWeek){
             if(!e.isEmpty()){
                 daysWithEvents+=1;
             }
@@ -101,9 +101,9 @@ public class WeeklyTimeTable extends TimeTable<UofTEvent, WeeklyTimeTable>{
         // Calculate the difference between the times
         int timeDifferenceBtnEvents = 0;
         for(int i=0; i<eventsByWeek.size(); i++){
-            List<UofTEvent> eventsByDay =eventsByWeek.get(i);
+            List<E> eventsByDay =eventsByWeek.get(i);
             for(int j=1; j<eventsByDay.size();j++){
-                UofTEvent e = eventsByDay.get(j);
+                E e = eventsByDay.get(j);
                 timeDifferenceBtnEvents += e.getStartTime()-eventsByDay.get(j-1).getEndTime();
             }
         }
@@ -116,7 +116,7 @@ public class WeeklyTimeTable extends TimeTable<UofTEvent, WeeklyTimeTable>{
      * Implement a way to compare TimeTables between themselves.
      */
     @Override
-    public int compareTo(WeeklyTimeTable o) {
+    public int compareTo(WeeklyTimeTable<E> o) {
         if(this.getScore()>o.getScore()){
             return -1;
         }
