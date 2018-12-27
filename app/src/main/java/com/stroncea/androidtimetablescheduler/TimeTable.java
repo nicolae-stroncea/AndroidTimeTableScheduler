@@ -18,8 +18,7 @@ import java.util.Set;
 
 public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> implements Comparable<T>, Scorable, Serializable {
     private List<EventGroup<E>> listOfEventGroups = new ArrayList<>();
-    // by default score is -1
-    private int score = -1;
+    private int score;
 
     public TimeTable() {}
 

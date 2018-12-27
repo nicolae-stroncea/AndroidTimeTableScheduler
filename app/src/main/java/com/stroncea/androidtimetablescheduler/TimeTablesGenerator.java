@@ -8,24 +8,27 @@ import java.util.List;
 /**
 Generates all possible TimeTables given a list  of choice of EventGroups.
  */
-public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> implements Comparator<T>, Serializable, TimeTableCreator<E,T> {
+public class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> implements Comparator<T>, Serializable{
     private List<ChooseFromEventGroups<E>> buildingBlocks;
     private List<T> timeTables = new ArrayList<>();
     private List<UserPreferences> userPref;
+    private TimeTableCreator<E,T> timeTableCreator;
 
     /**
      * Gets passed a list of ChooseFromEventGroups's, which are objects that contain alternatives for a course, i.e
      * Lec101, Lec205, Lec104 for a course CSC108.
      * @param buildingBlocks is a list of ChooseFromEventGroups to be combined together.
      */
-    public TimeTablesGenerator(List<ChooseFromEventGroups<E>> buildingBlocks){
+    public TimeTablesGenerator(List<ChooseFromEventGroups<E>> buildingBlocks, TimeTableCreator<E,T> t){
+        this.timeTableCreator = t;
         this.buildingBlocks = buildingBlocks;
     }
-    public TimeTablesGenerator(){
+    public TimeTablesGenerator(TimeTableCreator<E,T> t){
+        this.timeTableCreator = t;
         this.buildingBlocks = new ArrayList<>();
     }
-    public TimeTablesGenerator(List<ChooseFromEventGroups<E>> buildingBlocks, List<UserPreferences> userPref){
-        this.buildingBlocks = buildingBlocks;
+    public TimeTablesGenerator(List<ChooseFromEventGroups<E>> buildingBlocks, TimeTableCreator<E,T> t, List<UserPreferences> userPref){
+        this(buildingBlocks,t);
         this.userPref= userPref;
     }
     /**
@@ -53,7 +56,7 @@ public abstract class TimeTablesGenerator<E extends Event<E>, T extends TimeTabl
                 // create a new arrayList with items
                 // because otherwise the current one is modified
                 if(!hasAConflict(new ArrayList<>(items))){
-                    T t = createTimeTable(new ArrayList<>(items));
+                    T t = timeTableCreator.createTimeTable(new ArrayList<>(items));
                     t.giveScore();
                     timeTables.add(t);
 

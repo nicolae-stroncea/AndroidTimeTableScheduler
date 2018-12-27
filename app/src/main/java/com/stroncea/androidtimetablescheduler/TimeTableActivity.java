@@ -29,8 +29,9 @@ public class TimeTableActivity extends AppCompatActivity implements SwipeGesture
         gridView.setNumColumns(NUM_COLS);
         gridView.setSwipeGestureCallBack(this);
 
-
-        WeeklyTimeTablesGenerator<UofTEvent> t = SaveAndLoadTimeTableGenerator.<UofTEvent, WeeklyTimeTable<UofTEvent>, WeeklyTimeTablesGenerator<UofTEvent>>loadFromFile(this,"TimeTableGenerator");
+        //DO NOT DELETE INFERRED TYPE
+        //IT IS ABSOLUTELY NECESSARY. WILL GET WEIRD JAVA ERROR(probably bug from intellij or jdk) if you do
+        TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>> t = SaveAndLoadTimeTableGenerator.<UofTEvent, WeeklyTimeTable<UofTEvent>, TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>>>loadFromFile(this,"TimeTableGenerator");
         t.createTimeTables();
         activityModel = new TimeTableActivityModel(t);
 

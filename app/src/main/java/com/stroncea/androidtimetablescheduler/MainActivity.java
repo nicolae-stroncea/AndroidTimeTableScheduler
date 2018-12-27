@@ -28,7 +28,7 @@ private RadioGroup weight;
 
 CourseRequests asyncTask;
 ArrayAdapter<String> adapter;
-WeeklyTimeTablesGenerator<UofTEvent> t = new WeeklyTimeTablesGenerator<>();
+TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>> t = new TimeTablesGenerator<>(new WeeklyTimeTableCreator<UofTEvent>());
 
 
     @Override
@@ -110,7 +110,7 @@ WeeklyTimeTablesGenerator<UofTEvent> t = new WeeklyTimeTablesGenerator<>();
         generatetmtblbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                TimeTablesGenerator t = new WeeklyTimeTablesGenerator(listOfCourses);
+//                TimeTablesGenerator t = new WeeklyTimeTableCreator(listOfCourses);
                 SaveAndLoadTimeTableGenerator.saveToFile(MainActivity.this,"TimeTableGenerator",t);
                 startActivity(new Intent(MainActivity.this, TimeTableActivity.class));
 

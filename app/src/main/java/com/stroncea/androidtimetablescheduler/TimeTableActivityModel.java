@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Set;
 
 public class TimeTableActivityModel {
-    private WeeklyTimeTablesGenerator<UofTEvent> timeTablesGenerator;
+    private TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>> timeTablesGenerator;
     private WeeklyTimeTable<UofTEvent> weeklyTimeTable;
     private int currTimeTable = 0;
 
-    public TimeTableActivityModel(WeeklyTimeTablesGenerator<UofTEvent> t){
+    public TimeTableActivityModel(TimeTablesGenerator<UofTEvent,WeeklyTimeTable<UofTEvent>> t){
         this.timeTablesGenerator = t;
         List<WeeklyTimeTable<UofTEvent>> listOfTimeTables = timeTablesGenerator.getTimeTables();
         weeklyTimeTable = listOfTimeTables.get(currTimeTable);
@@ -55,7 +55,7 @@ public class TimeTableActivityModel {
         return timeTablesGenerator;
     }
 
-    public void setTimeTablesGenerator(WeeklyTimeTablesGenerator<UofTEvent> timeTablesGenerator) {
+    public void setTimeTablesGenerator(TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>> timeTablesGenerator) {
         this.timeTablesGenerator = timeTablesGenerator;
     }
 
