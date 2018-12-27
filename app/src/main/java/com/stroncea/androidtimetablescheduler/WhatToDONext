@@ -1,7 +1,9 @@
+//TODO Fix ChooseFromEventGroupsWithRepeats.Test on Mat235.
 //TODO fix bug: Mat223 and Mat224 add Bundle. Both have 4, and 5 elements, and when we add both, we get a total of 8.WHY
 //TODO: Fix bug: Try CSC207 and ECO101: Loop through the screen.  A lot of timetables are identical
 //TODO fix gridView not responsing sometimes. Check code and see for yourself, setAdapter isn't called
 //in some cases
+//TODO disable button when waiting for API course response
 
 
 
