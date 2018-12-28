@@ -1,4 +1,4 @@
-//TODO Fix ChooseFromEventGroupsWithRepeats.Test on Mat235.
+//TODO Fix ChooseFromEventGroupsWithRepeats AND CourseRequessModel(returns far less than actually are there).Test both on Mat235.
 //TODO fix bug: Mat223 and Mat224 add Bundle. Both have 4, and 5 elements, and when we add both, we get a total of 8.WHY
 //TODO: Fix bug: Try CSC207 and ECO101: Loop through the screen.  A lot of timetables are identical
 //TODO fix gridView not responsing sometimes. Check code and see for yourself, setAdapter isn't called
@@ -13,6 +13,7 @@
 //TODO Get rid of duplicate data by putting it in upper classes for example lectureSection and location into eventGroup and check that this
 // still maintains integrity of system and doesn't make it too dependent on implementation
 
+//TODO once timeTable is made consider making it possible to swith from one lecture to another by doing a long press
 
 
 //TODO Figure out the hashCode. Maybe make it a bit more general, so there's a chance it will be equal. Play aroud with that chance, and the profiler to see most efficient combo
