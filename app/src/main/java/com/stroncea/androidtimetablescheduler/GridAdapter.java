@@ -46,9 +46,10 @@ public class GridAdapter extends BaseAdapter {
             l.setLayoutParams(new LinearLayout.LayoutParams(mColumnWidth, mColumnHeight));
             convertView = inflater.inflate(R.layout.cell, l);
         }
+
         TextView textView = (TextView) convertView.findViewById(R.id.specialColumn);
-        textView.setText(mTextViews.get(position).getText());
-        textView.setBackgroundColor(mTextViews.get(position).getDrawingCacheBackgroundColor());
+        textView.setText(((TextView) getItem(position)).getText());
+        textView.setBackgroundColor(((TextView) getItem(position)).getDrawingCacheBackgroundColor());
 
 
 

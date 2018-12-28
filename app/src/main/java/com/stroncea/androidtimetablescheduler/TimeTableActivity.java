@@ -205,7 +205,9 @@ public class TimeTableActivity extends AppCompatActivity{
     }
 
     public void setAdapter(){
-        gridView.setAdapter(new GridAdapter(listOfTextViews, columnWidth, columnHeight, this));
+        GridAdapter g = new GridAdapter(listOfTextViews, columnWidth, columnHeight, this);
+        g.notifyDataSetChanged();
+        gridView.setAdapter(g);
         System.out.println("This should work now");
     }
 
