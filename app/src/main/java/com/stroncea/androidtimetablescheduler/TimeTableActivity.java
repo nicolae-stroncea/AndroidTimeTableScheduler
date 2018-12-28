@@ -3,12 +3,16 @@ package com.stroncea.androidtimetablescheduler;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,21 +24,50 @@ public class TimeTableActivity extends AppCompatActivity{
     public ArrayList<TextView> listOfTextViews;
     private TimeTableActivityModel activityModel;
     private int rowNumber;
+    private RelativeLayout relativeLayout;
 
     @Override
     public  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timetable);
         gridView = findViewById(R.id.grid);
+        relativeLayout = findViewById(R.id.timetable_view);
         // Since we have 5 days in a week
         gridView.setNumColumns(NUM_COLS);
         gridView.setFastScrollEnabled(true);
-
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.bottom_navigation);
         //DO NOT DELETE INFERRED TYPE
         //IT IS ABSOLUTELY NECESSARY. WILL GET WEIRD JAVA ERROR(probably bug from intellij or jdk) if you do
         TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>> t = SaveAndLoadTimeTableGenerator.<UofTEvent, WeeklyTimeTable<UofTEvent>, TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>>>loadFromFile(this,"TimeTableGenerator");
         t.createTimeTables();
         activityModel = new TimeTableActivityModel(t);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        switch (item.getItemId()) {
+                            // action with ID action_refresh was selected
+                            case R.id.prev:
+                                Toast.makeText(getApplicationContext(), "Prev selected", Toast.LENGTH_SHORT)
+                                        .show();
+                                activityModel.setPrevTimeTable();
+                                setUpDisplay();
+                                break;
+                            case R.id.next:
+                                Toast.makeText(getApplicationContext(), "Next selected", Toast.LENGTH_SHORT)
+                                        .show();
+                                activityModel.setNextTimeTable();
+                                setUpDisplay();
+                                break;
+                            default:
+                                break;
+                        }
+
+                        return true;
+                    }
+                });
 
         setUpDisplay();
     }
@@ -160,8 +193,8 @@ public class TimeTableActivity extends AppCompatActivity{
                         removeOnGlobalLayoutListener(gridView, this);
 
 
-                        int displayWidth = gridView.getMeasuredWidth();
-                        int displayHeight = gridView.getMeasuredHeight();
+                        int displayWidth = relativeLayout.getMeasuredWidth();
+                        int displayHeight = relativeLayout.getMeasuredHeight();
 
                         columnWidth = displayWidth / gridView.getNumColumns();
                         columnHeight = displayHeight / 12;
@@ -172,7 +205,7 @@ public class TimeTableActivity extends AppCompatActivity{
     }
 
     public void setAdapter(){
-        gridView.setAdapter(new GridAdapter(listOfTextViews, columnWidth, columnHeight));
+        gridView.setAdapter(new GridAdapter(listOfTextViews, columnWidth, columnHeight, this));
         System.out.println("This should work now");
     }
 
@@ -184,4 +217,8 @@ public class TimeTableActivity extends AppCompatActivity{
             v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
         }
     }
+
+
+
+
 }

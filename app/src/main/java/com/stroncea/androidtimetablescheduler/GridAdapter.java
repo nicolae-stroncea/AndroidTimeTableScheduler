@@ -1,28 +1,17 @@
 package com.stroncea.androidtimetablescheduler;
 
-/**
- * Excluded from tests because it is a view class.
- */
-/*
-Taken from:
-https://github.com/DaveNOTDavid/sample-puzzle/blob/master/app/src/main/java/com/davenotdavid/samplepuzzle/CustomAdapter.java
-
-This Class is an overwrite of the Base Adapter class
-It is designed to aid setting the textView sizes and positions in the GridView
- */
-
-
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * adapter for the TimeTable UI
- */
 public class GridAdapter extends BaseAdapter {
+
     /**
      * ArrayList of the textViews
      */
@@ -32,16 +21,38 @@ public class GridAdapter extends BaseAdapter {
      */
     private int mColumnWidth, mColumnHeight;
 
+    private Context context;
+    private String[] items;
+    LayoutInflater inflater;
     /**
      * Instantiates custom adapter object using textViews, column width and column height.
      * @param textViews - list of textViews
      * @param columnWidth - width of the column
      * @param columnHeight - height of the column
      */
-    public GridAdapter(ArrayList<TextView> textViews, int columnWidth, int columnHeight) {
-        mTextViews = textViews;
-        mColumnWidth = columnWidth;
-        mColumnHeight = columnHeight;
+    public GridAdapter(ArrayList<TextView> textViews, int columnWidth, int columnHeight, Context mContext) {
+        this.mTextViews = textViews;
+        this.mColumnWidth = columnWidth;
+        this.mColumnHeight = columnHeight;
+        this.context = mContext;
+        inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        if (convertView == null) {
+            LinearLayout l  = new LinearLayout(context);
+            l.setLayoutParams(new LinearLayout.LayoutParams(mColumnWidth, mColumnHeight));
+            convertView = inflater.inflate(R.layout.cell, l);
+        }
+        TextView textView = (TextView) convertView.findViewById(R.id.specialColumn);
+        textView.setText(mTextViews.get(position).getText());
+        textView.setBackgroundColor(mTextViews.get(position).getDrawingCacheBackgroundColor());
+
+
+
+        return convertView;
     }
 
     @Override
@@ -57,24 +68,5 @@ public class GridAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
-    }
-//TODO this works but not efficient as we're not recycling views.
-    //If there is time, try to recycle it, and make sure it works and doesn't return random
-    //positions as it does with the current implementation
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView textView;
-        textView = mTextViews.get(position);
-////    if (convertView == null) {
-////    }
-//      else {
-////    textView = (TextView) convertView;
-//      }
-
-        android.widget.AbsListView.LayoutParams params =
-                new android.widget.AbsListView.LayoutParams(mColumnWidth, mColumnHeight);
-        textView.setLayoutParams(params);
-
-        return textView;
     }
 }
