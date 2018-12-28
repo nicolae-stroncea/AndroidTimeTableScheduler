@@ -13,7 +13,7 @@ import android.widget.GridView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimeTableActivity extends AppCompatActivity implements SwipeGestureCallBack{
+public class TimeTableActivity extends AppCompatActivity{
     private GridView gridView;
     public static final int NUM_COLS = 6;
     private static int columnWidth, columnHeight;
@@ -28,7 +28,6 @@ public class TimeTableActivity extends AppCompatActivity implements SwipeGesture
         gridView = findViewById(R.id.grid);
         // Since we have 5 days in a week
         gridView.setNumColumns(NUM_COLS);
-//        gridView.setSwipeGestureCallBack(this);
         gridView.setFastScrollEnabled(true);
 
         //DO NOT DELETE INFERRED TYPE
@@ -183,20 +182,6 @@ public class TimeTableActivity extends AppCompatActivity implements SwipeGesture
             v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
         } else {
             v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
-        }
-    }
-
-    @Override
-    public void onSwipe(Direction direction) {
-        switch(direction){
-            case RIGHT:
-                activityModel.setPrevTimeTable();
-                setUpDisplay();
-                break;
-            case LEFT:
-                activityModel.setNextTimeTable();
-                setUpDisplay();
-                break;
         }
     }
 }
