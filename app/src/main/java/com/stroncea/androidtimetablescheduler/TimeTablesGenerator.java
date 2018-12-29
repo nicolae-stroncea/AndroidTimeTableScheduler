@@ -2,14 +2,13 @@ package com.stroncea.androidtimetablescheduler;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
 Generates all possible TimeTables given a list  of choice of EventGroups.
  */
-public class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> implements Comparator<T>, Serializable{
+public class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> implements  Serializable{
     private List<ChooseFromEventGroups<E>> buildingBlocks;
     private List<T> timeTables = new ArrayList<>();
     /**
@@ -53,7 +52,7 @@ public class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> i
     public void createTimeTables(){
         if(buildingBlocks.size()!=0){
             createHelper(0, new ArrayList<EventGroup<E>>());
-            Collections.sort(timeTables, this);
+            Collections.sort(timeTables);
         }
     }
 
@@ -107,13 +106,6 @@ public class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> i
     }
     public void addBuildingBlocks(ChooseFromEventGroups<E> newBuildingBlock){
         buildingBlocks.add(newBuildingBlock);
-    }
-    // The timmeTable with the smallest scoreForPreference is actually the biggest
-    // Therefore, we need to reverse them.
-    @Override
-    public int compare(T o1, T o2){
-        int comparingResult = o1.compareTo(o2);
-        return -comparingResult;
     }
 
     /**

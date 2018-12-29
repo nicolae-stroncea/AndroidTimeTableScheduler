@@ -1,4 +1,6 @@
 //TODO Go through each forLoop and remove all unnecessary method calls
+//TODO revise everything using single responsibility principle
+//TODO check again with the strategies
 //TODO Fix ChooseFromEventGroupsWithRepeats AND CourseRequessModel(returns far less than actually are there).Test both on Mat235.
 //TODO fix bug: Mat223 and Mat224 add Bundle. Both have 4, and 5 elements, and when we add both, we get a total of 8.WHY
 //TODO: Fix bug: Try CSC207 and ECO101: Loop through the screen.  A lot of timetables are identical

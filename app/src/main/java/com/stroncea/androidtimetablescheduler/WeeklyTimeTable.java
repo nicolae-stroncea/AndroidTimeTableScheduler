@@ -87,8 +87,14 @@ public class WeeklyTimeTable<E extends WeeklyEvent<E>> extends TimeTable<E, Week
 
 
     @Override
-    public UserPrefStrategies<E,WeeklyTimeTable<E>> getUserPreferenceBehaviours(){
-        return new WeeklyUserPrefStrategies<E>(this);
+    public SoftConstraintStrategy<E> getUserPreferenceBehaviours(SoftUserPreference pref){
+        switch(pref){
+            case NUMBER_OF_DAYS:
+                return new NumberOfDaysStrategy<>(this);
+            default:
+                return super.getUserPreferenceBehaviours(pref);
+
+        }
     }
     public int getDaysWithEvents(){
         return daysWithEvents;

@@ -8,6 +8,7 @@ import java.util.Map;
 /**
  * Represents a Valid List of EventGroups(From class description: all events in an eventGroup
  * must go together). There is no conflicts between any EventGroups.
+ * Must have a score.
  * Must implement Compare(), because timetables are compared to each other.*
  * Must implement Scorable, where you choose your custom filters on what attributes you want to scoreForPreference
  * a timeTable
@@ -80,9 +81,9 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> im
             int thisScore = thisScores[i];
             int otherScore = otherScores[i];
             if (thisScore > otherScore) {
-                return -1;
-            } else if (thisScore < otherScore) {
                 return 1;
+            } else if (thisScore < otherScore) {
+                return -1;
             }
         }
         // if we've reached this point,
@@ -98,11 +99,11 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> im
     public void giveScore(LinkedHashMap<SoftUserPreference, Integer> mapOfUserPreferences) {
         int counter = 0;
         int arraySize = mapOfUserPreferences.keySet().size();
-        UserPrefStrategies<E, T> upb = getUserPreferenceBehaviours();
         int[] thisScore = new int[arraySize];
         List<List<E>> lstOflstOfEvents = getListOfDayEvents();
         for(Map.Entry<SoftUserPreference, Integer> entry : mapOfUserPreferences.entrySet()){
-            thisScore[counter] = upb.scoreForPreference(entry.getKey(),entry.getValue(), lstOflstOfEvents);
+            SoftConstraintStrategy<E> upb = getUserPreferenceBehaviours(entry.getKey());
+            thisScore[counter] = upb.scoreForPreference(entry.getValue(), lstOflstOfEvents);
             counter+=1;
         }
         setScore(thisScore);
@@ -112,12 +113,19 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> im
      *
      * @return a UserPrefStrategies, which defines how to score data given an enum.
      */
-    public UserPrefStrategies<E,T> getUserPreferenceBehaviours(){
-        return new UserPrefStrategies<>();
+    public SoftConstraintStrategy<E> getUserPreferenceBehaviours(SoftUserPreference pref){
+        switch (pref){
+            case TIME_BTN_CLASSES:
+                return new TimeBetweenClassesStrategy<>();
+            case TIME_OF_DAY:
+                return new TimeOfDayStrategy<>();
+            default:
+                throw new IllegalStateException("Behaviour for this enum has not been implemented!");
+        }
     }
 
-    /**the list inside the list represents a Day of Events.
-     * @return
+    /** One list of events is a day.
+     * @return the list of days.
      */
     public abstract List<List<E>> getListOfDayEvents();
 
