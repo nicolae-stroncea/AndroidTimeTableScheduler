@@ -115,6 +115,8 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> im
      */
     public SoftConstraintStrategy<E> getUserPreferenceBehaviours(SoftUserPreference pref){
         switch (pref){
+            case NUMBER_OF_DAYS:
+                return new NumberOfDaysStrategy<>();
             case TIME_BTN_CLASSES:
                 return new TimeBetweenClassesStrategy<>();
             case TIME_OF_DAY:
@@ -125,6 +127,8 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> im
     }
 
     /** One list of events is a day.
+     * It is used to score the events according to user preferences, which is why every single
+     * timetable child must override it it it hasn't been yet.
      * @return the list of days.
      */
     public abstract List<List<E>> getListOfDayEvents();

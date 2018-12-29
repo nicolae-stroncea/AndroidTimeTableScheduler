@@ -3,20 +3,22 @@ package com.stroncea.androidtimetablescheduler;
 import java.util.List;
 
 
-//TODO make this a class for TimeTableOnly, get another one for WeeklyTimeTable
-public class NumberOfDaysStrategy<E extends WeeklyEvent<E>> implements SoftConstraintStrategy<E>{
+public class NumberOfDaysStrategy<E extends Event<E>> implements SoftConstraintStrategy<E>{
     public static final SoftUserPreference pref = SoftUserPreference.NUMBER_OF_DAYS;
-    WeeklyTimeTable<E> timeTable;
-
-    public NumberOfDaysStrategy(WeeklyTimeTable<E> t){
-        this.timeTable=t;
-    }
-
 
     @Override
     public int scoreForPreference(int valueOfPref, List<List<E>> events){
         // return the distance between the actual date and the desired date
-        return Math.abs(timeTable.getDaysWithEvents() - valueOfPref);
+
+        // find the number of days which have courses
+        int daysWithEvents = 0;
+        for(List<E> e: events){
+            if(!e.isEmpty()){
+                daysWithEvents+=1;
+            }
+        }
+
+        return Math.abs(daysWithEvents - valueOfPref);
 
     }
 

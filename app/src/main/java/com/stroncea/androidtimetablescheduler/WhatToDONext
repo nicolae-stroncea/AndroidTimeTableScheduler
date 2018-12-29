@@ -1,4 +1,9 @@
-//TODO Go through each forLoop and remove all unnecessary method calls
+//TODO it's possible to optimize giveScore by only calling it in CompareTo, and then in compareTo,
+// you do giveScore() on next userPref only if you haven't exited the function yet. IMPORTANT ONCE
+// you do giveScore, you save that value. To debug how effective it is, check how many values aren't
+// set.
+//TODO
+//TODO Go through each forLoop and while loop and remove all unnecessary method calls
 //TODO revise everything using single responsibility principle
 //TODO check again with the strategies
 //TODO Fix ChooseFromEventGroupsWithRepeats AND CourseRequessModel(returns far less than actually are there).Test both on Mat235.
