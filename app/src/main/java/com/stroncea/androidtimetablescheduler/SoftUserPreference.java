@@ -2,7 +2,7 @@ package com.stroncea.androidtimetablescheduler;
 
 import java.io.Serializable;
 
-public enum UserPreferences implements Serializable {
+public enum SoftUserPreference implements Serializable {
     /**
      *
      *  Soft constraints:
@@ -19,5 +19,5 @@ public enum UserPreferences implements Serializable {
      *  BLOCKED_TIME
      *
      */
-
+    TIME_BTN_CLASSES,TIME_OF_DAY,NUMBER_OF_DAYS
 }

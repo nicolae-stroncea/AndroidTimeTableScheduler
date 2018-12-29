@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -11,7 +12,18 @@ Generates all possible TimeTables given a list  of choice of EventGroups.
 public class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> implements Comparator<T>, Serializable{
     private List<ChooseFromEventGroups<E>> buildingBlocks;
     private List<T> timeTables = new ArrayList<>();
-    private List<UserPreferences> userPref;
+    /**
+     * is a map of the userPreferences, the order in which they count is the order of priority
+ *      i.e SoftUserPreference at index 0 is more important than SoftUserPreference at index 1, which is more
+ *      important than at index 2 and so on.
+ *      the value of the map is the value they assign to it. For example if they set enum TIME_BTN_CLASSES
+     *  be 4, that means they want 4 30-min blocks of free time btn classes
+     */
+    //TODO refactor the map so that when you shove 1hr blocks, it doubles it to account for fact that
+    //we're adding half hour slots rather than 1 hour slots
+
+
+    private LinkedHashMap<SoftUserPreference, Integer> userPref;
     private TimeTableCreator<E,T> timeTableCreator;
 
     /**
@@ -27,7 +39,7 @@ public class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> i
         this.timeTableCreator = t;
         this.buildingBlocks = new ArrayList<>();
     }
-    public TimeTablesGenerator(List<ChooseFromEventGroups<E>> buildingBlocks, TimeTableCreator<E,T> t, List<UserPreferences> userPref){
+    public TimeTablesGenerator(List<ChooseFromEventGroups<E>> buildingBlocks, TimeTableCreator<E,T> t, LinkedHashMap<SoftUserPreference, Integer> userPref){
         this(buildingBlocks,t);
         this.userPref= userPref;
     }
@@ -35,7 +47,7 @@ public class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> i
 
     }
     /**
-     * Create all possible TimeTable Combinations and sorts them according to score
+     * Create all possible TimeTable Combinations and sorts them according to scoreForPreference
      */
     //TODO transform this into normal forLoops. It's a lot faster that way.
     public void createTimeTables(){
@@ -60,7 +72,7 @@ public class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> i
                 // because otherwise the current one is modified
                 if(!hasAConflict(new ArrayList<>(items))){
                     T t = timeTableCreator.createTimeTable(new ArrayList<>(items));
-                    t.giveScore();
+                    t.giveScore(userPref);
                     timeTables.add(t);
 
                 }
@@ -96,7 +108,7 @@ public class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> i
     public void addBuildingBlocks(ChooseFromEventGroups<E> newBuildingBlock){
         buildingBlocks.add(newBuildingBlock);
     }
-    // The timmeTable with the smallest score is actually the biggest
+    // The timmeTable with the smallest scoreForPreference is actually the biggest
     // Therefore, we need to reverse them.
     @Override
     public int compare(T o1, T o2){
@@ -134,5 +146,11 @@ public class TimeTablesGenerator<E extends Event<E>, T extends TimeTable<E,T>> i
     return false;
     }
 
+    public LinkedHashMap<SoftUserPreference, Integer> getUserPref() {
+        return userPref;
+    }
 
+    public void setUserPref(LinkedHashMap<SoftUserPreference, Integer> userPref) {
+        this.userPref = userPref;
+    }
 }

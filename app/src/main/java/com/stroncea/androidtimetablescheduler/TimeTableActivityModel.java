@@ -24,7 +24,6 @@ public class TimeTableActivityModel {
             for(UofTEvent event:listOfEvents) {
                 // add the first hour
                 int durationInSeconds = event.getEndTime() - event.getStartTime();
-                //TODO if ends at something like:x30 then I'm fucked
                 int numberOfHalfHours = durationInSeconds / 1800;
                 int newHour = event.getStartTime();
                 for (int i = 0; i < numberOfHalfHours; i++) {

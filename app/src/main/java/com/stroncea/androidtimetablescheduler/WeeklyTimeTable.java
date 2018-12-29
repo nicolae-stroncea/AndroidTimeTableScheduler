@@ -3,12 +3,21 @@ package com.stroncea.androidtimetablescheduler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WeeklyTimeTable<E extends WeeklyEvent<E>> extends TimeTable<E, WeeklyTimeTable<E>>{
     private int daysWithEvents = 0;
     public WeeklyTimeTable(List<EventGroup<E>> listOfEventGroups) {
         super(listOfEventGroups);
+        List<List<E>> eventsByWeek = getEventsByWeek();
+        // find the number of days which have courses
+        for(List<E> e: eventsByWeek){
+            if(!e.isEmpty()){
+                daysWithEvents+=1;
+            }
+        }
     }
     public int getDaysWithEvents(){
         return daysWithEvents;
@@ -85,59 +94,26 @@ public class WeeklyTimeTable<E extends WeeklyEvent<E>> extends TimeTable<E, Week
     }
 
     /**
-     * Gives a score based on the amount of wait time between classes. The higher the score, the larger the wait time,
-     * therefore the worst a timetable is
-     * @return the score
+     * Gives a scoreForPreference to each preference based on ensuring they're in the same order
+     * THE BEST SCORE WILL BE THE LOWEST SCORE
+     * @return the scoreForPreference
      */
     @Override
-    public double giveScore() {
-        List<List<E>> eventsByWeek = getEventsByWeek();
-        // find the number of days which have courses
-        for(List<E> e: eventsByWeek){
-            if(!e.isEmpty()){
-                daysWithEvents+=1;
-            }
+    public void giveScore(LinkedHashMap<SoftUserPreference, Integer> mapOfUserPreferences) {
+        int counter = 0;
+        int arraySize = mapOfUserPreferences.keySet().size();
+        WeeklyUserPrefStrategies<E> upb = new WeeklyUserPrefStrategies<>();
+        int[] thisScore = new int[arraySize];
+        List<List<E>> lstOflstOfEvents = getEventsByWeek();
+        for(Map.Entry<SoftUserPreference, Integer> entry : mapOfUserPreferences.entrySet()){
+            thisScore[counter] = upb.scoreForPreference(entry.getKey(),entry.getValue(),this, lstOflstOfEvents);
+            counter+=1;
         }
-        // Calculate the difference between the times
-        int timeDifferenceBtnEvents = 0;
-        for(int i=0; i<eventsByWeek.size(); i++){
-            List<E> eventsByDay =eventsByWeek.get(i);
-            for(int j=1; j<eventsByDay.size();j++){
-                E e = eventsByDay.get(j);
-                timeDifferenceBtnEvents += e.getStartTime()-eventsByDay.get(j-1).getEndTime();
-            }
-        }
-        setScore(timeDifferenceBtnEvents);
-        return timeDifferenceBtnEvents;
+        setScore(thisScore);
     }
-    //TODO this is for just least amount of wait times
-
-    /**
-     * Implement a way to compare TimeTables between themselves.
-     */
     @Override
-    public int compareTo(WeeklyTimeTable<E> o) {
-        if(this.getScore()>o.getScore()){
-            return -1;
-        }
-        else if( this.getScore()==o.getScore()){
-            if(this.getDaysWithEvents()<o.getDaysWithEvents()){
-                return 1;
-            }
-            else if(this.getDaysWithEvents()==o.getDaysWithEvents()){
-                return 0;
-            }
-            else{
-                return -1;
-            }
-        }
-        else if(this.getScore()< o.getScore()){
-            return 1;
-        }
-        else{
-            return 0;
-        }
+    public UserPrefStrategies<E,WeeklyTimeTable<E>> getUserPreferenceBehaviours(){
+        return new WeeklyUserPrefStrategies<E>();
     }
-
-
 }
+

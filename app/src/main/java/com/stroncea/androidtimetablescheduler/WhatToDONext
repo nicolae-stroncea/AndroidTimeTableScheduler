@@ -1,3 +1,4 @@
+//TODO Go through each forLoop and remove all unnecessary method calls
 //TODO Fix ChooseFromEventGroupsWithRepeats AND CourseRequessModel(returns far less than actually are there).Test both on Mat235.
 //TODO fix bug: Mat223 and Mat224 add Bundle. Both have 4, and 5 elements, and when we add both, we get a total of 8.WHY
 //TODO: Fix bug: Try CSC207 and ECO101: Loop through the screen.  A lot of timetables are identical
@@ -5,8 +6,9 @@
 //in some cases
 //TODO disable button when waiting for API course response
 
-
-
+//TODO fix bug on what happens if you press generate timetable when nothing has been added yet
+//TODO fix bug for going next too many times. Make a toast
+//TODO possible bug where it doesn't show any 9am classes. Always starts at 10. Is it skipping shit/
 // Then The way that will look on the UI, is: If you have a Time, at which multiple Tutorials/Lectures occur, they are maybe coloured in a different way, or have an asterisks next to them.
 // You then click on them, and it displays all the possible Compatible Events Happening at the same Time.
 // EventGroup will now be a list specifically by time
@@ -18,8 +20,9 @@
 
 //TODO Figure out the hashCode. Maybe make it a bit more general, so there's a chance it will be equal. Play aroud with that chance, and the profiler to see most efficient combo
 
-
+//TODO bottomviewmenu overlaps timetable and blocks last view
 //TODO Add documentation and testing everywhere
+//TODO Notify user if there's no data that that's why messages aren't going through
 
 //TODO differentiate between fall, winter, and full year courses. If fall, make its own timetable for it. If winter, make its own timetable for it. If full year, put it in both fall and winter.
 

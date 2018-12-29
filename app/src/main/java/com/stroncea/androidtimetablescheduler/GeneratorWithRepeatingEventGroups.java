@@ -1,11 +1,9 @@
 package com.stroncea.androidtimetablescheduler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * This represents a TimeTableGenerator which is optimized for dealing with RepeatingGroups.
@@ -23,10 +21,15 @@ public class GeneratorWithRepeatingEventGroups<E extends Event<E>, T extends Tim
     }
     public GeneratorWithRepeatingEventGroups(TimeTableCreator<E,T> t){
         super(t);
+        LinkedHashMap<SoftUserPreference, Integer> test = new LinkedHashMap<>();
+        test.put(SoftUserPreference.TIME_OF_DAY, 0);
+        test.put(SoftUserPreference.TIME_BTN_CLASSES, 0);
+        test.put(SoftUserPreference.NUMBER_OF_DAYS,0);
+        setUserPref(test);
         bundle = new HashMap<>();
 
     }
-    public GeneratorWithRepeatingEventGroups(List<ChooseFromEventGroups<E>> buildingBlocks, TimeTableCreator<E,T> t, List<UserPreferences> userPref){
+    public GeneratorWithRepeatingEventGroups(List<ChooseFromEventGroups<E>> buildingBlocks, TimeTableCreator<E,T> t, LinkedHashMap<SoftUserPreference, Integer> userPref){
         super(buildingBlocks, t,userPref);
         bundle = new HashMap<>();
 
