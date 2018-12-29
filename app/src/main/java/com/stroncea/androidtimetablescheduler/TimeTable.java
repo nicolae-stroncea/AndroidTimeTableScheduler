@@ -1,15 +1,14 @@
 package com.stroncea.androidtimetablescheduler;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a Valid List of EventGroups(From class description: all events in an eventGroup
  * must go together). There is no conflicts between any EventGroups.
- * Must implement Compare(), where it decides how to sort the timeTables by scoreForPreference.
- * It must implement it because with different events, you will sort timeTables differently.
- * For example with a weekly event, you will compare by day of week, monthly event, by day of month.
- *
+ * Must implement Compare(), because timetables are compared to each other.*
  * Must implement Scorable, where you choose your custom filters on what attributes you want to scoreForPreference
  * a timeTable
  */
@@ -90,8 +89,37 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> im
         // this must mean that all the scores are virtually identical
         return 0;
     }
+    /**
+     * Gives a scoreForPreference to each preference based on ensuring they're in the same order
+     * THE BEST SCORE WILL BE THE LOWEST SCORE
+     * @return the scoreForPreference
+     */
+    @Override
+    public void giveScore(LinkedHashMap<SoftUserPreference, Integer> mapOfUserPreferences) {
+        int counter = 0;
+        int arraySize = mapOfUserPreferences.keySet().size();
+        UserPrefStrategies<E, T> upb = getUserPreferenceBehaviours();
+        int[] thisScore = new int[arraySize];
+        List<List<E>> lstOflstOfEvents = getListOfDayEvents();
+        for(Map.Entry<SoftUserPreference, Integer> entry : mapOfUserPreferences.entrySet()){
+            thisScore[counter] = upb.scoreForPreference(entry.getKey(),entry.getValue(), lstOflstOfEvents);
+            counter+=1;
+        }
+        setScore(thisScore);
+    }
 
-    public abstract UserPrefStrategies<E,T> getUserPreferenceBehaviours();
+    /**
+     *
+     * @return a UserPrefStrategies, which defines how to score data given an enum.
+     */
+    public UserPrefStrategies<E,T> getUserPreferenceBehaviours(){
+        return new UserPrefStrategies<>();
+    }
+
+    /**the list inside the list represents a Day of Events.
+     * @return
+     */
+    public abstract List<List<E>> getListOfDayEvents();
 
 
 }

@@ -84,7 +84,7 @@ public class TimeTableActivity extends AppCompatActivity{
         List<UofTEvent> day;
         // go day by day
         for(int i =0;i<NUM_COLS-1;i++){
-            List<List<UofTEvent>> daysWithEvents = activityModel.getWeeklyTimeTable().getEventsByWeek();
+            List<List<UofTEvent>> daysWithEvents = activityModel.getWeeklyTimeTable().getListOfDayEvents();
             // each day has the events sorted
             day = daysWithEvents.get(i);
             int eventCounter = 0;

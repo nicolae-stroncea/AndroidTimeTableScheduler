@@ -3,15 +3,13 @@ package com.stroncea.androidtimetablescheduler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class WeeklyTimeTable<E extends WeeklyEvent<E>> extends TimeTable<E, WeeklyTimeTable<E>>{
     private int daysWithEvents = 0;
     public WeeklyTimeTable(List<EventGroup<E>> listOfEventGroups) {
         super(listOfEventGroups);
-        List<List<E>> eventsByWeek = getEventsByWeek();
+        List<List<E>> eventsByWeek = getListOfDayEvents();
         // find the number of days which have courses
         for(List<E> e: eventsByWeek){
             if(!e.isEmpty()){
@@ -19,15 +17,12 @@ public class WeeklyTimeTable<E extends WeeklyEvent<E>> extends TimeTable<E, Week
             }
         }
     }
-    public int getDaysWithEvents(){
-        return daysWithEvents;
-    }
-
     /**
      *
      * @return the events by week, sorted by endtime.
      */
-    public List<List<E>> getEventsByWeek() {
+    @Override
+    public List<List<E>> getListOfDayEvents() {
         List<E> listOfEvents = new ArrayList<>();
         List<EventGroup<E>> listOfEventGroups = getListOfEventGroups();
         // first we flatten the list by combining all the events in 1.
@@ -89,31 +84,18 @@ public class WeeklyTimeTable<E extends WeeklyEvent<E>> extends TimeTable<E, Week
         return eventsByWeek;
     }
 
+
+
+    @Override
+    public UserPrefStrategies<E,WeeklyTimeTable<E>> getUserPreferenceBehaviours(){
+        return new WeeklyUserPrefStrategies<E>(this);
+    }
+    public int getDaysWithEvents(){
+        return daysWithEvents;
+    }
     public void setDaysWithEvents(int daysWithEvents) {
         this.daysWithEvents = daysWithEvents;
     }
 
-    /**
-     * Gives a scoreForPreference to each preference based on ensuring they're in the same order
-     * THE BEST SCORE WILL BE THE LOWEST SCORE
-     * @return the scoreForPreference
-     */
-    @Override
-    public void giveScore(LinkedHashMap<SoftUserPreference, Integer> mapOfUserPreferences) {
-        int counter = 0;
-        int arraySize = mapOfUserPreferences.keySet().size();
-        WeeklyUserPrefStrategies<E> upb = new WeeklyUserPrefStrategies<>();
-        int[] thisScore = new int[arraySize];
-        List<List<E>> lstOflstOfEvents = getEventsByWeek();
-        for(Map.Entry<SoftUserPreference, Integer> entry : mapOfUserPreferences.entrySet()){
-            thisScore[counter] = upb.scoreForPreference(entry.getKey(),entry.getValue(),this, lstOflstOfEvents);
-            counter+=1;
-        }
-        setScore(thisScore);
-    }
-    @Override
-    public UserPrefStrategies<E,WeeklyTimeTable<E>> getUserPreferenceBehaviours(){
-        return new WeeklyUserPrefStrategies<E>();
-    }
 }
 
