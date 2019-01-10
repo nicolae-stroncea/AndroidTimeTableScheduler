@@ -5,6 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * Single Responsibility: Represents a list of related EventGroups.
  * For this class, the related EventGroups are all alternatives to each other,
@@ -15,9 +19,14 @@ import java.util.NoSuchElementException;
  * in STRITLY 1 lecture.
  *
  */
+@NoArgsConstructor
 public class ChooseFromEventGroups<E extends Event<E>> implements  Iterable<EventGroup<E>>, Serializable {
     private List<EventGroup<E>> listOfOptions = new ArrayList<>();
-    public String name;
+    @Getter @Setter
+    private String name;
+    public ChooseFromEventGroups(String name){
+        this.name = name;
+    }
 
     /**
      *
@@ -35,20 +44,14 @@ public class ChooseFromEventGroups<E extends Event<E>> implements  Iterable<Even
         this.listOfOptions = listOfOptions;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
     /**
      * Adds a section.
      */
     public void add(EventGroup<E> section) {
         listOfOptions.add(section);
     }
-    public String getName() {
-        return this.name;
-    }
+
+
     public Iterator<EventGroup<E>> iterator() {
         return new SectionIterator();
     }

@@ -6,7 +6,7 @@ public enum TimeOfDay {
     TimeOfDay(int time){
         this.timeOfDay = time;
     }
-    static int getTheTimeInSeconds(TimeOfDay e){
+    public static int getTheTimeInSeconds(TimeOfDay e){
         switch(e){
             //return the startTime of the timeOfDay in seconds
             case MORNING:

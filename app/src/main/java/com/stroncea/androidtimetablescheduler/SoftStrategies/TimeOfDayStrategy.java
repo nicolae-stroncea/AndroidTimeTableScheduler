@@ -1,4 +1,8 @@
-package com.stroncea.androidtimetablescheduler;
+package com.stroncea.androidtimetablescheduler.SoftStrategies;
+
+import com.stroncea.androidtimetablescheduler.Event;
+import com.stroncea.androidtimetablescheduler.SoftUserPreference;
+import com.stroncea.androidtimetablescheduler.TimeOfDay;
 
 import java.util.List;
 

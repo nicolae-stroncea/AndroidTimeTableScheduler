@@ -57,7 +57,9 @@ public class CourseRequestsModel {
             JSONArray courseAcrossYears = new JSONArray(response);
             boolean foundCurrYear = false;
             int counter = 0;
-            String currYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+//            String currYear = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+            //Remove after testing
+            String currYear = "2018";
             JSONObject thisYearCourse = new JSONObject();
             while(!foundCurrYear && counter<courseAcrossYears.length()){
                 thisYearCourse = courseAcrossYears.getJSONObject(counter);
@@ -105,7 +107,7 @@ public class CourseRequestsModel {
                         typesOfCourses.put(courseType, typeCourse);
 
                     }
-                    // if this type of lecture doesn't exists, create it
+                    // if this type of lecture doesn'generator exists, create it
                     else{
                         ChooseFromEventGroupsWithRepeats<UofTEvent> typeCourse =new ChooseFromEventGroupsWithRepeats<>();
                         typeCourse.add(oneLectureGroup);

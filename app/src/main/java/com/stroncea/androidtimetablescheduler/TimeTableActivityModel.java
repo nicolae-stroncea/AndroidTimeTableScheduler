@@ -6,9 +6,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class TimeTableActivityModel {
+    @Getter @Setter
     private TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>> timeTablesGenerator;
+    @Getter @Setter
     private WeeklyTimeTable<UofTEvent> weeklyTimeTable;
+    @Getter @Setter
     private int currTimeTable = 0;
 
     public TimeTableActivityModel(TimeTablesGenerator<UofTEvent,WeeklyTimeTable<UofTEvent>> t){
@@ -49,21 +55,5 @@ public class TimeTableActivityModel {
             }
 
         }
-
-    public TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>> getTimeTablesGenerator() {
-        return timeTablesGenerator;
-    }
-
-    public void setTimeTablesGenerator(TimeTablesGenerator<UofTEvent, WeeklyTimeTable<UofTEvent>> timeTablesGenerator) {
-        this.timeTablesGenerator = timeTablesGenerator;
-    }
-
-    public WeeklyTimeTable<UofTEvent> getWeeklyTimeTable() {
-        return weeklyTimeTable;
-    }
-
-    public void setWeeklyTimeTable(WeeklyTimeTable<UofTEvent> weeklyTimeTable) {
-        this.weeklyTimeTable = weeklyTimeTable;
-    }
 
 }

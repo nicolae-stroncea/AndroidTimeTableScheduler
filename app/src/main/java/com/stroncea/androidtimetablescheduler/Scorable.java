@@ -1,9 +1,11 @@
 package com.stroncea.androidtimetablescheduler;
 
 
+import com.stroncea.androidtimetablescheduler.SoftStrategies.SoftConstraintStrategyFactory;
+
 import java.util.LinkedHashMap;
 
-public interface Scorable {
+public interface Scorable<E extends Event<E>> {
     /**
      * is a linkedHashmap of the userPreferences, the order in which they count is the order of priority
      *      i.e SoftUserPreference at index 0 is more important than SoftUserPreference at index 1, which is more
@@ -13,5 +15,6 @@ public interface Scorable {
      *
      * @return the scoreForPreference. The best scoreForPreference will be the lowest scoreForPreference.
      */
-    void giveScore(LinkedHashMap<SoftUserPreference, Integer> mapOfSoftUserPreferences);
-}
+    void giveScore(LinkedHashMap<SoftUserPreference, Integer> mapOfSoftUserPreferences, SoftConstraintStrategyFactory<E> factory);
+
+    }

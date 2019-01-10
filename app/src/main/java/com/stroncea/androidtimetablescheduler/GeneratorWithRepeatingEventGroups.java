@@ -5,6 +5,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * This represents a TimeTableGenerator which is optimized for dealing with RepeatingGroups.
  * A repeated group is one such that eventGroup1.isEqual(eventGroup2) returns true.
@@ -13,6 +16,7 @@ import java.util.Map;
  *
  */
 public class GeneratorWithRepeatingEventGroups<E extends Event<E>, T extends TimeTable<E,T>>  extends TimeTablesGenerator<E,T> {
+    @Getter @Setter
     private Map<EventGroup<E>, List<EventGroup<E>>> bundle;
 
     public GeneratorWithRepeatingEventGroups(List<ChooseFromEventGroups<E>> buildingBlocks, TimeTableCreator<E,T> t){
@@ -25,7 +29,7 @@ public class GeneratorWithRepeatingEventGroups<E extends Event<E>, T extends Tim
         test.put(SoftUserPreference.TIME_OF_DAY, 0);
         test.put(SoftUserPreference.TIME_BTN_CLASSES, 0);
         test.put(SoftUserPreference.NUMBER_OF_DAYS,0);
-        setUserPref(test);
+        setSoftOrderingConstraints(test);
         bundle = new HashMap<>();
 
     }
@@ -35,13 +39,6 @@ public class GeneratorWithRepeatingEventGroups<E extends Event<E>, T extends Tim
 
     }
 
-    public Map<EventGroup<E>, List<EventGroup<E>>> getBundle() {
-        return bundle;
-    }
-
-    public void setBundle(Map<EventGroup<E>, List<EventGroup<E>>> bundle) {
-        this.bundle = bundle;
-    }
     public void addToBundle(EventGroup<E> evGroup, List<EventGroup<E>> listOfEv){
         bundle.put(evGroup, listOfEv);
     }

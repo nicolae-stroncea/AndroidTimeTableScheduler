@@ -180,8 +180,8 @@ TimeTable checks if there is a conflict.
 //    listOfCourses.add(uofTCourse4);
 //
 //
-//    TimeTablesGenerator t = new WeeklyTimeTableCreator(listOfCourses);
-//    t.createTimeTables();
-//    t.getTimeTables().sort(t);
+//    TimeTablesGenerator generator = new WeeklyTimeTableCreator(listOfCourses);
+//    generator.createTimeTables();
+//    generator.getTimeTables().sort(generator);
     }
 }

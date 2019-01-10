@@ -5,7 +5,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class WeeklyTimeTable<E extends WeeklyEvent<E>> extends TimeTable<E, WeeklyTimeTable<E>>{
+    @Getter @Setter
     private int daysWithEvents = 0;
     public WeeklyTimeTable(List<EventGroup<E>> listOfEventGroups) {
         super(listOfEventGroups);
@@ -82,13 +86,6 @@ public class WeeklyTimeTable<E extends WeeklyEvent<E>> extends TimeTable<E, Week
 
         }
         return eventsByWeek;
-    }
-
-    public int getDaysWithEvents(){
-        return daysWithEvents;
-    }
-    public void setDaysWithEvents(int daysWithEvents) {
-        this.daysWithEvents = daysWithEvents;
     }
 
 }

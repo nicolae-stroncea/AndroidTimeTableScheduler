@@ -125,7 +125,7 @@ public class TimeTableActivity extends AppCompatActivity{
                         text = name.substring(0, name.length()-3) + " " + e.getLectureSection();
                         newBtn.setText(text);
 
-                        //however, we don't know anything about whether there are other rows in this event so don't iterate it.
+                        //however, we don'generator know anything about whether there are other rows in this event so don'generator iterate it.
 
                     }
                     // start time is greater than row time. That means there's no event in list which satisfies this
@@ -180,7 +180,7 @@ public class TimeTableActivity extends AppCompatActivity{
             this.rowNumber=rowNumber;
         }
         else{
-            // don't need to update display in the other one, as it's updated in changeGridViewSize
+            // don'generator need to update display in the other one, as it's updated in changeGridViewSize
             setAdapter();
         }
     }

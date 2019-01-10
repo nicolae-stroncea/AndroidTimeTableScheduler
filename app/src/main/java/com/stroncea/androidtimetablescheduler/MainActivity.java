@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.stroncea.androidtimetablescheduler.SoftStrategies.SoftConstraintStrategyFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +31,7 @@ private RadioGroup weight;
 
 CourseRequests asyncTask;
 ArrayAdapter<String> adapter;
-GeneratorWithRepeatingEventGroups<UofTEvent, WeeklyTimeTable<UofTEvent>> t = new GeneratorWithRepeatingEventGroups<>(new WeeklyTimeTableCreator<UofTEvent>());
+GeneratorWithRepeatingEventGroups<UofTEvent, WeeklyTimeTable<UofTEvent>> generator = new GeneratorWithRepeatingEventGroups<>(new WeeklyTimeTableCreator<UofTEvent>());
 
 
     @Override
@@ -43,6 +45,8 @@ GeneratorWithRepeatingEventGroups<UofTEvent, WeeklyTimeTable<UofTEvent>> t = new
         weight = findViewById(R.id.weight);
         course = findViewById(R.id.course);
         clearCourses = findViewById(R.id.clearCourses);
+        SoftConstraintStrategyFactory<UofTEvent> softConstraintStrategyFactory= new SoftConstraintStrategyFactory<UofTEvent>();
+        generator.setSoftConstraintStrategyFactory(softConstraintStrategyFactory);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listOfAcceptedCourses);
         acceptedCourses = findViewById(R.id.acceptedCourses);
         acceptedCourses.setAdapter(adapter);
@@ -111,8 +115,8 @@ GeneratorWithRepeatingEventGroups<UofTEvent, WeeklyTimeTable<UofTEvent>> t = new
         generatetmtblbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                TimeTablesGenerator t = new WeeklyTimeTableCreator(listOfCourses);
-                SaveAndLoadTimeTableGenerator.saveToFile(MainActivity.this,"TimeTableGenerator",t);
+//                TimeTablesGenerator generator = new WeeklyTimeTableCreator(listOfCourses);
+                SaveAndLoadTimeTableGenerator.saveToFile(MainActivity.this,"TimeTableGenerator", generator);
                 startActivity(new Intent(MainActivity.this, TimeTableActivity.class));
 
 
@@ -123,7 +127,7 @@ GeneratorWithRepeatingEventGroups<UofTEvent, WeeklyTimeTable<UofTEvent>> t = new
             public void onClick(View view) {
                 listOfAcceptedCourses.clear();
                 acceptedCourses.setAdapter(adapter);
-                t.clearBuildingBlocks();
+                generator.clearBuildingBlocks();
 
 
             }
@@ -153,8 +157,8 @@ GeneratorWithRepeatingEventGroups<UofTEvent, WeeklyTimeTable<UofTEvent>> t = new
             for(ChooseFromEventGroupsWithRepeats<UofTEvent> option: output){
                 // first clean it. Get rid of all repeat times.
                 Map<EventGroup<UofTEvent>, List<EventGroup<UofTEvent>>> oneOption = option.stripRepeats();
-                t.addToBundle(oneOption);
-                t.addBuildingBlocks(option);
+                generator.addToBundle(oneOption);
+                generator.addBuildingBlocks(option);
             }
             course.getText().clear();
             listOfAcceptedCourses.add(0, output.get(0).getName());

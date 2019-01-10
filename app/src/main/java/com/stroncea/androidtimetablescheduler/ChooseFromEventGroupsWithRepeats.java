@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class ChooseFromEventGroupsWithRepeats<E extends Event<E>> extends ChooseFromEventGroups<E> {
     public ChooseFromEventGroupsWithRepeats(String name) {
-        this.name = name;
+        super(name);
     }
     public ChooseFromEventGroupsWithRepeats(){
         super();

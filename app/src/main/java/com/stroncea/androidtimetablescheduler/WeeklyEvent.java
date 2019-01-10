@@ -1,5 +1,10 @@
 package com.stroncea.androidtimetablescheduler;
+
+import lombok.Getter;
+import lombok.Setter;
+
 public class WeeklyEvent<E extends WeeklyEvent<E>> extends Event<E> {
+    @Getter @Setter
     private int weekDay;
 
 
@@ -23,9 +28,6 @@ public class WeeklyEvent<E extends WeeklyEvent<E>> extends Event<E> {
         super( startTime, endTime);
     }
 
-    public void setWeekDay(int weekDay) {
-        this.weekDay = weekDay;
-    }
     public void setWeekDay(DaysOfWeek weekDay) {
         this.weekDay = weekDay.getDay();
     }
@@ -63,9 +65,6 @@ public class WeeklyEvent<E extends WeeklyEvent<E>> extends Event<E> {
         return intersects;
     }
 
-    public int getWeekDay() {
-        return weekDay;
-    }
 
     /**
      * Equals strictly if startTime, endTime and weekDay are the same

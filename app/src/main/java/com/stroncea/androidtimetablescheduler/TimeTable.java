@@ -1,9 +1,17 @@
 package com.stroncea.androidtimetablescheduler;
+import com.stroncea.androidtimetablescheduler.SoftStrategies.SoftConstraintStrategy;
+import com.stroncea.androidtimetablescheduler.SoftStrategies.SoftConstraintStrategyFactory;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Represents a Valid List of EventGroups(From class description: all events in an eventGroup
@@ -14,8 +22,10 @@ import java.util.Map;
  * a timeTable
  */
 
-public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> implements Comparable<T>, Scorable, Serializable {
+public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> implements Comparable<T>, Scorable<E>, Serializable {
+    @Getter @Setter
     private List<EventGroup<E>> listOfEventGroups = new ArrayList<>();
+    @Getter @Setter
     private int[] score;
 
     public TimeTable() {}
@@ -43,29 +53,6 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> im
         return listOfEvents;
     }
 
-
-    /**
-     *
-     * @param listOfEventGroups Set the different eventGroups to build the timeTable From
-     */
-    public void setEvents(List<EventGroup<E>> listOfEventGroups) {
-        this.listOfEventGroups = listOfEventGroups;
-    }
-
-   /**
-     * Get the groups
-     * @return the listOfEventGroups
-     */
-     public List<EventGroup<E>> getListOfEventGroups() {
-        return listOfEventGroups;
-    }
-     public int[] getScore() {
-        return score;
-    }
-
-    public void setScore(int[] score) {
-        this.score = score;
-    }
 
     /**
      * Compares this object with the specified object for order. Returns a negative integer, zero,
@@ -96,39 +83,32 @@ public abstract class TimeTable<E extends Event<E>, T extends TimeTable<E,T>> im
      * @return the scoreForPreference
      */
     @Override
-    public void giveScore(LinkedHashMap<SoftUserPreference, Integer> mapOfUserPreferences) {
+    public void giveScore(LinkedHashMap<SoftUserPreference, Integer> mapOfUserPreferences, SoftConstraintStrategyFactory<E> factory) {
         int counter = 0;
         int arraySize = mapOfUserPreferences.keySet().size();
         int[] thisScore = new int[arraySize];
         List<List<E>> lstOflstOfEvents = getListOfDayEvents();
+        List<SoftConstraintStrategy<E>> strategyList =  new ArrayList<>();
+        Set<SoftUserPreference> userPreferences = mapOfUserPreferences.keySet();
+        Map<SoftUserPreference, SoftConstraintStrategy<E>> prefToStrategy = new HashMap<>();
+        for(SoftUserPreference up: userPreferences){
+            SoftConstraintStrategy<E> strategy = factory.getUserPreferenceBehaviours(up);
+            strategyList.add(strategy);
+            prefToStrategy.put(up,strategy);
+        }
         for(Map.Entry<SoftUserPreference, Integer> entry : mapOfUserPreferences.entrySet()){
-            SoftConstraintStrategy<E> upb = getUserPreferenceBehaviours(entry.getKey());
-            thisScore[counter] = upb.scoreForPreference(entry.getValue(), lstOflstOfEvents);
+//            SoftConstraintStrategy<E> upb = hardConstraintFactory.getUserPreferenceBehaviours(entry.getKey());
+//            thisScore[counter] = upb.scoreForPreference(entry.getValue(), lstOflstOfEvents);
+            thisScore[counter] = prefToStrategy.get(entry.getKey()).scoreForPreference(entry.getValue(), lstOflstOfEvents);
             counter+=1;
         }
         setScore(thisScore);
     }
 
-    /**
-     *
-     * @return a UserPrefStrategies, which defines how to score data given an enum.
-     */
-    public SoftConstraintStrategy<E> getUserPreferenceBehaviours(SoftUserPreference pref){
-        switch (pref){
-            case NUMBER_OF_DAYS:
-                return new NumberOfDaysStrategy<>();
-            case TIME_BTN_CLASSES:
-                return new TimeBetweenClassesStrategy<>();
-            case TIME_OF_DAY:
-                return new TimeOfDayStrategy<>();
-            default:
-                throw new IllegalStateException("Behaviour for this enum has not been implemented!");
-        }
-    }
 
     /** One list of events is a day.
      * It is used to score the events according to user preferences, which is why every single
-     * timetable child must override it it it hasn't been yet.
+     * timetable child must override it it it hasn'generator been yet.
      * @return the list of days.
      */
     public abstract List<List<E>> getListOfDayEvents();
